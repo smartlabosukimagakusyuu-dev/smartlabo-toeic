@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TOEIC秒速文法</title>
+<style>
+  :root {
+    --navy: #1E3A8A;
+    --blue: #3B82F6;
+    --blue-light: #EFF6FF;
+    --blue-mid: #DBEAFE;
+    --green: #10B981;
+    --green-light: #ECFDF5;
+    --red: #EF4444;
+    --red-light: #FEF2F2;
+    --gold: #F59E0B;
+    --gold-light: #FFFBEB;
+    --gray: #6B7280;
+    --gray-light: #F3F4F6;
+    --white: #FFFFFF;
+    --shadow: 0 2px 12px rgba(0,0,0,0.10);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.13);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+    background: #F0F4FF;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 480px;
+    background: #F0F4FF;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ===== SCREENS ===== */
+  .screen { display: none; padding-bottom: 80px; animation: fadeIn .25s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ===== SPLASH ===== */
+  #screen-splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0;
+    background: linear-gradient(160deg, #1E3A8A 0%, #3B82F6 100%);
+  }
+  .splash-icon { font-size: 64px; margin-bottom: 16px; animation: splashPop .6s cubic-bezier(.34,1.56,.64,1); }
+  .splash-title { color: #fff; font-size: 28px; font-weight: 800; letter-spacing: .5px; }
+  .splash-sub { color: rgba(255,255,255,.75); font-size: 14px; margin-top: 6px; }
+  .splash-bar { width: 120px; height: 4px; background: rgba(255,255,255,.25); border-radius: 2px; margin-top: 40px; overflow:hidden; }
+  .splash-progress { height: 100%; background: #fff; border-radius: 2px; animation: splashLoad 1.2s ease forwards; }
+  @keyframes splashPop { from{transform:scale(0)} to{transform:scale(1)} }
+  @keyframes splashLoad { from{width:0} to{width:100%} }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    color: white;
+    padding: 16px 20px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; }
+  .header-logo { display: flex; align-items: center; gap: 8px; }
+  .header-icon { font-size: 22px; }
+  .header-title { font-size: 18px; font-weight: 800; }
+  .header-sub { font-size: 11px; opacity: .75; margin-top: 1px; }
+  .header-badge { background: rgba(255,255,255,.2); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: #fff;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    z-index: 100;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.07);
+  }
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--gray);
+    font-size: 10px;
+    font-weight: 600;
+    gap: 3px;
+    transition: color .15s;
+  }
+  .nav-btn .nav-icon { font-size: 20px; }
+  .nav-btn.active { color: var(--blue); }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin: 12px 16px;
+  }
+  .card-sm { padding: 14px 16px; margin: 8px 16px; }
+
+  /* ===== HOME SCREEN ===== */
+  .home-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    padding: 24px 20px;
+    color: white;
+    text-align: center;
+  }
+  .home-hero-icon { font-size: 48px; margin-bottom: 8px; }
+  .home-hero-title { font-size: 24px; font-weight: 800; }
+  .home-hero-catch { font-size: 13px; opacity: .8; margin-top: 4px; }
+
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 16px; margin-top: 14px; }
+  .stat-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .stat-icon { font-size: 20px; margin-bottom: 4px; }
+  .stat-val { font-size: 20px; font-weight: 800; color: var(--navy); }
+  .stat-label { font-size: 10px; color: var(--gray); margin-top: 2px; }
+
+  .level-card {
+    background: linear-gradient(135deg, var(--gold) 0%, #F97316 100%);
+    border-radius: var(--radius);
+    margin: 14px 16px 0;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .level-icon { font-size: 32px; }
+  .level-info { flex: 1; }
+  .level-name { color: #fff; font-size: 15px; font-weight: 800; }
+  .level-sub { color: rgba(255,255,255,.8); font-size: 11px; margin-top: 2px; }
+  .level-bar-wrap { margin-top: 8px; background: rgba(255,255,255,.3); border-radius: 4px; height: 6px; overflow: hidden; }
+  .level-bar { height: 100%; background: #fff; border-radius: 4px; transition: width .5s ease; }
+
+  .home-btns { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 14px rgba(59,130,246,.4);
+    transition: transform .1s, box-shadow .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary:active { transform: scale(.97); box-shadow: none; }
+  .btn-secondary {
+    background: var(--white);
+    color: var(--navy);
+    border: 2px solid var(--blue-mid);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-secondary:active { transform: scale(.97); }
+  .btn-review {
+    background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 14px rgba(139,92,246,.3);
+    transition: transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-review:active { transform: scale(.97); }
+
+  /* ===== QUIZ SCREEN ===== */
+  .quiz-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    padding: 16px 20px;
+    color: white;
+  }
+  .quiz-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .quiz-progress-text { font-size: 13px; opacity: .85; }
+  .quiz-genre-badge {
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .quiz-progress-bar { height: 4px; background: rgba(255,255,255,.25); border-radius: 2px; overflow: hidden; }
+  .quiz-progress-fill { height: 100%; background: #fff; border-radius: 2px; transition: width .3s ease; }
+
+  /* Timer */
+  .timer-wrap { display: flex; justify-content: center; margin: 16px 0 4px; }
+  .timer-ring { position: relative; width: 56px; height: 56px; }
+  .timer-svg { transform: rotate(-90deg); }
+  .timer-track { fill: none; stroke: rgba(255,255,255,.2); stroke-width: 4; }
+  .timer-arc {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 138;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset .1s linear, stroke .3s;
+  }
+  .timer-arc.warning { stroke: var(--gold); }
+  .timer-arc.danger { stroke: var(--red); }
+  .timer-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .quiz-question-card {
+    background: var(--white);
+    margin: 12px 16px;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1F2937;
+  }
+  .blank { display: inline-block; min-width: 60px; border-bottom: 2px solid var(--blue); color: var(--blue); font-weight: 700; text-align: center; }
+
+  .choices-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .choice-btn {
+    background: var(--white);
+    border: 2px solid #E5E7EB;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all .15s;
+    box-shadow: var(--shadow);
+  }
+  .choice-btn:active { transform: scale(.98); }
+  .choice-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green); animation: popIn .25s ease; }
+  .choice-btn.wrong { background: var(--red-light); border-color: var(--red); color: var(--red); animation: shake .3s ease; }
+  .choice-btn.reveal { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .choice-btn:disabled { cursor: default; }
+  .choice-label {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background .15s, color .15s;
+  }
+  .choice-btn.correct .choice-label { background: var(--green); color: #fff; }
+  .choice-btn.wrong .choice-label { background: var(--red); color: #fff; }
+  .choice-btn.reveal .choice-label { background: var(--green); color: #fff; }
+
+  @keyframes popIn { from{transform:scale(.95)} to{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* Feedback */
+  .feedback-card {
+    margin: 12px 16px;
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    display: none;
+    animation: slideUp .25s ease;
+  }
+  .feedback-card.show { display: block; }
+  .feedback-card.correct { background: var(--green-light); border: 1.5px solid var(--green); }
+  .feedback-card.wrong { background: var(--red-light); border: 1.5px solid var(--red); }
+  @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .feedback-header { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+  .feedback-card.correct .feedback-header { color: var(--green); }
+  .feedback-card.wrong .feedback-header { color: var(--red); }
+  .feedback-answer { font-size: 13px; color: #374151; margin-bottom: 6px; }
+  .feedback-answer strong { color: var(--navy); }
+  .feedback-explain { font-size: 13px; color: #374151; background: rgba(255,255,255,.7); border-radius: 8px; padding: 10px 12px; line-height: 1.6; }
+  .feedback-explain-label { font-size: 11px; font-weight: 700; color: var(--gray); margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: calc(100% - 32px);
+    margin: 10px 16px 16px;
+    box-shadow: 0 4px 14px rgba(59,130,246,.35);
+    transition: transform .1s;
+    display: none;
+  }
+  .btn-next.show { display: block; }
+  .btn-next:active { transform: scale(.97); }
+
+  /* Review mode colors */
+  .review-mode .quiz-header { background: linear-gradient(135deg, #5B21B6 0%, #8B5CF6 100%); }
+  .review-mode .btn-next { background: linear-gradient(135deg, #8B5CF6 0%, #5B21B6 100%); }
+
+  /* ===== RESULT SCREEN ===== */
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    padding: 32px 20px;
+    text-align: center;
+    color: white;
+  }
+  .result-emoji { font-size: 56px; margin-bottom: 12px; }
+  .result-title { font-size: 22px; font-weight: 800; }
+  .result-score { font-size: 48px; font-weight: 800; margin: 8px 0; }
+  .result-score span { font-size: 18px; opacity: .8; }
+  .result-msg { font-size: 13px; opacity: .8; margin-top: 4px; }
+
+  .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 16px 0; }
+  .result-stat { background: var(--white); border-radius: var(--radius-sm); padding: 14px; text-align: center; box-shadow: var(--shadow); }
+  .result-stat-val { font-size: 22px; font-weight: 800; color: var(--navy); }
+  .result-stat-label { font-size: 11px; color: var(--gray); margin-top: 3px; }
+
+  /* ===== ANALYSIS SCREEN ===== */
+  .analysis-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    padding: 20px;
+    color: white;
+  }
+  .analysis-title { font-size: 18px; font-weight: 800; }
+  .analysis-sub { font-size: 12px; opacity: .75; margin-top: 3px; }
+
+  .genre-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .genre-row:last-child { border-bottom: none; }
+  .genre-name { width: 72px; font-size: 13px; font-weight: 700; color: #374151; flex-shrink: 0; }
+  .genre-bar-wrap { flex: 1; height: 10px; background: #F3F4F6; border-radius: 5px; overflow: hidden; }
+  .genre-bar-fill { height: 100%; border-radius: 5px; transition: width .6s ease; }
+  .genre-pct { width: 36px; text-align: right; font-size: 13px; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+  .genre-count { width: 40px; text-align: right; font-size: 11px; color: var(--gray); flex-shrink: 0; }
+
+  /* ===== TOAST ===== */
+  #toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(30,30,30,.9);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity .25s, transform .25s;
+    pointer-events: none;
+    z-index: 200;
+    white-space: nowrap;
+    max-width: 90%;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ===== CONFETTI ===== */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 300;
+  }
+
+  /* ===== LEVEL TABS ===== */
+  .level-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px 0;
+  }
+  .level-tab {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--white);
+    color: var(--gray);
+    box-shadow: var(--shadow);
+    transition: all .15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .level-tab .tab-icon { font-size: 16px; }
+  .level-tab .tab-count { font-size: 10px; font-weight: 600; opacity: .7; }
+  .level-tab.active { background: var(--navy); color: #fff; box-shadow: 0 4px 12px rgba(30,58,138,.35); }
+  .level-tab.active .tab-count { opacity: .8; }
+  .level-tab:active { transform: scale(.96); }
+
+  /* Utility */
+  .section-title { font-size: 13px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; padding: 14px 16px 4px; }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--gray); }
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state-text { font-size: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- SPLASH -->
+  <div id="screen-splash" class="screen active">
+    <div class="splash-icon">⚡</div>
+    <div class="splash-title">TOEIC秒速文法</div>
+    <div class="splash-sub">3秒でPart5を見抜く</div>
+    <div class="splash-bar"><div class="splash-progress"></div></div>
+  </div>
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen">
+    <div class="home-hero">
+      <div class="home-hero-icon">⚡</div>
+      <div class="home-hero-title">TOEIC秒速文法</div>
+      <div class="home-hero-catch">3秒でPart5を見抜く</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-val" id="stat-today">0</div>
+        <div class="stat-label">今日の問題</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-val" id="stat-acc">—</div>
+        <div class="stat-label">正解率</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-val" id="stat-streak">0</div>
+        <div class="stat-label">連続日数</div>
+      </div>
+    </div>
+
+    <div class="level-card" id="level-card">
+      <div class="level-icon" id="level-icon">🌱</div>
+      <div class="level-info">
+        <div class="level-name" id="level-name">Lv.1 TOEIC初心者</div>
+        <div class="level-sub" id="level-sub">次のレベルまで あと10問正解</div>
+        <div class="level-bar-wrap"><div class="level-bar" id="level-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="section-title">難易度を選ぶ</div>
+    <div class="level-tabs" id="level-tabs">
+      <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
+        <span class="tab-icon">⚡</span>全問題
+        <span class="tab-count" id="tab-count-all">30問</span>
+      </button>
+      <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
+        <span class="tab-icon">🌱</span>初級
+        <span class="tab-count" id="tab-count-初級">12問</span>
+      </button>
+      <button class="level-tab" data-level="中級" onclick="selectLevelTab('中級')">
+        <span class="tab-icon">📚</span>中級
+        <span class="tab-count" id="tab-count-中級">12問</span>
+      </button>
+      <button class="level-tab" data-level="上級" onclick="selectLevelTab('上級')">
+        <span class="tab-icon">🎯</span>上級
+        <span class="tab-count" id="tab-count-上級">6問</span>
+      </button>
+    </div>
+
+    <div class="home-btns">
+      <button class="btn-primary" id="btn-start" onclick="startNormal()">⚡ 学習を始める</button>
+      <button class="btn-review" id="btn-review-home" onclick="startReview()">🔄 間違えた問題を復習</button>
+      <button class="btn-secondary" onclick="showScreen('screen-analysis')">📊 弱点分析を見る</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-header">
+      <div class="quiz-meta">
+        <div class="quiz-progress-text" id="quiz-progress">1 / 10</div>
+        <div class="quiz-genre-badge" id="quiz-genre">品詞</div>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg class="timer-svg" width="56" height="56" viewBox="0 0 56 56">
+            <circle class="timer-track" cx="28" cy="28" r="22"/>
+            <circle class="timer-arc" id="timer-arc" cx="28" cy="28" r="22"/>
+          </svg>
+          <div class="timer-num" id="timer-num">3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-question-card" id="quiz-question"></div>
+
+    <div class="choices-list" id="choices-list"></div>
+
+    <div class="feedback-card" id="feedback-card">
+      <div class="feedback-header" id="feedback-header"></div>
+      <div class="feedback-answer" id="feedback-answer"></div>
+      <div class="feedback-explain">
+        <div class="feedback-explain-label">解説</div>
+        <div id="feedback-explain-text"></div>
+      </div>
+    </div>
+
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">次の問題へ →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen">
+    <div class="result-hero">
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <div class="result-title" id="result-title">お疲れさまでした！</div>
+      <div class="result-score" id="result-score">8<span> / 10</span></div>
+      <div class="result-msg" id="result-msg">よくできました！</div>
+    </div>
+
+    <div class="result-stats">
+      <div class="result-stat">
+        <div class="result-stat-val" id="result-correct">8</div>
+        <div class="result-stat-label">正解数</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val" id="result-acc">80%</div>
+        <div class="result-stat-label">今回の正解率</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val" id="result-total-correct">0</div>
+        <div class="result-stat-label">累計正解数</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val" id="result-total-acc">—</div>
+        <div class="result-stat-label">累計正解率</div>
+      </div>
+    </div>
+
+    <div class="home-btns">
+      <button class="btn-primary" onclick="startNormal()">⚡ もう一度やる</button>
+      <button class="btn-review" id="btn-result-review" onclick="startReview()">🔄 間違えた問題を復習</button>
+      <button class="btn-secondary" onclick="showScreen('screen-home')">🏠 ホームへ戻る</button>
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div id="screen-analysis" class="screen">
+    <div class="analysis-header">
+      <div class="analysis-title">📊 弱点分析</div>
+      <div class="analysis-sub">ジャンル別の正解率</div>
+    </div>
+
+    <div class="card" id="analysis-overall">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:13px;color:var(--gray);font-weight:600;">累計正解率</div>
+          <div style="font-size:32px;font-weight:800;color:var(--navy)" id="analysis-total-acc">—</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:13px;color:var(--gray);font-weight:600;">総回答数</div>
+          <div style="font-size:32px;font-weight:800;color:var(--navy)" id="analysis-total-count">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">ジャンル別成績</div>
+    <div class="card" id="genre-list"></div>
+
+    <div class="home-btns">
+      <button class="btn-primary" onclick="startNormal()">⚡ 学習を始める</button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<nav class="bottom-nav" id="bottom-nav" style="display:none;">
+  <button class="nav-btn active" id="nav-home" onclick="showScreen('screen-home')">
+    <span class="nav-icon">🏠</span>ホーム
+  </button>
+  <button class="nav-btn" id="nav-quiz" onclick="startNormal()">
+    <span class="nav-icon">⚡</span>学習
+  </button>
+  <button class="nav-btn" id="nav-analysis" onclick="showScreen('screen-analysis')">
+    <span class="nav-icon">📊</span>分析
+  </button>
+</nav>
+
+<div id="toast"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<script>
+// ===== QUESTION DATA =====
+const QUESTIONS = [
+  // 品詞
+  {
+    id: 1, genre: '品詞', level: '初級',
+    q: 'The manager gave a very _______ speech at the annual meeting.',
+    choices: ['inspire', 'inspiring', 'inspiration', 'inspired'],
+    answer: 'inspiring',
+    explain: '名詞(speech)を修飾するのは形容詞。inspire(動詞)→inspiring(形容詞)が正解。'
+  },
+  {
+    id: 2, genre: '品詞', level: '中級',
+    q: 'The new policy was designed to increase _______ among employees.',
+    choices: ['productive', 'productively', 'productivity', 'produce'],
+    answer: 'productivity',
+    explain: '動詞 increase の目的語には名詞が必要。productivity(生産性)が正解。'
+  },
+  {
+    id: 3, genre: '品詞', level: '初級',
+    q: 'The report was _______ submitted before the deadline.',
+    choices: ['success', 'successful', 'succeed', 'successfully'],
+    answer: 'successfully',
+    explain: '動詞(submitted)を修飾するのは副詞。successfully(首尾よく)が正解。'
+  },
+  {
+    id: 4, genre: '品詞', level: '初級',
+    q: 'Employees are required to wear _______ clothing in the laboratory.',
+    choices: ['protect', 'protection', 'protective', 'protectively'],
+    answer: 'protective',
+    explain: '名詞(clothing)を修飾するのは形容詞。protective(保護用の)が正解。'
+  },
+  {
+    id: 5, genre: '品詞', level: '中級',
+    q: 'The _______ of the project was delayed due to budget cuts.',
+    choices: ['complete', 'completing', 'completely', 'completion'],
+    answer: 'completion',
+    explain: '冠詞(The)の後、前置詞(of)の前には名詞が必要。completion(完了)が正解。'
+  },
+  {
+    id: 6, genre: '品詞', level: '中級',
+    q: 'Mr. Kim spoke _______ about the company\'s future plans.',
+    choices: ['confidence', 'confident', 'confidently', 'confide'],
+    answer: 'confidently',
+    explain: '動詞(spoke)を修飾するのは副詞。confidently(自信を持って)が正解。'
+  },
+  // 時制
+  {
+    id: 7, genre: '時制', level: '初級',
+    q: 'The company _______ its new headquarters last year.',
+    choices: ['open', 'opens', 'opened', 'has opened'],
+    answer: 'opened',
+    explain: 'last year(去年)は過去を表す語句。過去形 opened が正解。'
+  },
+  {
+    id: 8, genre: '時制', level: '初級',
+    q: 'Ms. Chen _______ for the company since 2015.',
+    choices: ['works', 'worked', 'has worked', 'will work'],
+    answer: 'has worked',
+    explain: 'since + 過去の時点 は現在完了形のサイン。has worked が正解。'
+  },
+  {
+    id: 9, genre: '時制', level: '上級',
+    q: 'The meeting _______ by the time you arrive tomorrow.',
+    choices: ['ends', 'ended', 'has ended', 'will have ended'],
+    answer: 'will have ended',
+    explain: '「明日あなたが着くまでに」→ 未来のある時点までに完了 → 未来完了形 will have ended が正解。'
+  },
+  {
+    id: 10, genre: '時制', level: '中級',
+    q: 'The technician _______ the equipment when the power went out.',
+    choices: ['repairs', 'was repairing', 'has repaired', 'repaired'],
+    answer: 'was repairing',
+    explain: 'when + 過去の突発的な動作 → その時進行中だったことを表す過去進行形 was repairing が正解。'
+  },
+  // 受動態
+  {
+    id: 11, genre: '受動態', level: '初級',
+    q: 'The annual report _______ by the accounting department every December.',
+    choices: ['prepares', 'is prepared', 'has prepared', 'was preparing'],
+    answer: 'is prepared',
+    explain: '主語(報告書)は「準備される」側。every December で習慣なので現在形の受動態 is prepared が正解。'
+  },
+  {
+    id: 12, genre: '受動態', level: '初級',
+    q: 'The new office building _______ last month.',
+    choices: ['completed', 'was completed', 'has completed', 'completes'],
+    answer: 'was completed',
+    explain: '建物は「完成される」側(受動)。last month があるので過去形 was completed が正解。'
+  },
+  {
+    id: 13, genre: '受動態', level: '中級',
+    q: 'Customers _______ to register before making a purchase.',
+    choices: ['require', 'are required', 'have required', 'requiring'],
+    answer: 'are required',
+    explain: 'be required to do = 「〜することが求められる」という受動態の慣用表現。are required が正解。'
+  },
+  {
+    id: 14, genre: '受動態', level: '中級',
+    q: 'The damaged goods _______ to the supplier for a refund.',
+    choices: ['sent', 'sends', 'were sent', 'have sent'],
+    answer: 'were sent',
+    explain: '商品(goods)は「送られる」側なので受動態。文脈から過去なので were sent が正解。'
+  },
+  // 関係詞
+  {
+    id: 15, genre: '関係詞', level: '初級',
+    q: 'The employee _______ received the award has been with us for ten years.',
+    choices: ['who', 'which', 'where', 'whose'],
+    answer: 'who',
+    explain: '先行詞が人(employee)で、後ろに動詞(received)が続くので主格の関係代名詞 who が正解。'
+  },
+  {
+    id: 16, genre: '関係詞', level: '中級',
+    q: 'The conference room _______ the meeting was held has a capacity of 50.',
+    choices: ['which', 'who', 'where', 'when'],
+    answer: 'where',
+    explain: '先行詞が場所(conference room)で「会議が開かれた場所」→ 関係副詞 where が正解。'
+  },
+  {
+    id: 17, genre: '関係詞', level: '中級',
+    q: 'The document _______ you requested has been sent to your email.',
+    choices: ['who', 'whom', 'that', 'where'],
+    answer: 'that',
+    explain: '先行詞が物(document)で、後ろは you requested(主語+動詞)→ 目的格の関係代名詞 that が正解。'
+  },
+  {
+    id: 18, genre: '関係詞', level: '上級',
+    q: 'The candidate _______ experience matches our requirements will be interviewed.',
+    choices: ['who', 'which', 'whose', 'whom'],
+    answer: 'whose',
+    explain: '空所の後に名詞(experience)が続く → 所有格の関係代名詞 whose が正解。'
+  },
+  // 前置詞
+  {
+    id: 19, genre: '前置詞', level: '初級',
+    q: 'The office will be closed _______ the national holiday.',
+    choices: ['in', 'on', 'at', 'for'],
+    answer: 'on',
+    explain: '特定の日(祝日・曜日)には on を使う。on Monday / on the holiday と同じ用法。'
+  },
+  {
+    id: 20, genre: '前置詞', level: '初級',
+    q: 'Please submit your application _______ Friday at the latest.',
+    choices: ['until', 'by', 'at', 'during'],
+    answer: 'by',
+    explain: 'by = 「〜までに」(期限)。until は「〜までずっと」(継続)。締め切りには by を使う。'
+  },
+  {
+    id: 21, genre: '前置詞', level: '中級',
+    q: 'The manager has been working on this project _______ three months.',
+    choices: ['since', 'for', 'during', 'within'],
+    answer: 'for',
+    explain: '期間の長さ(three months)には for を使う。since は「〜以来」で起点を示す。'
+  },
+  {
+    id: 22, genre: '前置詞', level: '中級',
+    q: 'The new branch will be located _______ Fifth Avenue and Oak Street.',
+    choices: ['between', 'among', 'in', 'into'],
+    answer: 'between',
+    explain: '2つのものの間には between を使う。among は3つ以上のものの中に使う。'
+  },
+  // 接続詞
+  {
+    id: 23, genre: '接続詞', level: '初級',
+    q: '_______ the weather was bad, the outdoor event was postponed.',
+    choices: ['Although', 'Because', 'Unless', 'However'],
+    answer: 'Because',
+    explain: '天気が悪い「ので」中止 → 理由を示す接続詞 because が正解。although は「〜にもかかわらず」。'
+  },
+  {
+    id: 24, genre: '接続詞', level: '中級',
+    q: 'Please turn off all electronic devices _______ the presentation is in progress.',
+    choices: ['because', 'although', 'while', 'unless'],
+    answer: 'while',
+    explain: 'while = 「〜している間」。同時進行の2つの動作を結ぶ接続詞。'
+  },
+  {
+    id: 25, genre: '接続詞', level: '上級',
+    q: 'The store will remain open _______ there is a severe weather warning.',
+    choices: ['if', 'unless', 'although', 'because'],
+    answer: 'unless',
+    explain: 'unless = 「〜でない限り」。if not とほぼ同じ意味の接続詞。'
+  },
+  {
+    id: 26, genre: '接続詞', level: '上級',
+    q: '_______ the renovations are complete, the office will reopen in June.',
+    choices: ['Until', 'While', 'Once', 'Although'],
+    answer: 'Once',
+    explain: 'once = 「ひとたび〜すれば」「〜したら」。完了を条件とする接続詞。'
+  },
+  // 比較
+  {
+    id: 27, genre: '比較', level: '初級',
+    q: 'This laptop is _______ than the previous model.',
+    choices: ['light', 'lighter', 'lightest', 'lightly'],
+    answer: 'lighter',
+    explain: 'than がある → 比較級。light → lighter。比較級は形容詞に -er をつける。'
+  },
+  {
+    id: 28, genre: '比較', level: '中級',
+    q: 'The _______ employee in our department is Ms. Park.',
+    choices: ['experience', 'more experienced', 'most experienced', 'experiencing'],
+    answer: 'most experienced',
+    explain: '「部門の中で最も〜」→ 最上級。the most experienced(最も経験豊富な)が正解。'
+  },
+  {
+    id: 29, genre: '比較', level: '上級',
+    q: 'The new software is not _______ efficient as the old one.',
+    choices: ['so', 'more', 'most', 'much'],
+    answer: 'so',
+    explain: 'not as...as / not so...as = 「〜ほど...でない」同等比較の否定形。so が正解。'
+  },
+  {
+    id: 30, genre: '語法', level: '上級',
+    q: 'We look forward _______ hearing from you soon.',
+    choices: ['to', 'for', 'at', 'on'],
+    answer: 'to',
+    explain: 'look forward to doing = 「〜を楽しみにしている」。to の後は動名詞(hearing)が来る慣用表現。'
+  }
+];
+
+// ===== GENRES =====
+const GENRES = ['品詞','時制','受動態','関係詞','前置詞','接続詞','比較','語法'];
+const GENRE_COLORS = {
+  '品詞': '#3B82F6', '時制': '#8B5CF6', '受動態': '#EC4899',
+  '関係詞': '#F59E0B', '前置詞': '#10B981', '接続詞': '#EF4444',
+  '比較': '#F97316', '語法': '#06B6D4'
+};
+
+// ===== STATE =====
+let state = {
+  mode: 'normal', // 'normal' | 'review'
+  selectedLevel: 'all', // 'all' | '初級' | '中級' | '上級'
+  questions: [],
+  current: 0,
+  correct: 0,
+  answered: false,
+  timerInterval: null,
+  timerSec: 3
+};
+
+// ===== STORAGE =====
+const STORE = {
+  load() {
+    try {
+      return JSON.parse(localStorage.getItem('toeic_grammar') || '{}');
+    } catch(e) { return {}; }
+  },
+  save(data) {
+    localStorage.setItem('toeic_grammar', JSON.stringify(data));
+  },
+  getDefaults() {
+    return {
+      totalCorrect: 0,
+      totalAnswered: 0,
+      genreStats: {},      // { '品詞': { correct:0, total:0 }, ... }
+      wrongIds: [],        // wrong question IDs
+      streak: 0,
+      lastDate: null,
+      todayCount: 0,
+      todayDate: null
+    };
+  },
+  get() {
+    const defaults = this.getDefaults();
+    const saved = this.load();
+    return Object.assign({}, defaults, saved);
+  }
+};
+
+function getData() { return STORE.get(); }
+function saveData(d) { STORE.save(d); }
+
+// ===== SCREEN ROUTING =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('active');
+    el.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+  // Nav highlight
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (id === 'screen-home') document.getElementById('nav-home')?.classList.add('active');
+  else if (id === 'screen-quiz') document.getElementById('nav-quiz')?.classList.add('active');
+  else if (id === 'screen-analysis') {
+    document.getElementById('nav-analysis')?.classList.add('active');
+    renderAnalysis();
+  }
+  // Hide nav on quiz/result
+  const nav = document.getElementById('bottom-nav');
+  nav.style.display = (id === 'screen-splash') ? 'none' : 'flex';
+
+  if (id === 'screen-home') renderHome();
+  if (id === 'screen-result') renderResult();
+}
+
+// ===== LEVEL TABS =====
+function selectLevelTab(level) {
+  state.selectedLevel = level;
+  document.querySelectorAll('.level-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.level === level);
+  });
+  // ボタンラベル更新
+  const pool = level === 'all' ? QUESTIONS : QUESTIONS.filter(q => q.level === level);
+  const count = Math.min(pool.length, 10);
+  document.getElementById('btn-start').textContent = `⚡ ${level === 'all' ? '全問題' : level}を学習する（${count}問）`;
+}
+
+// ===== LEVEL =====
+function getLevel(totalCorrect) {
+  if (totalCorrect < 10) return { lv: 1, name: 'Lv.1 TOEIC初心者', icon: '🌱', next: 10, min: 0 };
+  if (totalCorrect < 30) return { lv: 2, name: 'Lv.2 Part5練習中', icon: '📚', next: 30, min: 10 };
+  if (totalCorrect < 60) return { lv: 3, name: 'Lv.3 TOEIC600挑戦', icon: '🎯', next: 60, min: 30 };
+  return { lv: 4, name: 'Lv.4 文法マスター', icon: '🏆', next: null, min: 60 };
+}
+
+// ===== HOME RENDER =====
+function renderHome() {
+  const d = getData();
+  // Update today count
+  const today = new Date().toDateString();
+  if (d.todayDate !== today) { d.todayCount = 0; d.todayDate = today; }
+
+  document.getElementById('stat-today').textContent = d.todayCount;
+  const acc = d.totalAnswered > 0 ? Math.round(d.totalCorrect / d.totalAnswered * 100) + '%' : '—';
+  document.getElementById('stat-acc').textContent = acc;
+  document.getElementById('stat-streak').textContent = d.streak;
+
+  const lv = getLevel(d.totalCorrect);
+  document.getElementById('level-icon').textContent = lv.icon;
+  document.getElementById('level-name').textContent = lv.name;
+  if (lv.next) {
+    const remain = lv.next - d.totalCorrect;
+    document.getElementById('level-sub').textContent = `次のレベルまで あと${remain}問正解`;
+    const pct = ((d.totalCorrect - lv.min) / (lv.next - lv.min) * 100).toFixed(0);
+    document.getElementById('level-bar').style.width = pct + '%';
+  } else {
+    document.getElementById('level-sub').textContent = '最高レベル達成！おめでとう🎉';
+    document.getElementById('level-bar').style.width = '100%';
+  }
+
+  // Level tab counts
+  ['初級','中級','上級'].forEach(lv => {
+    const el = document.getElementById('tab-count-' + lv);
+    if (el) el.textContent = QUESTIONS.filter(q => q.level === lv).length + '問';
+  });
+  // Start button label
+  const pool = state.selectedLevel === 'all' ? QUESTIONS : QUESTIONS.filter(q => q.level === state.selectedLevel);
+  document.getElementById('btn-start').textContent = `⚡ ${state.selectedLevel === 'all' ? '全問題' : state.selectedLevel}を学習する（${Math.min(pool.length,10)}問）`;
+
+  // Review button
+  const btn = document.getElementById('btn-review-home');
+  if (d.wrongIds && d.wrongIds.length > 0) {
+    btn.style.display = '';
+    btn.textContent = `🔄 間違えた問題を復習（${d.wrongIds.length}問）`;
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+// ===== START QUIZ =====
+function startNormal() {
+  const pool = state.selectedLevel === 'all'
+    ? QUESTIONS
+    : QUESTIONS.filter(q => q.level === state.selectedLevel);
+  const shuffled = [...pool].sort(() => Math.random() - .5);
+  state.mode = 'normal';
+  state.questions = shuffled.slice(0, 10);
+  state.current = 0;
+  state.correct = 0;
+  state.answered = false;
+  document.getElementById('screen-quiz').classList.remove('review-mode');
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function startReview() {
+  const d = getData();
+  const wrongIds = d.wrongIds || [];
+  if (wrongIds.length === 0) {
+    showToast('間違えた問題がありません！');
+    return;
+  }
+  const wrongQs = QUESTIONS.filter(q => wrongIds.includes(q.id));
+  const shuffled = wrongQs.sort(() => Math.random() - .5);
+  state.mode = 'review';
+  state.questions = shuffled;
+  state.current = 0;
+  state.correct = 0;
+  state.answered = false;
+  document.getElementById('screen-quiz').classList.add('review-mode');
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+// ===== RENDER QUESTION =====
+function renderQuestion() {
+  if (state.current >= state.questions.length) {
+    finishQuiz();
+    return;
+  }
+  const q = state.questions[state.current];
+  state.answered = false;
+
+  // Header
+  document.getElementById('quiz-progress').textContent = `${state.current + 1} / ${state.questions.length}`;
+  document.getElementById('quiz-genre').textContent = q.genre;
+  const pct = (state.current / state.questions.length * 100).toFixed(0);
+  document.getElementById('quiz-progress-fill').style.width = pct + '%';
+
+  // Question text — replace blank
+  const qText = q.q.replace('_______', '<span class="blank">  ？  </span>');
+  document.getElementById('quiz-question').innerHTML = qText;
+
+  // Choices — shuffle
+  const choices = [...q.choices].sort(() => Math.random() - .5);
+  const labels = ['A', 'B', 'C', 'D'];
+  const list = document.getElementById('choices-list');
+  list.innerHTML = '';
+  choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-label">${labels[i]}</span><span>${c}</span>`;
+    btn.onclick = () => selectAnswer(c, q, choices);
+    list.appendChild(btn);
+  });
+
+  // Feedback hide
+  const fb = document.getElementById('feedback-card');
+  fb.className = 'feedback-card';
+  document.getElementById('btn-next').classList.remove('show');
+
+  // Timer
+  startTimer(q, choices);
+}
+
+// ===== TIMER =====
+function getTimerSeconds() {
+  const d = getData();
+  const lv = getLevel(d.totalCorrect).lv;
+  return { 1: 20, 2: 15, 3: 12, 4: 10 }[lv] || 15;
+}
+
+function startTimer(q, choices) {
+  clearInterval(state.timerInterval);
+  const secs = getTimerSeconds();
+  state.timerSec = secs;
+  updateTimerUI(secs);
+
+  state.timerInterval = setInterval(() => {
+    state.timerSec--;
+    updateTimerUI(state.timerSec);
+    if (state.timerSec <= 0) {
+      clearInterval(state.timerInterval);
+      if (!state.answered) {
+        // Time up — auto skip
+        showFeedback(null, q);
+      }
+    }
+  }, 1000);
+}
+
+function updateTimerUI(sec) {
+  const arc = document.getElementById('timer-arc');
+  const num = document.getElementById('timer-num');
+  const circumference = 138;
+  const total = getTimerSeconds();
+  const pct = sec / total;
+  arc.style.strokeDashoffset = circumference * (1 - pct);
+  num.textContent = Math.max(0, sec);
+  arc.classList.remove('warning', 'danger');
+  if (sec <= Math.ceil(total * 0.3)) arc.classList.add('warning');
+  if (sec <= Math.ceil(total * 0.15)) arc.classList.add('danger');
+}
+
+// ===== SELECT ANSWER =====
+function selectAnswer(chosen, q, shuffledChoices) {
+  if (state.answered) return;
+  state.answered = true;
+  clearInterval(state.timerInterval);
+
+  const labels = ['A', 'B', 'C', 'D'];
+  const btns = document.querySelectorAll('.choice-btn');
+  const isCorrect = chosen === q.answer;
+
+  btns.forEach((btn, i) => {
+    const val = shuffledChoices[i];
+    btn.disabled = true;
+    if (val === q.answer) btn.classList.add('reveal');
+    if (val === chosen && !isCorrect) btn.classList.add('wrong');
+    if (val === chosen && isCorrect) {
+      btn.classList.remove('reveal');
+      btn.classList.add('correct');
+    }
+  });
+
+  showFeedback(isCorrect ? chosen : null, q);
+  saveAnswer(isCorrect, q);
+}
+
+function showFeedback(chosen, q) {
+  const isCorrect = chosen !== null;
+  const fb = document.getElementById('feedback-card');
+  fb.className = 'feedback-card show ' + (isCorrect ? 'correct' : 'wrong');
+
+  document.getElementById('feedback-header').innerHTML =
+    isCorrect ? '⭕ 正解！' : (chosen === null ? '⏰ 時間切れ！' : '✖ 惜しい！');
+
+  document.getElementById('feedback-answer').innerHTML =
+    `正解：<strong>${q.answer}</strong>`;
+
+  document.getElementById('feedback-explain-text').textContent = q.explain;
+
+  document.getElementById('btn-next').classList.add('show');
+
+  // Scroll feedback into view
+  setTimeout(() => {
+    fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+
+  if (isCorrect) state.correct++;
+}
+
+// ===== SAVE STATS =====
+function saveAnswer(isCorrect, q) {
+  const d = getData();
+  const today = new Date().toDateString();
+
+  // Today count
+  if (d.todayDate !== today) { d.todayCount = 0; d.todayDate = today; }
+  d.todayCount = (d.todayCount || 0) + 1;
+
+  // Streak
+  const lastDate = d.lastDate;
+  if (lastDate !== today) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (lastDate === yesterday.toDateString()) {
+      d.streak = (d.streak || 0) + 1;
+    } else if (lastDate !== today) {
+      d.streak = 1;
+    }
+    d.lastDate = today;
+  }
+
+  // Totals
+  d.totalAnswered = (d.totalAnswered || 0) + 1;
+  if (isCorrect) d.totalCorrect = (d.totalCorrect || 0) + 1;
+
+  // Genre
+  if (!d.genreStats) d.genreStats = {};
+  if (!d.genreStats[q.genre]) d.genreStats[q.genre] = { correct: 0, total: 0 };
+  d.genreStats[q.genre].total++;
+  if (isCorrect) d.genreStats[q.genre].correct++;
+
+  // Wrong IDs
+  if (!d.wrongIds) d.wrongIds = [];
+  if (!isCorrect) {
+    if (!d.wrongIds.includes(q.id)) d.wrongIds.push(q.id);
+  } else {
+    d.wrongIds = d.wrongIds.filter(id => id !== q.id);
+  }
+
+  saveData(d);
+}
+
+// ===== NEXT QUESTION =====
+function nextQuestion() {
+  state.current++;
+  renderQuestion();
+}
+
+// ===== FINISH QUIZ =====
+function finishQuiz() {
+  clearInterval(state.timerInterval);
+  showScreen('screen-result');
+  const total = state.questions.length;
+  const correct = state.correct;
+  if (correct === total) launchConfetti();
+}
+
+// ===== RESULT RENDER =====
+function renderResult() {
+  const correct = state.correct;
+  const total = state.questions.length;
+  const pct = Math.round(correct / total * 100);
+
+  let emoji = '😊', msg = 'よく頑張りました！';
+  if (pct === 100) { emoji = '🎉'; msg = 'パーフェクト！素晴らしい！'; }
+  else if (pct >= 80) { emoji = '😄'; msg = 'すごい！高正解率です！'; }
+  else if (pct >= 60) { emoji = '👍'; msg = 'なかなかいい感じです！'; }
+  else if (pct >= 40) { emoji = '😤'; msg = '復習でさらに伸びます！'; }
+  else { emoji = '📚'; msg = '丁寧に復習しましょう！'; }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = state.mode === 'review' ? '復習完了！' : 'お疲れさまでした！';
+  document.getElementById('result-score').innerHTML = `${correct}<span> / ${total}</span>`;
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-correct').textContent = correct;
+  document.getElementById('result-acc').textContent = pct + '%';
+
+  const d = getData();
+  document.getElementById('result-total-correct').textContent = d.totalCorrect || 0;
+  const totalAcc = d.totalAnswered > 0 ? Math.round(d.totalCorrect / d.totalAnswered * 100) + '%' : '—';
+  document.getElementById('result-total-acc').textContent = totalAcc;
+
+  // Review button
+  const d2 = getData();
+  const btn = document.getElementById('btn-result-review');
+  if (d2.wrongIds && d2.wrongIds.length > 0) {
+    btn.style.display = '';
+    btn.textContent = `🔄 間違えた問題を復習（${d2.wrongIds.length}問）`;
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+// ===== ANALYSIS RENDER =====
+function renderAnalysis() {
+  const d = getData();
+  const totalAcc = d.totalAnswered > 0 ? Math.round(d.totalCorrect / d.totalAnswered * 100) + '%' : '—';
+  document.getElementById('analysis-total-acc').textContent = totalAcc;
+  document.getElementById('analysis-total-count').textContent = d.totalAnswered || 0;
+
+  const list = document.getElementById('genre-list');
+  const stats = d.genreStats || {};
+
+  if (Object.keys(stats).length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📊</div><div class="empty-state-text">まだデータがありません。<br>問題を解くと分析が表示されます。</div></div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  GENRES.forEach(genre => {
+    const s = stats[genre];
+    if (!s || s.total === 0) return;
+    const pct = Math.round(s.correct / s.total * 100);
+    const color = pct >= 70 ? '#10B981' : pct >= 40 ? '#F59E0B' : '#EF4444';
+    const row = document.createElement('div');
+    row.className = 'genre-row';
+    row.innerHTML = `
+      <div class="genre-name">${genre}</div>
+      <div class="genre-bar-wrap">
+        <div class="genre-bar-fill" style="width:${pct}%;background:${color}"></div>
+      </div>
+      <div class="genre-pct" style="color:${color}">${pct}%</div>
+      <div class="genre-count">${s.correct}/${s.total}</div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const pieces = Array.from({length: 80}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    r: Math.random() * 8 + 4,
+    d: Math.random() * 80,
+    color: ['#3B82F6','#10B981','#F59E0B','#EF4444','#8B5CF6'][Math.floor(Math.random()*5)],
+    tilt: Math.random() * 10 - 5,
+    tiltAngle: 0,
+    tiltSpeed: Math.random() * .1 + .05
+  }));
+  let frame;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.ellipse(p.x, p.y, p.r, p.r * .6, p.tilt, 0, Math.PI * 2);
+      ctx.fill();
+      p.y += Math.cos(p.d) + 2;
+      p.x += Math.sin(p.d) * .4;
+      p.tiltAngle += p.tiltSpeed;
+      p.tilt = Math.sin(p.tiltAngle) * 12;
+    });
+    if (pieces.every(p => p.y > canvas.height)) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+    frame = requestAnimationFrame(draw);
+  }
+  draw();
+  setTimeout(() => { cancelAnimationFrame(frame); ctx.clearRect(0, 0, canvas.width, canvas.height); }, 3500);
+}
+
+// ===== INIT =====
+window.addEventListener('load', () => {
+  // Splash → home
+  setTimeout(() => {
+    document.getElementById('screen-splash').classList.remove('active');
+    showScreen('screen-home');
+  }, 1400);
+});
+</script>
+</body>
+</html>
