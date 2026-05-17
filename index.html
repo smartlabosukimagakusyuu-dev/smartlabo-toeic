@@ -926,8 +926,8 @@
   <!-- ===== SETTINGS SCREEN ===== -->
   <div id="screen-settings" class="screen">
     <div class="settings-card">
-      <!-- Premium banner -->
-      <div class="premium-card">
+      <!-- Premium banner (非表示) -->
+      <div class="premium-card" style="display:none">
         <div class="premium-card-emoji">👑</div>
         <h3>プレミアムにアップグレード</h3>
         <p>中級・上級の全単語 (500語+) を解放。<br>広告なし・学習分析・AIヒント機能。</p>
@@ -940,9 +940,13 @@
         <span class="settings-icon">🎯</span>
         <div class="settings-label">
           <div class="settings-label-title">1日の目標問題数</div>
-          <div class="settings-label-desc">現在: 20問 / 日</div>
+          <div class="settings-label-desc" id="goal-desc">現在: 20問 / 日</div>
         </div>
-        <span style="font-size:14px;font-weight:700;color:var(--navy)">20問</span>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <button id="btn-goal-minus" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:18px;font-weight:700;cursor:pointer;color:var(--navy);display:flex;align-items:center;justify-content:center;line-height:1">−</button>
+          <span id="goal-display" style="font-size:15px;font-weight:800;color:var(--navy);min-width:42px;text-align:center">20問</span>
+          <button id="btn-goal-plus" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:18px;font-weight:700;cursor:pointer;color:var(--navy);display:flex;align-items:center;justify-content:center;line-height:1">＋</button>
+        </div>
       </div>
 
       <div class="settings-section-title">表示設定</div>
@@ -1007,7 +1011,7 @@
 <script>
 // ===== APP CONFIG =====
 const PREMIUM_UNLOCKED = false; // set true to unlock all levels
-const DAILY_GOAL = 20;          // questions per day target
+let dailyGoal = parseInt(localStorage.getItem('daily_goal') || '20'); // 10〜500, step 10
 
 // ===== VOCABULARY DATABASE (1000語) =====
 const WORDS = {
@@ -2580,13 +2584,13 @@ function updateDailyGoal() {
   const s = loadStats();
   const today = getTodayStr();
   const todayQ = (s.lastDate === today) ? (s.todayQuestions || 0) : 0;
-  const pct = Math.min(100, Math.round(todayQ / DAILY_GOAL * 100));
-  const remaining = Math.max(0, DAILY_GOAL - todayQ);
+  const pct = Math.min(100, Math.round(todayQ / dailyGoal * 100));
+  const remaining = Math.max(0, dailyGoal - todayQ);
   const fill = document.getElementById('dg-fill');
   const count = document.getElementById('dg-count');
   const msg   = document.getElementById('dg-msg');
   if (fill)  fill.style.width = pct + '%';
-  if (count) count.textContent = todayQ + '/' + DAILY_GOAL + '問';
+  if (count) count.textContent = todayQ + '/' + dailyGoal + '問';
   if (msg)   msg.textContent = remaining === 0
     ? '🎉 今日の目標達成！素晴らしい！'
     : 'あと ' + remaining + ' 問で今日の目標達成！';
@@ -2640,6 +2644,29 @@ function launchConfetti() {
   draw();
   setTimeout(() => { cancelAnimationFrame(rafId); ctx.clearRect(0, 0, canvas.width, canvas.height); }, 4500);
 }
+
+// ===== DAILY GOAL SETTING =====
+function syncGoalDisplay() {
+  document.getElementById('goal-display').textContent = dailyGoal + '問';
+  document.getElementById('goal-desc').textContent    = '現在: ' + dailyGoal + '問 / 日';
+}
+syncGoalDisplay();
+
+document.getElementById('btn-goal-minus').addEventListener('click', () => {
+  if (dailyGoal <= 10) return;
+  dailyGoal -= 10;
+  localStorage.setItem('daily_goal', dailyGoal);
+  syncGoalDisplay();
+  updateDailyGoal();
+});
+
+document.getElementById('btn-goal-plus').addEventListener('click', () => {
+  if (dailyGoal >= 500) return;
+  dailyGoal += 10;
+  localStorage.setItem('daily_goal', dailyGoal);
+  syncGoalDisplay();
+  updateDailyGoal();
+});
 
 // ===== SETTINGS ACTIONS =====
 document.getElementById('btn-upgrade').addEventListener('click', () => {
