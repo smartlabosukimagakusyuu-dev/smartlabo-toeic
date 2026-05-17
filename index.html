@@ -315,7 +315,16 @@
       box-shadow: 0 4px 14px rgba(30,58,138,0.35);
       display: none;
     }
-    .btn-next.show   { display: block; }
+    .btn-next.show {
+      display: block;
+      position: fixed;
+      bottom: 72px; /* above bottom nav */
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 448px;
+      z-index: 200;
+    }
     .btn-next.review { background: linear-gradient(135deg, #5B21B6, var(--purple)); box-shadow: 0 4px 14px rgba(139,92,246,0.35); }
     .btn-next:active { filter: brightness(0.9); transform: scale(0.98); }
 
@@ -2275,10 +2284,6 @@ function selectAnswer(choice, q) {
 
   document.getElementById('btn-next').classList.add('show');
 
-  // ① 自動スクロール
-  setTimeout(() => {
-    document.getElementById('btn-next').scrollIntoView({behavior:'smooth', block:'nearest'});
-  }, 150);
 }
 
 // ===== NEXT QUESTION =====
