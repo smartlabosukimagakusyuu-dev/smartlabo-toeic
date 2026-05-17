@@ -86,7 +86,7 @@
     main {
       width: 100%;
       max-width: 480px;
-      padding: 14px 16px 90px; /* bottom for nav bar */
+      padding: 14px 16px 150px; /* bottom: nav bar + fixed next button */
       flex: 1;
     }
 
@@ -2284,9 +2284,9 @@ function selectAnswer(choice, q) {
 
   document.getElementById('btn-next').classList.add('show');
 
-  // フィードバックが見えるようにスクロール（次へボタンは固定表示なのでスクロール不要）
+  // 解説が全て見えるようにページ最下部までスクロール
   setTimeout(() => {
-    document.getElementById('feedback').scrollIntoView({behavior:'smooth', block:'nearest'});
+    window.scrollTo({top: document.documentElement.scrollHeight, behavior:'smooth'});
   }, 150);
 }
 
