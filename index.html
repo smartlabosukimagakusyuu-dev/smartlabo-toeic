@@ -2284,6 +2284,10 @@ function selectAnswer(choice, q) {
 
   document.getElementById('btn-next').classList.add('show');
 
+  // フィードバックが見えるようにスクロール（次へボタンは固定表示なのでスクロール不要）
+  setTimeout(() => {
+    document.getElementById('feedback').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 150);
 }
 
 // ===== NEXT QUESTION =====
