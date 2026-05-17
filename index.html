@@ -13,18 +13,34 @@
     }
 
     :root {
-      --primary: #4A90E2;
-      --primary-dark: #357ABD;
-      --review: #9B59B6;
-      --review-dark: #7D3C98;
-      --correct: #27AE60;
-      --wrong: #E74C3C;
-      --bg: #F0F4F8;
-      --card: #FFFFFF;
-      --text: #2D3748;
-      --subtext: #718096;
-      --border: #E2E8F0;
-      --shadow: 0 4px 20px rgba(0,0,0,0.10);
+      --navy:         #1E3A8A;
+      --blue:         #3B82F6;
+      --blue-dark:    #2563EB;
+      --gold:         #F59E0B;
+      --purple:       #8B5CF6;
+      /* Legacy aliases (referenced by JS) */
+      --primary:      #3B82F6;
+      --primary-dark: #2563EB;
+      --review:       #8B5CF6;
+      --review-dark:  #7C3AED;
+      --correct:      #10B981;
+      --wrong:        #EF4444;
+      /* Surfaces */
+      --bg:      #EEF2FB;
+      --card:    #FFFFFF;
+      --text:    #1E293B;
+      --subtext: #64748B;
+      --border:  #E2E8F0;
+      --shadow:  0 4px 20px rgba(30,58,138,0.10);
+    }
+
+    body.dark {
+      --bg:      #0F172A;
+      --card:    #1E293B;
+      --text:    #F1F5F9;
+      --subtext: #94A3B8;
+      --border:  #334155;
+      --shadow:  0 4px 20px rgba(0,0,0,0.5);
     }
 
     body {
@@ -40,27 +56,37 @@
     /* ===== HEADER ===== */
     header {
       width: 100%;
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue-dark) 100%);
       color: white;
-      padding: 16px 20px;
+      padding: 16px 20px 14px;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(74,144,226,0.4);
+      box-shadow: 0 2px 12px rgba(30,58,138,0.35);
       transition: background 0.3s;
+      position: relative;
     }
 
     header.review-mode {
-      background: var(--review);
-      box-shadow: 0 2px 8px rgba(155,89,182,0.4);
+      background: linear-gradient(135deg, #5B21B6 0%, var(--purple) 100%);
+      box-shadow: 0 2px 12px rgba(139,92,246,0.35);
     }
 
-    header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
-    header p  { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+    header h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.3px; }
+    header p  { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+
+    .header-settings {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.18); border: none; color: white;
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; cursor: pointer; transition: background 0.2s;
+    }
+    .header-settings:active { background: rgba(255,255,255,0.3); }
 
     /* ===== MAIN ===== */
     main {
       width: 100%;
       max-width: 480px;
-      padding: 16px;
+      padding: 14px 16px 90px; /* bottom for nav bar */
       flex: 1;
     }
 
@@ -71,16 +97,31 @@
     /* ===== START SCREEN ===== */
     .start-card {
       background: var(--card);
-      border-radius: 20px;
-      padding: 28px 20px 24px;
+      border-radius: 24px;
+      padding: 24px 20px 20px;
       box-shadow: var(--shadow);
       text-align: center;
-      margin-top: 16px;
+      margin-top: 10px;
     }
 
-    .start-card .icon { font-size: 56px; margin-bottom: 12px; }
-    .start-card h2   { font-size: 21px; margin-bottom: 6px; }
-    .start-card > p  { color: var(--subtext); font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+    .start-card .icon { font-size: 52px; margin-bottom: 10px; }
+    .start-card h2   { font-size: 22px; font-weight: 800; margin-bottom: 4px; color: var(--navy); }
+    .start-card > p  { color: var(--subtext); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+
+    /* ===== DAILY GOAL BAR ===== */
+    .daily-goal {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue-dark) 100%);
+      border-radius: 18px; padding: 14px 18px; margin-bottom: 16px; color: white; text-align: left;
+    }
+    .daily-goal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .daily-goal-label { font-size: 13px; font-weight: 700; opacity: 0.9; }
+    .daily-goal-count { font-size: 13px; font-weight: 800; }
+    .daily-goal-track { height: 8px; background: rgba(255,255,255,0.25); border-radius: 8px; overflow: hidden; }
+    .daily-goal-fill  {
+      height: 100%; background: var(--gold); border-radius: 8px;
+      transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); min-width: 0%;
+    }
+    .daily-goal-msg { font-size: 11px; opacity: 0.8; margin-top: 7px; }
 
     /* level select */
     .level-select { margin-bottom: 20px; }
@@ -91,10 +132,13 @@
     .level-btns { display: flex; gap: 8px; justify-content: center; }
     .level-btn {
       padding: 8px 18px; border-radius: 20px; border: 2px solid var(--border);
-      background: white; font-size: 13px; font-weight: 600; cursor: pointer;
+      background: var(--card); font-size: 13px; font-weight: 700; cursor: pointer;
       transition: all 0.2s; color: var(--subtext);
     }
-    .level-btn.selected { border-color: var(--primary); background: var(--primary); color: white; }
+    .level-btn.selected {
+      border-color: var(--navy); background: var(--navy); color: white;
+      box-shadow: 0 4px 12px rgba(30,58,138,0.28);
+    }
 
     /* ===== MODE CARDS ===== */
     .mode-cards { display: flex; flex-direction: column; gap: 12px; }
@@ -116,27 +160,29 @@
     }
 
     .mode-card.challenge {
-      background: linear-gradient(135deg, #EBF4FF 0%, #DBEAFE 100%);
+      background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
       border-color: #BFDBFE;
+      box-shadow: 0 2px 8px rgba(59,130,246,0.10);
     }
-    .mode-card.challenge:not([disabled]):hover {
-      box-shadow: 0 4px 16px rgba(74,144,226,0.25);
+    .mode-card.challenge:not([disabled]):active {
+      box-shadow: 0 6px 20px rgba(59,130,246,0.22);
     }
 
     .mode-card.review {
-      background: linear-gradient(135deg, #F5EEFF 0%, #EDE9FE 100%);
+      background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
       border-color: #DDD6FE;
+      box-shadow: 0 2px 8px rgba(139,92,246,0.10);
     }
-    .mode-card.review:not([disabled]):hover {
-      box-shadow: 0 4px 16px rgba(155,89,182,0.25);
+    .mode-card.review:not([disabled]):active {
+      box-shadow: 0 6px 20px rgba(139,92,246,0.22);
     }
 
-    .mode-icon { font-size: 40px; flex-shrink: 0; }
+    .mode-icon { font-size: 38px; flex-shrink: 0; }
 
     .mode-info { flex: 1; }
-    .mode-title { font-size: 17px; font-weight: 800; margin-bottom: 3px; }
-    .mode-card.challenge .mode-title { color: var(--primary); }
-    .mode-card.review    .mode-title { color: var(--review); }
+    .mode-title { font-size: 16px; font-weight: 800; margin-bottom: 3px; }
+    .mode-card.challenge .mode-title { color: #1D4ED8; }
+    .mode-card.review    .mode-title { color: #6D28D9; }
     .mode-desc { font-size: 12px; color: var(--subtext); line-height: 1.5; }
 
     .mode-badge {
@@ -203,7 +249,7 @@
       font-weight: 600; letter-spacing: 0.5px;
     }
     .word {
-      font-size: 36px; font-weight: 800; color: var(--text);
+      font-size: 38px; font-weight: 800; color: var(--navy);
       letter-spacing: -1px; margin-bottom: 8px; word-break: break-all;
     }
     .pronunciation { font-size: 14px; color: var(--subtext); margin-bottom: 8px; font-style: italic; }
@@ -263,13 +309,14 @@
     .feedback-example em { color: var(--text); font-style: italic; }
 
     .btn-next {
-      width: 100%; padding: 14px; background: var(--primary); color: white;
-      border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
-      cursor: pointer; margin-top: 10px; transition: background 0.2s, transform 0.1s;
+      width: 100%; padding: 15px; background: linear-gradient(135deg, var(--navy), var(--blue-dark)); color: white;
+      border: none; border-radius: 16px; font-size: 16px; font-weight: 700;
+      cursor: pointer; margin-top: 10px; transition: filter 0.2s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(30,58,138,0.35);
       display: none;
     }
     .btn-next.show   { display: block; }
-    .btn-next.review { background: var(--review); }
+    .btn-next.review { background: linear-gradient(135deg, #5B21B6, var(--purple)); box-shadow: 0 4px 14px rgba(139,92,246,0.35); }
     .btn-next:active { filter: brightness(0.9); transform: scale(0.98); }
 
     /* ===== RESULT SCREEN ===== */
@@ -278,9 +325,9 @@
       box-shadow: var(--shadow); text-align: center; margin-top: 16px;
     }
     .result-emoji  { font-size: 68px; margin-bottom: 10px; }
-    .result-title  { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .result-title  { font-size: 24px; font-weight: 800; margin-bottom: 4px; color: var(--navy); }
     .result-score  {
-      font-size: 50px; font-weight: 800; color: var(--primary);
+      font-size: 56px; font-weight: 800; color: var(--navy);
       line-height: 1; margin: 14px 0 4px;
     }
     .result-score.review-score { color: var(--review); }
@@ -314,32 +361,32 @@
     .cleared-info.show { display: block; }
 
     .btn-primary {
-      width: 100%; padding: 15px; background: var(--primary); color: white;
-      border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
+      width: 100%; padding: 16px; background: linear-gradient(135deg, var(--navy), var(--blue-dark)); color: white;
+      border: none; border-radius: 16px; font-size: 16px; font-weight: 700;
       cursor: pointer; transition: filter 0.2s; margin-bottom: 10px;
-      box-shadow: 0 4px 12px rgba(74,144,226,0.3);
+      box-shadow: 0 6px 18px rgba(30,58,138,0.35);
     }
     .btn-primary:active { filter: brightness(0.9); }
 
     .btn-review-start {
-      width: 100%; padding: 15px; background: var(--review); color: white;
-      border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
+      width: 100%; padding: 16px; background: linear-gradient(135deg, #5B21B6, var(--purple)); color: white;
+      border: none; border-radius: 16px; font-size: 16px; font-weight: 700;
       cursor: pointer; transition: filter 0.2s; margin-bottom: 10px;
-      box-shadow: 0 4px 12px rgba(155,89,182,0.3);
+      box-shadow: 0 6px 18px rgba(139,92,246,0.35);
       display: none;
     }
     .btn-review-start.show { display: block; }
     .btn-review-start:active { filter: brightness(0.9); }
 
     .btn-outline {
-      width: 100%; padding: 13px; background: transparent;
-      color: var(--primary); border: 2px solid var(--primary);
-      border-radius: 14px; font-size: 14px; font-weight: 700;
+      width: 100%; padding: 14px; background: transparent;
+      color: var(--navy); border: 2px solid var(--navy);
+      border-radius: 16px; font-size: 14px; font-weight: 700;
       cursor: pointer; transition: background 0.2s;
     }
-    .btn-outline:active { background: #EBF4FF; }
-    .btn-outline.review-outline { color: var(--review); border-color: var(--review); }
-    .btn-outline.review-outline:active { background: #F5EEFF; }
+    .btn-outline:active { background: #EFF6FF; }
+    .btn-outline.review-outline { color: var(--purple); border-color: var(--purple); }
+    .btn-outline.review-outline:active { background: #F5F3FF; }
 
     /* ===== ANIMATIONS ===== */
     @keyframes fadeSlideUp {
@@ -395,13 +442,13 @@
     /* ===== QUICK STATS (start screen) ===== */
     .quick-stats {
       display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg,#f0f9ff,#e0f2fe);
-      border-radius: 14px; padding: 12px 8px; margin-bottom: 18px;
+      background: linear-gradient(135deg, var(--navy), var(--blue-dark));
+      border-radius: 18px; padding: 14px 8px; margin-bottom: 16px;
     }
     .quick-stat { flex: 1; text-align: center; }
-    .quick-stat-val { font-size: 22px; font-weight: 800; color: var(--primary); line-height: 1.1; }
-    .quick-stat-label { font-size: 11px; color: var(--subtext); margin-top: 2px; }
-    .quick-stat-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
+    .quick-stat-val { font-size: 24px; font-weight: 900; color: white; line-height: 1.1; }
+    .quick-stat-label { font-size: 10px; color: rgba(255,255,255,0.75); margin-top: 2px; font-weight: 600; }
+    .quick-stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
 
     /* ===== STATS MODE CARD ===== */
     .mode-card.stats-card { background: linear-gradient(135deg,#fdf4ff,#fae8ff); border-color: #d946ef20; }
@@ -448,13 +495,143 @@
       font-size: 10px; font-weight: 700; background: var(--wrong); color: white;
       padding: 2px 6px; border-radius: 10px; white-space: nowrap;
     }
+
+    /* ===== SPLASH SCREEN ===== */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(160deg, #1E3A8A 0%, #1D4ED8 55%, #7C3AED 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #splash.hide { opacity: 0; pointer-events: none; transform: scale(1.06); }
+    .splash-icon  { font-size: 80px; margin-bottom: 18px; animation: splashBounce 0.6s ease 0.2s both; }
+    .splash-title { font-size: 28px; font-weight: 800; color: white; letter-spacing: -0.5px; animation: splashFade 0.5s ease 0.4s both; }
+    .splash-sub   { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 6px; animation: splashFade 0.5s ease 0.6s both; }
+    .splash-bar-wrap {
+      width: 60px; height: 4px; background: rgba(255,255,255,0.2);
+      border-radius: 4px; margin-top: 40px; overflow: hidden;
+      animation: splashFade 0.5s ease 0.8s both;
+    }
+    .splash-bar-fill {
+      height: 100%; width: 0; background: white; border-radius: 4px;
+      animation: splashLoad 1.3s ease 0.8s forwards;
+    }
+    @keyframes splashBounce {
+      from { opacity: 0; transform: scale(0.6) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes splashFade {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes splashLoad { to { width: 100%; } }
+
+    /* ===== BOTTOM NAVIGATION ===== */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--card); border-top: 1px solid var(--border);
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 8px 0 max(10px, env(safe-area-inset-bottom));
+      z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.07);
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      background: none; border: none; cursor: pointer; padding: 6px 14px;
+      border-radius: 14px; transition: background 0.2s; min-width: 60px;
+    }
+    .nav-item:active { background: var(--bg); }
+    .nav-icon  { font-size: 22px; transition: transform 0.2s; line-height: 1; }
+    .nav-label { font-size: 10px; font-weight: 700; color: var(--subtext); transition: color 0.2s; }
+    .nav-item.active .nav-icon  { transform: scale(1.15); }
+    .nav-item.active .nav-label { color: var(--navy); }
+
+    /* ===== SETTINGS SCREEN ===== */
+    .settings-card {
+      background: var(--card); border-radius: 24px;
+      box-shadow: var(--shadow); margin-top: 12px; overflow: hidden;
+    }
+    .settings-section-title {
+      font-size: 11px; font-weight: 700; color: var(--subtext);
+      text-transform: uppercase; letter-spacing: 0.8px;
+      padding: 18px 20px 8px;
+    }
+    .settings-row {
+      display: flex; align-items: center; padding: 15px 20px;
+      border-top: 1px solid var(--border); gap: 14px;
+    }
+    .settings-icon { font-size: 22px; flex-shrink: 0; }
+    .settings-label { flex: 1; }
+    .settings-label-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .settings-label-desc  { font-size: 12px; color: var(--subtext); margin-top: 2px; }
+    .toggle-switch {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--border); border: none; cursor: pointer;
+      position: relative; transition: background 0.3s; flex-shrink: 0;
+    }
+    .toggle-switch.on { background: var(--navy); }
+    .toggle-switch::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      transition: left 0.3s;
+    }
+    .toggle-switch.on::after { left: 23px; }
+    .premium-card {
+      margin: 0 0 0;
+      background: linear-gradient(135deg, var(--navy) 0%, #2563EB 55%, #7C3AED 100%);
+      padding: 22px 20px; color: white; text-align: center;
+    }
+    .premium-card-emoji { font-size: 36px; margin-bottom: 8px; }
+    .premium-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .premium-card p  { font-size: 13px; opacity: 0.85; line-height: 1.6; margin-bottom: 16px; }
+    .btn-premium {
+      background: var(--gold); color: #1E293B; border: none;
+      border-radius: 14px; padding: 13px 24px; font-size: 15px; font-weight: 800;
+      cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(245,158,11,0.5);
+      transition: filter 0.2s;
+    }
+    .btn-premium:active { filter: brightness(0.92); }
+    .settings-version {
+      text-align: center; padding: 20px; font-size: 12px; color: var(--subtext);
+    }
+
+    /* ===== TOAST ===== */
+    #toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(16px);
+      background: var(--navy); color: white; padding: 10px 22px;
+      border-radius: 20px; font-size: 13px; font-weight: 700;
+      opacity: 0; transition: opacity 0.3s, transform 0.3s;
+      z-index: 500; pointer-events: none; white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(30,58,138,0.4);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ===== CONFETTI CANVAS ===== */
+    #confetti-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 400;
+    }
+
+    /* ===== STATS SCREEN UPGRADES ===== */
+    .streak-days { font-size: 64px; font-weight: 900; color: var(--gold); line-height: 1.1; margin-top: 4px; }
+    .stats-grid-val { font-size: 26px; font-weight: 800; color: var(--navy); }
+    .level-row-rate { font-size: 14px; font-weight: 800; color: var(--navy); min-width: 38px; text-align: right; }
   </style>
 </head>
 <body>
 
+<!-- ===== SPLASH ===== -->
+<div id="splash">
+  <div class="splash-icon">📘</div>
+  <div class="splash-title">TOEIC 英単語帳</div>
+  <div class="splash-sub">毎日続けて、スコアアップ！</div>
+  <div class="splash-bar-wrap"><div class="splash-bar-fill"></div></div>
+</div>
+
 <header id="app-header">
   <h1>📘 TOEIC 英単語帳</h1>
   <p id="header-sub">4択で力試し！</p>
+  <button class="header-settings" id="btn-header-settings" title="設定">⚙️</button>
 </header>
 
 <main>
@@ -465,6 +642,18 @@
       <div class="icon">📚</div>
       <h2>英単語トレーニング</h2>
       <p>TOEICに出やすい英単語を<br>4択クイズで楽しく覚えよう！</p>
+
+      <!-- Daily goal bar -->
+      <div class="daily-goal">
+        <div class="daily-goal-top">
+          <span class="daily-goal-label">🎯 今日の目標</span>
+          <span class="daily-goal-count" id="dg-count">0/20問</span>
+        </div>
+        <div class="daily-goal-track">
+          <div class="daily-goal-fill" id="dg-fill" style="width:0%"></div>
+        </div>
+        <div class="daily-goal-msg" id="dg-msg">あと 20 問で今日の目標達成！</div>
+      </div>
 
       <!-- Quick stats -->
       <div class="quick-stats">
@@ -725,9 +914,92 @@
     </div>
   </div>
 
+  <!-- ===== SETTINGS SCREEN ===== -->
+  <div id="screen-settings" class="screen">
+    <div class="settings-card">
+      <!-- Premium banner -->
+      <div class="premium-card">
+        <div class="premium-card-emoji">👑</div>
+        <h3>プレミアムにアップグレード</h3>
+        <p>中級・上級の全単語 (500語+) を解放。<br>広告なし・学習分析・AIヒント機能。</p>
+        <button class="btn-premium" id="btn-upgrade">✨ 今すぐアップグレード</button>
+      </div>
+
+      <div class="settings-section-title">学習設定</div>
+
+      <div class="settings-row">
+        <span class="settings-icon">🎯</span>
+        <div class="settings-label">
+          <div class="settings-label-title">1日の目標問題数</div>
+          <div class="settings-label-desc">現在: 20問 / 日</div>
+        </div>
+        <span style="font-size:14px;font-weight:700;color:var(--navy)">20問</span>
+      </div>
+
+      <div class="settings-section-title">表示設定</div>
+
+      <div class="settings-row">
+        <span class="settings-icon">🌙</span>
+        <div class="settings-label">
+          <div class="settings-label-title">ダークモード</div>
+          <div class="settings-label-desc">画面を暗くして目を保護</div>
+        </div>
+        <button class="toggle-switch" id="toggle-dark"></button>
+      </div>
+
+      <div class="settings-section-title">データ</div>
+
+      <div class="settings-row">
+        <span class="settings-icon">🗑️</span>
+        <div class="settings-label">
+          <div class="settings-label-title">学習データをリセット</div>
+          <div class="settings-label-desc">苦手リスト・記録をすべて削除</div>
+        </div>
+        <button id="btn-reset-data" style="background:var(--wrong);color:white;border:none;border-radius:10px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">リセット</button>
+      </div>
+
+      <div class="settings-version">
+        TOEIC 英単語帳 v2.0<br>
+        <span style="font-size:11px">© 2026 · Made with ❤️</span>
+      </div>
+    </div>
+    <div style="height:12px"></div>
+    <button class="btn-outline" id="settings-back">← ホームに戻る</button>
+  </div>
+
 </main>
 
+<!-- ===== BOTTOM NAVIGATION ===== -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-nav="home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">ホーム</span>
+  </button>
+  <button class="nav-item" data-nav="vocab">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">単語帳</span>
+  </button>
+  <button class="nav-item" data-nav="stats">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">記録</span>
+  </button>
+  <button class="nav-item" data-nav="settings">
+    <span class="nav-icon">⚙️</span>
+    <span class="nav-label">設定</span>
+  </button>
+</nav>
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<!-- Confetti canvas -->
+<canvas id="confetti-canvas"></canvas>
+
 <script>
+// ===== APP CONFIG =====
+const PREMIUM_UNLOCKED = false; // set true to unlock all levels
+const DAILY_GOAL = 20;          // questions per day target
+
 // ===== VOCABULARY DATABASE (1000語) =====
 const WORDS = {
   beginner: [
@@ -1698,11 +1970,13 @@ function recordSession(level, questions, correct) {
   const today = getTodayStr();
   if (!s.lastDate) {
     s.streak = 1;
+    s.todayQuestions = questions;
   } else if (s.lastDate === today) {
-    // already studied today — keep streak as-is
+    s.todayQuestions = (s.todayQuestions || 0) + questions;
   } else {
     const diff = Math.round((new Date(today) - new Date(s.lastDate)) / 86400000);
     s.streak = diff === 1 ? s.streak + 1 : 1;
+    s.todayQuestions = questions;
   }
   s.lastDate  = today;
   s.maxStreak = Math.max(s.maxStreak, s.streak);
@@ -1792,12 +2066,17 @@ function setHeaderMode(mode) {
     header.classList.add('review-mode');
     sub.textContent = '苦手単語を集中復習！';
   } else if (mode === 'vocab') {
-    header.style.background = '#059669';
+    header.style.background = 'linear-gradient(135deg,#065F46,#059669)';
+    header.style.boxShadow  = '0 2px 12px rgba(5,150,105,0.35)';
     sub.textContent = 'レベル別単語一覧';
   } else if (mode === 'stats') {
-    header.style.background = '#7c3aed';
-    header.style.boxShadow  = '0 2px 8px rgba(124,58,237,0.4)';
+    header.style.background = 'linear-gradient(135deg,#5B21B6,#8B5CF6)';
+    header.style.boxShadow  = '0 2px 12px rgba(139,92,246,0.4)';
     sub.textContent = '学習記録';
+  } else if (mode === 'settings') {
+    header.style.background = 'linear-gradient(135deg,#1E293B,#334155)';
+    header.style.boxShadow  = '0 2px 12px rgba(0,0,0,0.3)';
+    sub.textContent = '設定';
   } else {
     sub.textContent = '4択で力試し！';
   }
@@ -1815,6 +2094,7 @@ function refreshStart() {
     reviewBtn.removeAttribute('disabled');
   }
   refreshQuickStats();
+  updateDailyGoal();
 }
 
 // ===== LEVEL BUTTONS =====
@@ -2100,6 +2380,15 @@ function showResult() {
   // 学習記録を保存
   recordSession(isReview ? null : state.level, total, correct);
 
+  // 高スコア演出
+  if (rate === 100) {
+    launchConfetti();
+    showToast('🏆 完璧！全問正解！');
+  } else if (rate >= 80) {
+    launchConfetti();
+    showToast('🎉 ' + rate + '% ！よくできました！');
+  }
+
   show('screen-result');
   refreshStart();
 }
@@ -2113,6 +2402,7 @@ document.getElementById('btn-go-review').addEventListener('click', () => {
 });
 
 document.getElementById('btn-back').addEventListener('click', () => {
+  setActiveNav('home');
   setHeaderMode('challenge');
   refreshStart();
   show('screen-start');
@@ -2123,6 +2413,7 @@ let vocabLevel  = 'beginner';
 let vocabFilter = 'all';
 
 document.getElementById('btn-vocab').addEventListener('click', () => {
+  setActiveNav('vocab');
   vocabLevel  = state.level;
   vocabFilter = 'all';
   setHeaderMode('vocab');
@@ -2132,18 +2423,21 @@ document.getElementById('btn-vocab').addEventListener('click', () => {
 });
 
 document.getElementById('vocab-back').addEventListener('click', () => {
+  setActiveNav('home');
   setHeaderMode('challenge');
   refreshStart();
   show('screen-start');
 });
 
 document.getElementById('btn-stats').addEventListener('click', () => {
+  setActiveNav('stats');
   setHeaderMode('stats');
   renderStatsScreen();
   show('screen-stats');
 });
 
 document.getElementById('stats-back').addEventListener('click', () => {
+  setActiveNav('home');
   setHeaderMode('challenge');
   refreshStart();
   show('screen-start');
@@ -2203,6 +2497,153 @@ function renderVocabList() {
     </div>`;
   }).join('');
 }
+
+// ===== SPLASH SCREEN =====
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if (splash) splash.classList.add('hide');
+}, 1700);
+
+// ===== DARK MODE =====
+let darkMode = localStorage.getItem('dark_mode') === '1';
+function applyDarkMode() {
+  document.body.classList.toggle('dark', darkMode);
+  const btn = document.getElementById('toggle-dark');
+  if (btn) btn.classList.toggle('on', darkMode);
+}
+applyDarkMode();
+
+document.getElementById('toggle-dark').addEventListener('click', () => {
+  darkMode = !darkMode;
+  localStorage.setItem('dark_mode', darkMode ? '1' : '0');
+  applyDarkMode();
+});
+
+// ===== BOTTOM NAVIGATION =====
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.nav === id);
+  });
+}
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const nav = btn.dataset.nav;
+    setActiveNav(nav);
+    if (nav === 'home') {
+      setHeaderMode('challenge');
+      refreshStart();
+      show('screen-start');
+    } else if (nav === 'vocab') {
+      vocabLevel  = state.level;
+      vocabFilter = 'all';
+      setHeaderMode('vocab');
+      show('screen-vocab');
+      syncVocabTabs();
+      renderVocabList();
+    } else if (nav === 'stats') {
+      setHeaderMode('stats');
+      renderStatsScreen();
+      show('screen-stats');
+    } else if (nav === 'settings') {
+      setHeaderMode('settings');
+      show('screen-settings');
+    }
+  });
+});
+
+// ===== HEADER SETTINGS BUTTON =====
+document.getElementById('btn-header-settings').addEventListener('click', () => {
+  setActiveNav('settings');
+  setHeaderMode('settings');
+  show('screen-settings');
+});
+
+document.getElementById('settings-back').addEventListener('click', () => {
+  setActiveNav('home');
+  setHeaderMode('challenge');
+  refreshStart();
+  show('screen-start');
+});
+
+// ===== DAILY GOAL =====
+function updateDailyGoal() {
+  const s = loadStats();
+  const today = getTodayStr();
+  const todayQ = (s.lastDate === today) ? (s.todayQuestions || 0) : 0;
+  const pct = Math.min(100, Math.round(todayQ / DAILY_GOAL * 100));
+  const remaining = Math.max(0, DAILY_GOAL - todayQ);
+  const fill = document.getElementById('dg-fill');
+  const count = document.getElementById('dg-count');
+  const msg   = document.getElementById('dg-msg');
+  if (fill)  fill.style.width = pct + '%';
+  if (count) count.textContent = todayQ + '/' + DAILY_GOAL + '問';
+  if (msg)   msg.textContent = remaining === 0
+    ? '🎉 今日の目標達成！素晴らしい！'
+    : 'あと ' + remaining + ' 問で今日の目標達成！';
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#F59E0B','#3B82F6','#10B981','#EF4444','#8B5CF6','#06B6D4','#F97316'];
+  const pieces = Array.from({length: 90}, () => ({
+    x:  Math.random() * canvas.width,
+    y: -Math.random() * 120,
+    w:  Math.random() * 11 + 5,
+    h:  Math.random() * 7  + 4,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    r:  Math.random() * 360,
+    dr: (Math.random() - 0.5) * 9,
+    dy: Math.random() * 3 + 2,
+    dx: (Math.random() - 0.5) * 2,
+  }));
+  let rafId;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    pieces.forEach(p => {
+      if (p.y < canvas.height + 20) alive = true;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.r * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+      p.y  += p.dy; p.x += p.dx; p.r += p.dr; p.dy += 0.05;
+    });
+    if (alive) rafId = requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  cancelAnimationFrame(rafId);
+  draw();
+  setTimeout(() => { cancelAnimationFrame(rafId); ctx.clearRect(0, 0, canvas.width, canvas.height); }, 4500);
+}
+
+// ===== SETTINGS ACTIONS =====
+document.getElementById('btn-upgrade').addEventListener('click', () => {
+  showToast('🚀 近日公開予定！ありがとうございます。');
+});
+
+document.getElementById('btn-reset-data').addEventListener('click', () => {
+  if (!confirm('学習データをすべて削除しますか？この操作は元に戻せません。')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  try { localStorage.removeItem(STATS_KEY); } catch(e) {}
+  showToast('🗑️ データをリセットしました');
+  refreshStart();
+});
 
 // ===== INIT =====
 refreshStart();
