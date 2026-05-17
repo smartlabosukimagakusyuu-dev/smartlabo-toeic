@@ -2296,6 +2296,7 @@ function selectAnswer(choice, q) {
 
 // ===== NEXT QUESTION =====
 document.getElementById('btn-next').addEventListener('click', () => {
+  window.scrollTo({top: 0, behavior: 'smooth'});
   state.current++;
   if (state.current >= state.questions.length) showResult();
   else renderQuestion();
