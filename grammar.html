@@ -914,6 +914,33 @@
   .detail-fab.visible { display: flex; }
   .detail-fab:active { transform: scale(.88); box-shadow: 0 2px 8px rgba(30,58,138,.3); }
 
+  /* ===== TOP-LEFT STICKY TOC BUTTON ===== */
+  .detail-toc-topbtn {
+    position: fixed;
+    top: 12px; left: 12px;
+    display: none;
+    align-items: center; gap: 5px;
+    padding: 7px 13px 7px 10px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(30,58,138,.92);
+    color: white;
+    font-size: 12px; font-weight: 800;
+    cursor: pointer;
+    z-index: 200;
+    box-shadow: 0 2px 12px rgba(30,58,138,.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity .2s, transform .2s cubic-bezier(.34,1.56,.64,1);
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  .detail-toc-topbtn.visible { display: flex; }
+  .detail-toc-topbtn.shown { opacity: 1; transform: translateY(0); }
+  .detail-toc-topbtn:active { transform: scale(.92); }
+  .detail-toc-topbtn-icon { font-size: 14px; }
+
   .points-drawer-backdrop {
     position: fixed;
     inset: 0;
@@ -1596,6 +1623,12 @@
   </div>
 
 </div><!-- /app -->
+
+<!-- Top-left sticky TOC button (grammar detail) -->
+<button class="detail-toc-topbtn" id="detail-toc-topbtn" onclick="openPointsDrawer()">
+  <span class="detail-toc-topbtn-icon">📋</span>
+  <span>ポイント一覧</span>
+</button>
 
 <!-- Floating TOC button (grammar detail) -->
 <button class="detail-fab" id="detail-fab" onclick="openPointsDrawer()" title="ポイント一覧">📋</button>
@@ -5337,8 +5370,9 @@ function saveData(d) { STORE.save(d); }
 // ===== SCREEN ROUTING =====
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  // Hide FAB & close drawer when leaving grammar detail
+  // Hide FAB, top button & close drawer when leaving grammar detail
   document.getElementById('detail-fab')?.classList.remove('visible');
+  hideTocTopBtn();
   if (typeof closePointsDrawer === 'function') closePointsDrawer();
   const el = document.getElementById(id);
   if (el) {
@@ -5365,6 +5399,7 @@ function showScreen(id) {
   else if (id === 'screen-grammar-detail') {
     document.getElementById('nav-grammar')?.classList.add('active');
     document.getElementById('detail-fab')?.classList.add('visible');
+    setupTocTopBtnScroll();
   }
   // Hide nav on quiz/result
   const nav = document.getElementById('bottom-nav');
@@ -7217,6 +7252,41 @@ function startGenreQuiz(genre) {
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
+}
+
+// ===== TOP-LEFT TOC BUTTON (scroll-aware) =====
+let _tocScrollListener = null;
+
+function setupTocTopBtnScroll() {
+  // Remove old listener if any
+  if (_tocScrollListener) window.removeEventListener('scroll', _tocScrollListener);
+
+  const btn = document.getElementById('detail-toc-topbtn');
+  if (!btn) return;
+
+  btn.classList.add('visible');
+
+  _tocScrollListener = () => {
+    // Show button after scrolling past the TOC section (~220px from top)
+    if (window.scrollY > 220) {
+      btn.classList.add('shown');
+    } else {
+      btn.classList.remove('shown');
+    }
+  };
+  window.addEventListener('scroll', _tocScrollListener, { passive: true });
+  // Initial check
+  _tocScrollListener();
+}
+
+function hideTocTopBtn() {
+  const btn = document.getElementById('detail-toc-topbtn');
+  if (!btn) return;
+  btn.classList.remove('visible', 'shown');
+  if (_tocScrollListener) {
+    window.removeEventListener('scroll', _tocScrollListener);
+    _tocScrollListener = null;
+  }
 }
 
 // ===== FLOATING TOC DRAWER =====
