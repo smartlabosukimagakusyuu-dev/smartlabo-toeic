@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">190問</span>
+        <span class="tab-count" id="tab-count-all">230問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -2238,6 +2238,287 @@ const QUESTIONS = [
     choices: ['work', 'working', 'to work', 'worked'],
     answer: 'working',
     explain: 'capable of の of は前置詞なので後ろには動名詞が来る。be capable of doing = 「〜する能力がある」。'
+  },
+  // 語法・感情形容詞（-ing / -ed）追加分
+  {
+    id: 191, genre: '語法', level: '初級',
+    q: 'The movie was very _______.',
+    choices: ['bore', 'boring', 'bored', 'boredom'],
+    answer: 'boring',
+    explain: '物・事が「退屈させる」は -ing 形。boring = 「退屈な（退屈させる）」。'
+  },
+  {
+    id: 192, genre: '語法', level: '初級',
+    q: 'I was _______ by the story.',
+    choices: ['interest', 'interesting', 'interested', 'interestingly'],
+    answer: 'interested',
+    explain: '人が「興味を持った」は -ed 形。be interested in = 「〜に興味がある」。'
+  },
+  {
+    id: 193, genre: '語法', level: '初級',
+    q: 'The game was really _______.',
+    choices: ['excite', 'excited', 'exciting', 'excitement'],
+    answer: 'exciting',
+    explain: '物・事が「ワクワクさせる」は -ing 形。exciting = 「わくわくさせる」。'
+  },
+  {
+    id: 194, genre: '語法', level: '初級',
+    q: 'She looked _______ after work.',
+    choices: ['tire', 'tiring', 'tired', 'tiredly'],
+    answer: 'tired',
+    explain: '人の状態「疲れた」は -ed 形。tired = 「疲れている」。'
+  },
+  {
+    id: 195, genre: '語法', level: '初級',
+    q: 'The lecture was _______.',
+    choices: ['confuse', 'confusing', 'confused', 'confusion'],
+    answer: 'confusing',
+    explain: '物・事が「混乱させる」は -ing 形。confusing = 「分かりにくい」。'
+  },
+  {
+    id: 196, genre: '語法', level: '初級',
+    q: 'I felt _______ during the meeting.',
+    choices: ['bore', 'boring', 'bored', 'bores'],
+    answer: 'bored',
+    explain: '人が「退屈している」は -ed 形。bored = 「退屈した」。'
+  },
+  {
+    id: 197, genre: '語法', level: '初級',
+    q: 'This book is very _______.',
+    choices: ['interest', 'interesting', 'interested', 'interests'],
+    answer: 'interesting',
+    explain: '物・事が「面白い（人を引き付ける）」は -ing 形。interesting = 「面白い」。'
+  },
+  {
+    id: 198, genre: '語法', level: '初級',
+    q: 'The children were _______ by the clown.',
+    choices: ['amuse', 'amusing', 'amused', 'amusement'],
+    answer: 'amused',
+    explain: '人が「楽しませてもらった」は -ed 形。be amused = 「楽しんでいる」。'
+  },
+  {
+    id: 199, genre: '語法', level: '初級',
+    q: 'The news was very _______.',
+    choices: ['shock', 'shocking', 'shocked', 'shockingly'],
+    answer: 'shocking',
+    explain: 'ニュースが「衝撃を与える」は -ing 形。shocking = 「衝撃的な」。'
+  },
+  {
+    id: 200, genre: '語法', level: '初級',
+    q: 'She became _______ after hearing the result.',
+    choices: ['surprise', 'surprising', 'surprised', 'surprisingly'],
+    answer: 'surprised',
+    explain: '人が「驚いた」は -ed 形。be surprised = 「驚いている」。'
+  },
+  {
+    id: 201, genre: '語法', level: '初級',
+    q: 'The movie ending was _______.',
+    choices: ['move', 'moving', 'moved', 'movement'],
+    answer: 'moving',
+    explain: '物・事が「感動させる」は -ing 形。moving = 「感動的な」。'
+  },
+  {
+    id: 202, genre: '語法', level: '初級',
+    q: 'I was deeply _______ by her kindness.',
+    choices: ['touch', 'touching', 'touched', 'touches'],
+    answer: 'touched',
+    explain: '人が「心を動かされた」は -ed 形。be touched = 「感動した」。'
+  },
+  {
+    id: 203, genre: '語法', level: '初級',
+    q: 'The class was too _______.',
+    choices: ['tire', 'tiring', 'tired', 'tiredly'],
+    answer: 'tiring',
+    explain: '授業が「疲れさせる」は -ing 形。tiring = 「疲れさせる・くたびれる」。'
+  },
+  {
+    id: 204, genre: '語法', level: '初級',
+    q: 'He seemed _______ after the trip.',
+    choices: ['exhaust', 'exhausting', 'exhausted', 'exhaustion'],
+    answer: 'exhausted',
+    explain: '人が「疲れ果てた」は -ed 形。exhausted = 「ぐったり疲れた」。'
+  },
+  {
+    id: 205, genre: '語法', level: '初級',
+    q: 'The test was _______ than expected.',
+    choices: ['challenge', 'challenging', 'challenged', 'challengeable'],
+    answer: 'challenging',
+    explain: 'テストが「やりがいある・難しい」は -ing 形。challenging = 「手強い・やりがいのある」。'
+  },
+  {
+    id: 206, genre: '語法', level: '中級',
+    q: 'The audience was _______ by the performance.',
+    choices: ['impress', 'impressing', 'impressed', 'impression'],
+    answer: 'impressed',
+    explain: '人が「感銘を受けた」は -ed 形。be impressed = 「感動・感銘を受けた」。'
+  },
+  {
+    id: 207, genre: '語法', level: '中級',
+    q: 'The instructions were very _______.',
+    choices: ['confuse', 'confusing', 'confused', 'confusion'],
+    answer: 'confusing',
+    explain: '説明が「分かりにくい（人を混乱させる）」は -ing 形。confusing = 「分かりにくい」。'
+  },
+  {
+    id: 208, genre: '語法', level: '中級',
+    q: 'She felt _______ about the interview.',
+    choices: ['worry', 'worrying', 'worried', 'worriedly'],
+    answer: 'worried',
+    explain: '人が「心配している」は -ed 形。worried = 「不安な・心配している」。'
+  },
+  {
+    id: 209, genre: '語法', level: '中級',
+    q: 'The game became more _______ as time passed.',
+    choices: ['excite', 'exciting', 'excited', 'excites'],
+    answer: 'exciting',
+    explain: 'ゲームが「ワクワクさせる」は -ing 形。exciting = 「わくわくさせる」。'
+  },
+  {
+    id: 210, genre: '語法', level: '中級',
+    q: 'I was _______ to hear the news.',
+    choices: ['disappoint', 'disappointing', 'disappointed', 'disappointment'],
+    answer: 'disappointed',
+    explain: '人が「がっかりした」は -ed 形。be disappointed = 「失望している」。'
+  },
+  {
+    id: 211, genre: '語法', level: '中級',
+    q: 'The report was extremely _______.',
+    choices: ['interest', 'interesting', 'interested', 'interestingly'],
+    answer: 'interesting',
+    explain: 'レポートが「興味深い」は -ing 形。interesting = 「面白い・興味深い」。'
+  },
+  {
+    id: 212, genre: '語法', level: '中級',
+    q: 'The employees looked _______ after the overtime work.',
+    choices: ['tire', 'tiring', 'tired', 'tires'],
+    answer: 'tired',
+    explain: '人が「疲れた」は -ed 形。tired = 「疲れている」。'
+  },
+  {
+    id: 213, genre: '語法', level: '中級',
+    q: 'This puzzle is really _______.',
+    choices: ['confuse', 'confusing', 'confused', 'confuses'],
+    answer: 'confusing',
+    explain: 'パズルが「混乱させる」は -ing 形。confusing = 「ややこしい」。'
+  },
+  {
+    id: 214, genre: '語法', level: '中級',
+    q: 'She was _______ by his sudden question.',
+    choices: ['surprise', 'surprising', 'surprised', 'surprisingly'],
+    answer: 'surprised',
+    explain: '人が「驚かされた」は -ed 形。be surprised = 「驚いている」。'
+  },
+  {
+    id: 215, genre: '語法', level: '中級',
+    q: 'The documentary was highly _______.',
+    choices: ['educate', 'educating', 'educated', 'education'],
+    answer: 'educating',
+    explain: 'ドキュメンタリーが「教育的な」は -ing 形。educating = 「教育効果のある」。'
+  },
+  {
+    id: 216, genre: '語法', level: '中級',
+    q: 'He became _______ after losing the game.',
+    choices: ['depress', 'depressing', 'depressed', 'depression'],
+    answer: 'depressed',
+    explain: '人が「落ち込んだ」は -ed 形。depressed = 「気分が落ち込んだ」。'
+  },
+  {
+    id: 217, genre: '語法', level: '中級',
+    q: 'The conference was mentally _______.',
+    choices: ['exhaust', 'exhausting', 'exhausted', 'exhaustion'],
+    answer: 'exhausting',
+    explain: '会議が「疲れさせる」は -ing 形。exhausting = 「消耗させる・くたくたにさせる」。'
+  },
+  {
+    id: 218, genre: '語法', level: '中級',
+    q: 'The manager seemed _______ with the results.',
+    choices: ['satisfy', 'satisfying', 'satisfied', 'satisfaction'],
+    answer: 'satisfied',
+    explain: '人が「満足している」は -ed 形。be satisfied = 「満足している」。'
+  },
+  {
+    id: 219, genre: '語法', level: '中級',
+    q: 'The students found the lesson _______.',
+    choices: ['bore', 'boring', 'bored', 'boredom'],
+    answer: 'boring',
+    explain: '授業が「退屈だ」は -ing 形。find + 目的語 + 形容詞 で boring が正解。'
+  },
+  {
+    id: 220, genre: '語法', level: '中級',
+    q: 'She was _______ by the beautiful scenery.',
+    choices: ['amaze', 'amazing', 'amazed', 'amazement'],
+    answer: 'amazed',
+    explain: '人が「驚いた」は -ed 形。be amazed = 「驚嘆している」。'
+  },
+  {
+    id: 221, genre: '語法', level: '上級',
+    q: 'The proposal was quite _______ to investors.',
+    choices: ['appeal', 'appealing', 'appealed', 'appealingly'],
+    answer: 'appealing',
+    explain: '提案が「魅力的な」は -ing 形。appealing = 「魅力的な・訴えかけるような」。'
+  },
+  {
+    id: 222, genre: '語法', level: '上級',
+    q: 'The workers were _______ by the sudden announcement.',
+    choices: ['alarm', 'alarming', 'alarmed', 'alarmingly'],
+    answer: 'alarmed',
+    explain: '人が「不安になった・驚いた」は -ed 形。be alarmed = 「警戒している・心配している」。'
+  },
+  {
+    id: 223, genre: '語法', level: '上級',
+    q: 'The CEO gave an _______ speech.',
+    choices: ['inspire', 'inspiring', 'inspired', 'inspiration'],
+    answer: 'inspiring',
+    explain: 'スピーチが「刺激的な・人を奮い立たせる」は -ing 形。inspiring = 「インスピレーションを与える」。'
+  },
+  {
+    id: 224, genre: '語法', level: '上級',
+    q: 'The audience remained _______ throughout the show.',
+    choices: ['fascinate', 'fascinating', 'fascinated', 'fascination'],
+    answer: 'fascinated',
+    explain: '観客が「魅了された」は -ed 形。be fascinated = 「魅了されている」。'
+  },
+  {
+    id: 225, genre: '語法', level: '上級',
+    q: 'The task was physically _______.',
+    choices: ['demand', 'demanding', 'demanded', 'demands'],
+    answer: 'demanding',
+    explain: '仕事が「きつい・要求の多い」は -ing 形。demanding = 「過酷な・要求の高い」。'
+  },
+  {
+    id: 226, genre: '語法', level: '上級',
+    q: 'She looked _______ by the complicated explanation.',
+    choices: ['puzzle', 'puzzling', 'puzzled', 'puzzlement'],
+    answer: 'puzzled',
+    explain: '人が「困惑している」は -ed 形。puzzled = 「当惑した・困惑した」。'
+  },
+  {
+    id: 227, genre: '語法', level: '上級',
+    q: 'The new software is very _______ for beginners.',
+    choices: ['confuse', 'confusing', 'confused', 'confuses'],
+    answer: 'confusing',
+    explain: 'ソフトが「分かりにくい」は -ing 形。confusing = 「紛らわしい・難解な」。'
+  },
+  {
+    id: 228, genre: '語法', level: '上級',
+    q: 'The investors seemed _______ about the market trend.',
+    choices: ['concern', 'concerning', 'concerned', 'concernedly'],
+    answer: 'concerned',
+    explain: '人が「心配している」は -ed 形。be concerned = 「懸念している」。ビジネス英語の頻出表現。'
+  },
+  {
+    id: 229, genre: '語法', level: '上級',
+    q: 'The workshop was both informative and _______.',
+    choices: ['motivate', 'motivating', 'motivated', 'motivation'],
+    answer: 'motivating',
+    explain: 'ワークショップが「やる気を与える」は -ing 形。motivating = 「モチベーションを高める」。'
+  },
+  {
+    id: 230, genre: '語法', level: '上級',
+    q: 'I felt completely _______ after the long flight.',
+    choices: ['drain', 'draining', 'drained', 'drainage'],
+    answer: 'drained',
+    explain: '人が「エネルギーを使い果たした」は -ed 形。drained = 「消耗した・疲れ果てた」。'
   }
 ];
 
