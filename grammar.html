@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">270問</span>
+        <span class="tab-count" id="tab-count-all">310問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -2802,6 +2802,289 @@ const QUESTIONS = [
     choices: ['relaxed', 'more relaxed', 'most relaxed', 'relaxing'],
     answer: 'more relaxed',
     explain: 'the + 比較級, the + 比較級 の構文。「心配するほど〜だ」。'
+  },
+  // ===== 関係詞 初級 (id 271-285) =====
+  {
+    id: 271, genre: '関係詞', level: '初級',
+    q: 'The man ___ is standing there is my teacher.',
+    choices: ['which', 'who', 'where', 'what'],
+    answer: 'who',
+    explain: '人を先行詞とする関係代名詞は who を使う。'
+  },
+  {
+    id: 272, genre: '関係詞', level: '初級',
+    q: 'This is the book ___ I bought yesterday.',
+    choices: ['who', 'where', 'which', 'when'],
+    answer: 'which',
+    explain: '物を先行詞とする関係代名詞は which を使う。'
+  },
+  {
+    id: 273, genre: '関係詞', level: '初級',
+    q: 'The restaurant ___ we ate was very nice.',
+    choices: ['who', 'which', 'where', 'what'],
+    answer: 'where',
+    explain: '場所を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 274, genre: '関係詞', level: '初級',
+    q: 'I remember the day ___ we first met.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'when',
+    explain: '時を先行詞とする関係副詞は when を使う。'
+  },
+  {
+    id: 275, genre: '関係詞', level: '初級',
+    q: 'The girl ___ lives next door is kind.',
+    choices: ['which', 'where', 'who', 'when'],
+    answer: 'who',
+    explain: '人を先行詞とする関係代名詞は who を使う。'
+  },
+  {
+    id: 276, genre: '関係詞', level: '初級',
+    q: 'This is the house ___ my uncle built.',
+    choices: ['who', 'which', 'when', 'where'],
+    answer: 'which',
+    explain: '物（家）を先行詞とする関係代名詞は which を使う。'
+  },
+  {
+    id: 277, genre: '関係詞', level: '初級',
+    q: 'The park ___ we played soccer is nearby.',
+    choices: ['where', 'which', 'who', 'what'],
+    answer: 'where',
+    explain: '場所を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 278, genre: '関係詞', level: '初級',
+    q: 'I know a boy ___ can speak French.',
+    choices: ['which', 'who', 'where', 'when'],
+    answer: 'who',
+    explain: '人（boy）を先行詞とする関係代名詞は who を使う。'
+  },
+  {
+    id: 279, genre: '関係詞', level: '初級',
+    q: 'The movie ___ we watched was exciting.',
+    choices: ['who', 'where', 'which', 'when'],
+    answer: 'which',
+    explain: '映画は物なので関係代名詞 which を使う。'
+  },
+  {
+    id: 280, genre: '関係詞', level: '初級',
+    q: 'That is the school ___ my mother works.',
+    choices: ['which', 'who', 'where', 'what'],
+    answer: 'where',
+    explain: '場所（school）を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 281, genre: '関係詞', level: '初級',
+    q: 'The person ___ called you is my boss.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'who',
+    explain: '人を先行詞とする関係代名詞は who を使う。'
+  },
+  {
+    id: 282, genre: '関係詞', level: '初級',
+    q: 'This is the camera ___ I want to buy.',
+    choices: ['who', 'where', 'which', 'when'],
+    answer: 'which',
+    explain: 'camera は物なので関係代名詞 which を使う。'
+  },
+  {
+    id: 283, genre: '関係詞', level: '初級',
+    q: 'I visited the town ___ I was born.',
+    choices: ['which', 'where', 'who', 'what'],
+    answer: 'where',
+    explain: '場所（town）を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 284, genre: '関係詞', level: '初級',
+    q: 'Do you remember the year ___ we met?',
+    choices: ['which', 'where', 'when', 'who'],
+    answer: 'when',
+    explain: '時（year）を先行詞とする関係副詞は when を使う。'
+  },
+  {
+    id: 285, genre: '関係詞', level: '初級',
+    q: 'The woman ___ helped me was very kind.',
+    choices: ['which', 'who', 'where', 'when'],
+    answer: 'who',
+    explain: '人（woman）を先行詞とする関係代名詞は who を使う。'
+  },
+  // ===== 関係詞 中級 (id 286-300) =====
+  {
+    id: 286, genre: '関係詞', level: '中級',
+    q: 'The company ___ he works for is famous.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'which',
+    explain: '会社は物扱いなので which を使う。前置詞 for が後に続く形。'
+  },
+  {
+    id: 287, genre: '関係詞', level: '中級',
+    q: 'This is the reason ___ I was late.',
+    choices: ['who', 'which', 'why', 'when'],
+    answer: 'why',
+    explain: '理由を先行詞とする関係副詞は why を使う。'
+  },
+  {
+    id: 288, genre: '関係詞', level: '中級',
+    q: 'The book ___ cover is red is mine.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す関係代名詞は whose。「表紙が赤い本」。'
+  },
+  {
+    id: 289, genre: '関係詞', level: '中級',
+    q: 'The man ___ car was stolen called the police.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す whose。「車が盗まれた男性」。'
+  },
+  {
+    id: 290, genre: '関係詞', level: '中級',
+    q: 'The hotel ___ we stayed was comfortable.',
+    choices: ['which', 'where', 'who', 'when'],
+    answer: 'where',
+    explain: '場所（hotel）を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 291, genre: '関係詞', level: '中級',
+    q: 'The student ___ won the contest is absent today.',
+    choices: ['which', 'who', 'where', 'when'],
+    answer: 'who',
+    explain: '人（student）を先行詞とする関係代名詞は who を使う。'
+  },
+  {
+    id: 292, genre: '関係詞', level: '中級',
+    q: 'I lost the watch ___ my father gave me.',
+    choices: ['who', 'where', 'which', 'when'],
+    answer: 'which',
+    explain: '物（watch）を先行詞とする関係代名詞は which を使う。'
+  },
+  {
+    id: 293, genre: '関係詞', level: '中級',
+    q: 'This is the office ___ my brother works.',
+    choices: ['which', 'where', 'who', 'what'],
+    answer: 'where',
+    explain: '場所（office）を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 294, genre: '関係詞', level: '中級',
+    q: 'The day ___ we left for Osaka was rainy.',
+    choices: ['who', 'which', 'when', 'where'],
+    answer: 'when',
+    explain: '時（day）を先行詞とする関係副詞は when を使う。'
+  },
+  {
+    id: 295, genre: '関係詞', level: '中級',
+    q: 'The artist ___ paintings are famous lives nearby.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す whose。「絵が有名なアーティスト」。'
+  },
+  {
+    id: 296, genre: '関係詞', level: '中級',
+    q: 'The movie ___ I told you about was amazing.',
+    choices: ['who', 'where', 'which', 'when'],
+    answer: 'which',
+    explain: '物（movie）を先行詞とする関係代名詞は which を使う。'
+  },
+  {
+    id: 297, genre: '関係詞', level: '中級',
+    q: 'The reason ___ she quit her job is unclear.',
+    choices: ['who', 'which', 'why', 'when'],
+    answer: 'why',
+    explain: '理由を先行詞とする関係副詞は why を使う。'
+  },
+  {
+    id: 298, genre: '関係詞', level: '中級',
+    q: 'The city ___ I grew up has changed a lot.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'where',
+    explain: '場所（city）を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 299, genre: '関係詞', level: '中級',
+    q: 'The teacher ___ class I enjoy is absent today.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す whose。teacher\'s class の意味。'
+  },
+  {
+    id: 300, genre: '関係詞', level: '中級',
+    q: 'I still remember the moment ___ we met.',
+    choices: ['who', 'which', 'when', 'where'],
+    answer: 'when',
+    explain: '時（moment）を先行詞とする関係副詞は when を使う。'
+  },
+  // ===== 関係詞 上級 (id 301-310) =====
+  {
+    id: 301, genre: '関係詞', level: '上級',
+    q: 'The proposal, ___ was submitted yesterday, was approved.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'which',
+    explain: 'コンマで区切られた非制限用法。物を先行詞とするので which を使う。'
+  },
+  {
+    id: 302, genre: '関係詞', level: '上級',
+    q: 'The employee ___ performance improved received a bonus.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す whose。「業績が向上した従業員」。'
+  },
+  {
+    id: 303, genre: '関係詞', level: '上級',
+    q: 'The building in ___ the meeting was held is historic.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'which',
+    explain: '前置詞 + which の形。in which = where と同義。'
+  },
+  {
+    id: 304, genre: '関係詞', level: '上級',
+    q: 'The year ___ the company was founded was 1998.',
+    choices: ['who', 'which', 'when', 'where'],
+    answer: 'when',
+    explain: '時（year）を先行詞とする関係副詞は when を使う。'
+  },
+  {
+    id: 305, genre: '関係詞', level: '上級',
+    q: 'Anyone ___ wants to join may apply.',
+    choices: ['who', 'which', 'where', 'when'],
+    answer: 'who',
+    explain: 'Anyone（人）を先行詞とする関係代名詞は who を使う。'
+  },
+  {
+    id: 306, genre: '関係詞', level: '上級',
+    q: 'This is the exact place ___ the accident occurred.',
+    choices: ['which', 'where', 'who', 'when'],
+    answer: 'where',
+    explain: '場所（place）を先行詞とする関係副詞は where を使う。'
+  },
+  {
+    id: 307, genre: '関係詞', level: '上級',
+    q: 'The contract ___ terms were revised was signed today.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す whose。「条件が改訂された契約」。'
+  },
+  {
+    id: 308, genre: '関係詞', level: '上級',
+    q: 'The manager with ___ I spoke was helpful.',
+    choices: ['who', 'whom', 'which', 'whose'],
+    answer: 'whom',
+    explain: '前置詞の後は目的格 whom を使う。with whom I spoke が正しい形。'
+  },
+  {
+    id: 309, genre: '関係詞', level: '上級',
+    q: 'The issue about ___ they argued remains unresolved.',
+    choices: ['who', 'whom', 'which', 'whose'],
+    answer: 'which',
+    explain: '前置詞 + which の形。about which = 物を受けるので which。'
+  },
+  {
+    id: 310, genre: '関係詞', level: '上級',
+    q: 'The scientist ___ discoveries changed medicine won an award.',
+    choices: ['who', 'whose', 'which', 'where'],
+    answer: 'whose',
+    explain: '所有を表す whose。「発見が医学を変えた科学者」。'
   }
 ];
 
