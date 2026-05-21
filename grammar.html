@@ -511,6 +511,7 @@
     gap: 4px;
     position: relative;
     min-height: 72px;
+    padding-bottom: 12px;
   }
   .grammar-card-icon { font-size: 26px; margin-bottom: 2px; }
   .grammar-card-name { font-size: 15px; font-weight: 800; color: #fff; }
@@ -6151,22 +6152,22 @@ function renderGrammarList() {
         <div class="grammar-card-icon">${cat.icon}</div>
         <div class="grammar-card-name">${cat.name}</div>
         ${!hasQuestions ? `<span class="grammar-card-badge coming">準備中</span>` : (acc !== null ? `<span class="grammar-card-badge">${acc}%</span>` : '')}
+        ${hasQuestions
+          ? `<button class="grammar-card-practice" onclick="event.stopPropagation();startGenreQuiz('${cat.genre}')">⚡ 練習する（${qCount}問）</button>`
+          : `<button class="grammar-card-practice disabled" disabled>🔜 準備中</button>`}
       </div>
       <div class="grammar-card-body">
         <div class="grammar-card-short">${cat.short}</div>
         <div class="grammar-card-meta">
           <span class="grammar-card-qcount">${qCount}問</span>
           ${acc !== null
-            ? `<span class="grammar-card-acc" style="background:${cat.accentColor}20;color:${cat.accentColor}">正答率 ${acc}%　${stats.correct}問クリア</span>`
+            ? `<span class="grammar-card-acc" style="background:${cat.accentColor}20;color:${cat.accentColor}">${acc}% / ${stats.correct}クリア</span>`
             : `<span class="grammar-card-acc">未挑戦</span>`}
         </div>
         <div class="grammar-card-progress">
           <div class="grammar-card-progress-fill" style="width:${mastery}%;background:${cat.accentColor}"></div>
         </div>
       </div>
-      ${hasQuestions
-        ? `<button class="grammar-card-practice" onclick="event.stopPropagation();startGenreQuiz('${cat.genre}')">⚡ 練習する（${qCount}問）</button>`
-        : `<button class="grammar-card-practice disabled" disabled>🔜 準備中</button>`}
     `;
     grid.appendChild(card);
   });
