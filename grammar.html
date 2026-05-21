@@ -486,6 +486,153 @@
   .grammar-list-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
   .grammar-list-sub { font-size: 13px; opacity: .75; }
 
+  /* ===== GRAMMAR TOC ===== */
+  .grammar-toc-section {
+    margin: 16px 16px 4px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .grammar-toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .grammar-toc-header:active { background: #F9FAFB; }
+  .grammar-toc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .grammar-toc-header-left span:first-child { font-size: 16px; }
+  .grammar-toc-toggle {
+    font-size: 12px;
+    color: var(--gray);
+    transition: transform .25s;
+  }
+  .grammar-toc-toggle.open { transform: rotate(180deg); }
+  .grammar-toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: #F3F4F6;
+    border-top: 1px solid #F3F4F6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+  }
+  .grammar-toc-grid.open { max-height: 500px; }
+  .grammar-toc-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 12px 8px;
+    background: var(--white);
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .15s;
+    position: relative;
+  }
+  .grammar-toc-item:active { background: #EFF6FF; }
+  .grammar-toc-num {
+    position: absolute;
+    top: 5px; left: 7px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #D1D5DB;
+    letter-spacing: .5px;
+  }
+  .grammar-toc-icon { font-size: 22px; }
+  .grammar-toc-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .grammar-toc-acc {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--gray);
+  }
+  .grammar-toc-acc.done { color: var(--green); }
+
+  /* ===== GRAMMAR DETAIL NAV ===== */
+  .detail-cat-strip-wrap {
+    background: var(--white);
+    border-bottom: 1px solid #F3F4F6;
+    overflow: hidden;
+  }
+  .detail-cat-strip {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .detail-cat-strip::-webkit-scrollbar { display: none; }
+  .detail-cat-chip {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #E5E7EB;
+    background: #F9FAFB;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .detail-cat-chip:active { transform: scale(.93); }
+  .detail-cat-chip.active {
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  }
+  .detail-nav-row {
+    display: flex;
+    gap: 10px;
+    margin: 0 16px 16px;
+  }
+  .detail-nav-btn {
+    flex: 1;
+    padding: 12px 10px;
+    border-radius: 12px;
+    border: 2px solid #E5E7EB;
+    background: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .detail-nav-btn:active { background: #EFF6FF; border-color: var(--blue); }
+  .detail-nav-btn:disabled { opacity: .35; pointer-events: none; }
+  .detail-nav-btn .nav-cat-icon { font-size: 16px; }
+  .detail-nav-btn .nav-cat-name { font-size: 11px; font-weight: 800; }
+
   .grammar-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1176,6 +1323,16 @@
       <div class="grammar-list-title">📖 文法一覧</div>
       <div class="grammar-list-sub">文法を理解して、即演習！</div>
     </div>
+    <!-- TOC -->
+    <div class="grammar-toc-section" id="grammar-toc-section">
+      <div class="grammar-toc-header" onclick="toggleGrammarToc()">
+        <div class="grammar-toc-header-left">
+          <span>📋</span><span>目次 — 全12カテゴリ</span>
+        </div>
+        <span class="grammar-toc-toggle" id="grammar-toc-toggle">▼</span>
+      </div>
+      <div class="grammar-toc-grid" id="grammar-toc-grid"></div>
+    </div>
     <div class="grammar-grid" id="grammar-grid"></div>
   </div>
 
@@ -1186,6 +1343,10 @@
       <div class="detail-icon" id="detail-icon">📘</div>
       <div class="detail-title" id="detail-title">時制</div>
       <div class="detail-short" id="detail-short">現在完了・過去形を攻略</div>
+    </div>
+    <!-- Category nav strip -->
+    <div class="detail-cat-strip-wrap">
+      <div class="detail-cat-strip" id="detail-cat-strip"></div>
     </div>
     <div class="detail-stats-row">
       <div class="detail-stat">
@@ -1206,6 +1367,25 @@
     <button class="btn-practice" id="btn-practice" onclick="startFromCategory()">
       ⚡ この文法を練習する
     </button>
+    <!-- Prev / Next navigation -->
+    <div class="detail-nav-row">
+      <button class="detail-nav-btn" id="detail-prev-btn" onclick="navigateDetailCategory(-1)">
+        <span>◀</span>
+        <div>
+          <div style="font-size:9px;color:var(--gray);margin-bottom:2px;">前の文法</div>
+          <div class="nav-cat-icon" id="detail-prev-icon"></div>
+          <div class="nav-cat-name" id="detail-prev-name"></div>
+        </div>
+      </button>
+      <button class="detail-nav-btn" id="detail-next-btn" onclick="navigateDetailCategory(1)">
+        <div style="text-align:right">
+          <div style="font-size:9px;color:var(--gray);margin-bottom:2px;">次の文法</div>
+          <div class="nav-cat-icon" id="detail-next-icon"></div>
+          <div class="nav-cat-name" id="detail-next-name"></div>
+        </div>
+        <span>▶</span>
+      </button>
+    </div>
   </div>
 
 </div><!-- /app -->
@@ -6172,11 +6352,44 @@ const GRAMMAR_CATEGORIES = [
 
 let currentDetailCategory = null;
 
+// ===== GRAMMAR TOC TOGGLE =====
+let grammarTocOpen = false;
+function toggleGrammarToc() {
+  grammarTocOpen = !grammarTocOpen;
+  document.getElementById('grammar-toc-grid').classList.toggle('open', grammarTocOpen);
+  document.getElementById('grammar-toc-toggle').classList.toggle('open', grammarTocOpen);
+}
+
 // ===== GRAMMAR LIST RENDER =====
 function renderGrammarList() {
   const grid = document.getElementById('grammar-grid');
+  const tocGrid = document.getElementById('grammar-toc-grid');
   const d = getData();
   grid.innerHTML = '';
+  tocGrid.innerHTML = '';
+
+  GRAMMAR_CATEGORIES.forEach((cat, idx) => {
+    // --- TOC item ---
+    const stats = (d.genreStats || {})[cat.genre] || { correct: 0, total: 0 };
+    const acc = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) : null;
+    const tocItem = document.createElement('button');
+    tocItem.className = 'grammar-toc-item';
+    tocItem.onclick = () => {
+      if (grammarTocOpen) {
+        grammarTocOpen = false;
+        document.getElementById('grammar-toc-grid').classList.remove('open');
+        document.getElementById('grammar-toc-toggle').classList.remove('open');
+      }
+      showGrammarDetail(cat.id);
+    };
+    tocItem.innerHTML = `
+      <span class="grammar-toc-num">${String(idx + 1).padStart(2, '0')}</span>
+      <span class="grammar-toc-icon">${cat.icon}</span>
+      <span class="grammar-toc-name">${cat.name}</span>
+      <span class="grammar-toc-acc ${acc !== null ? 'done' : ''}">${acc !== null ? acc + '%' : '未挑戦'}</span>
+    `;
+    tocGrid.appendChild(tocItem);
+  });
 
   GRAMMAR_CATEGORIES.forEach(cat => {
     const stats = (d.genreStats || {})[cat.genre] || { correct: 0, total: 0 };
@@ -6222,12 +6435,45 @@ function showGrammarDetail(categoryId) {
   const cat = GRAMMAR_CATEGORIES.find(c => c.id === categoryId);
   if (!cat) return;
   currentDetailCategory = cat;
+  const catIdx = GRAMMAR_CATEGORIES.indexOf(cat);
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'instant' });
 
   // Header
   document.getElementById('detail-header').style.background = cat.bg;
   document.getElementById('detail-icon').textContent = cat.icon;
   document.getElementById('detail-title').textContent = cat.name;
   document.getElementById('detail-short').textContent = cat.short;
+
+  // Category strip
+  const strip = document.getElementById('detail-cat-strip');
+  strip.innerHTML = '';
+  GRAMMAR_CATEGORIES.forEach((c, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'detail-cat-chip' + (c.id === categoryId ? ' active' : '');
+    if (c.id === categoryId) chip.style.background = cat.accentColor;
+    chip.innerHTML = `${c.icon} ${c.name}`;
+    chip.onclick = () => showGrammarDetail(c.id);
+    strip.appendChild(chip);
+  });
+  // Scroll active chip into view after render
+  setTimeout(() => {
+    const activeChip = strip.querySelector('.active');
+    if (activeChip) activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, 80);
+
+  // Prev / Next nav
+  const prevCat = GRAMMAR_CATEGORIES[catIdx - 1] || null;
+  const nextCat = GRAMMAR_CATEGORIES[catIdx + 1] || null;
+  const prevBtn = document.getElementById('detail-prev-btn');
+  const nextBtn = document.getElementById('detail-next-btn');
+  prevBtn.disabled = !prevCat;
+  nextBtn.disabled = !nextCat;
+  document.getElementById('detail-prev-icon').textContent = prevCat ? prevCat.icon : '';
+  document.getElementById('detail-prev-name').textContent = prevCat ? prevCat.name : '';
+  document.getElementById('detail-next-icon').textContent = nextCat ? nextCat.icon : '';
+  document.getElementById('detail-next-name').textContent = nextCat ? nextCat.name : '';
 
   // Stats from localStorage
   const d = getData();
@@ -6298,6 +6544,14 @@ function startGenreQuiz(genre) {
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
+}
+
+// ===== NAVIGATE DETAIL CATEGORY (prev/next) =====
+function navigateDetailCategory(dir) {
+  if (!currentDetailCategory) return;
+  const idx = GRAMMAR_CATEGORIES.indexOf(currentDetailCategory);
+  const next = GRAMMAR_CATEGORIES[idx + dir];
+  if (next) showGrammarDetail(next.id);
 }
 
 // ===== START FROM CATEGORY (detail page button) =====
