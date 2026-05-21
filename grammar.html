@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">390問</span>
+        <span class="tab-count" id="tab-count-all">430問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -3651,6 +3651,289 @@ const QUESTIONS = [
     choices: ["aren't", "weren't", "wouldn't be", "won't be"],
     answer: "wouldn't be",
     explain: '"Without ..." は仮定法の条件節として機能する。現在の事実への反実仮想。'
+  },
+  // ===== 前置詞 初級 (id 391-405) =====
+  {
+    id: 391, genre: '前置詞', level: '初級',
+    q: 'She arrived ___ the station at 8.',
+    choices: ['in', 'on', 'at', 'to'],
+    answer: 'at',
+    explain: '地点（駅・空港など特定の場所）には at を使う。'
+  },
+  {
+    id: 392, genre: '前置詞', level: '初級',
+    q: 'I usually get up ___ 7 a.m.',
+    choices: ['in', 'on', 'at', 'by'],
+    answer: 'at',
+    explain: '時刻には at を使う。'
+  },
+  {
+    id: 393, genre: '前置詞', level: '初級',
+    q: 'We have a meeting ___ Monday.',
+    choices: ['in', 'on', 'at', 'for'],
+    answer: 'on',
+    explain: '曜日・特定の日には on を使う。'
+  },
+  {
+    id: 394, genre: '前置詞', level: '初級',
+    q: 'My birthday is ___ July.',
+    choices: ['in', 'on', 'at', 'to'],
+    answer: 'in',
+    explain: '月・年・季節には in を使う。'
+  },
+  {
+    id: 395, genre: '前置詞', level: '初級',
+    q: 'The cat is ___ the table.',
+    choices: ['in', 'on', 'under', 'between'],
+    answer: 'under',
+    explain: '下にある場合は under を使う。'
+  },
+  {
+    id: 396, genre: '前置詞', level: '初級',
+    q: 'The book is ___ the desk.',
+    choices: ['on', 'in', 'at', 'between'],
+    answer: 'on',
+    explain: '表面の上にあるものには on を使う。'
+  },
+  {
+    id: 397, genre: '前置詞', level: '初級',
+    q: 'She is interested ___ music.',
+    choices: ['on', 'at', 'in', 'for'],
+    answer: 'in',
+    explain: 'be interested in で「〜に興味がある」。'
+  },
+  {
+    id: 398, genre: '前置詞', level: '初級',
+    q: 'I went to school ___ bus.',
+    choices: ['with', 'by', 'on', 'in'],
+    answer: 'by',
+    explain: '交通手段は by + 無冠詞の乗り物。'
+  },
+  {
+    id: 399, genre: '前置詞', level: '初級',
+    q: 'The picture is ___ the wall.',
+    choices: ['in', 'on', 'under', 'between'],
+    answer: 'on',
+    explain: '壁に貼り付いているものには on を使う。'
+  },
+  {
+    id: 400, genre: '前置詞', level: '初級',
+    q: 'He sat ___ me and Tom.',
+    choices: ['under', 'between', 'through', 'during'],
+    answer: 'between',
+    explain: '2つ（2人）の間には between を使う。'
+  },
+  {
+    id: 401, genre: '前置詞', level: '初級',
+    q: 'I studied English ___ three hours.',
+    choices: ['for', 'since', 'during', 'by'],
+    answer: 'for',
+    explain: '期間（〜の間）を表すには for を使う。'
+  },
+  {
+    id: 402, genre: '前置詞', level: '初級',
+    q: 'She has lived here ___ 2020.',
+    choices: ['for', 'during', 'since', 'until'],
+    answer: 'since',
+    explain: '起点（〜以来）を表すには since を使う。'
+  },
+  {
+    id: 403, genre: '前置詞', level: '初級',
+    q: 'The train arrived ___ time.',
+    choices: ['on', 'at', 'in', 'for'],
+    answer: 'on',
+    explain: 'on time で「時間通りに」という慣用表現。'
+  },
+  {
+    id: 404, genre: '前置詞', level: '初級',
+    q: 'We walked ___ the park.',
+    choices: ['through', 'during', 'between', 'since'],
+    answer: 'through',
+    explain: '公園の中を通り抜けるので through を使う。'
+  },
+  {
+    id: 405, genre: '前置詞', level: '初級',
+    q: 'I stayed home ___ the rain.',
+    choices: ['because', 'because of', 'although', 'despite'],
+    answer: 'because of',
+    explain: '名詞（the rain）の前に置く原因表現は because of。'
+  },
+  // ===== 前置詞 中級 (id 406-420) =====
+  {
+    id: 406, genre: '前置詞', level: '中級',
+    q: 'She succeeded ___ passing the exam.',
+    choices: ['at', 'for', 'in', 'with'],
+    answer: 'in',
+    explain: 'succeed in で「〜に成功する」。'
+  },
+  {
+    id: 407, genre: '前置詞', level: '中級',
+    q: 'The meeting starts ___ noon.',
+    choices: ['in', 'on', 'at', 'during'],
+    answer: 'at',
+    explain: 'noon（正午）など特定の時点には at を使う。'
+  },
+  {
+    id: 408, genre: '前置詞', level: '中級',
+    q: 'He apologized ___ being late.',
+    choices: ['to', 'for', 'about', 'with'],
+    answer: 'for',
+    explain: 'apologize for で「〜を謝る」。'
+  },
+  {
+    id: 409, genre: '前置詞', level: '中級',
+    q: 'The office is located ___ the second floor.',
+    choices: ['in', 'at', 'on', 'between'],
+    answer: 'on',
+    explain: '階（フロア）には on を使う。on the second floor。'
+  },
+  {
+    id: 410, genre: '前置詞', level: '中級',
+    q: 'She is responsible ___ customer support.',
+    choices: ['to', 'with', 'for', 'on'],
+    answer: 'for',
+    explain: 'be responsible for で「〜に責任がある」。'
+  },
+  {
+    id: 411, genre: '前置詞', level: '中級',
+    q: 'We arrived ___ the airport early.',
+    choices: ['to', 'at', 'on', 'for'],
+    answer: 'at',
+    explain: 'arrive at で「〜に到着する」（地点）。'
+  },
+  {
+    id: 412, genre: '前置詞', level: '中級',
+    q: 'He is good ___ math.',
+    choices: ['for', 'at', 'on', 'with'],
+    answer: 'at',
+    explain: 'be good at で「〜が得意だ」。'
+  },
+  {
+    id: 413, genre: '前置詞', level: '中級',
+    q: 'The train passed ___ the tunnel.',
+    choices: ['through', 'between', 'during', 'since'],
+    answer: 'through',
+    explain: 'トンネルを通り抜けるので through を使う。'
+  },
+  {
+    id: 414, genre: '前置詞', level: '中級',
+    q: 'She has been absent ___ Monday.',
+    choices: ['for', 'during', 'since', 'until'],
+    answer: 'since',
+    explain: '月曜日から（ずっと欠席）なので起点を表す since を使う。'
+  },
+  {
+    id: 415, genre: '前置詞', level: '中級',
+    q: 'I borrowed this book ___ my friend.',
+    choices: ['from', 'with', 'about', 'during'],
+    answer: 'from',
+    explain: 'borrow from で「〜から借りる」。'
+  },
+  {
+    id: 416, genre: '前置詞', level: '中級',
+    q: 'The conference will continue ___ Friday.',
+    choices: ['until', 'during', 'through', 'between'],
+    answer: 'until',
+    explain: 'until で「〜まで（ずっと）」という継続を表す。'
+  },
+  {
+    id: 417, genre: '前置詞', level: '中級',
+    q: 'He was angry ___ the result.',
+    choices: ['about', 'with', 'for', 'between'],
+    answer: 'about',
+    explain: 'be angry about で「〜について怒っている」（物事に対して）。'
+  },
+  {
+    id: 418, genre: '前置詞', level: '中級',
+    q: 'The store is open ___ 9 a.m. to 6 p.m.',
+    choices: ['since', 'from', 'during', 'until'],
+    answer: 'from',
+    explain: 'from A to B で「A から B まで」という範囲を表す。'
+  },
+  {
+    id: 419, genre: '前置詞', level: '中級',
+    q: 'She divided the cake ___ four people.',
+    choices: ['among', 'between', 'during', 'through'],
+    answer: 'among',
+    explain: '3人以上の間で分けるときは among を使う。'
+  },
+  {
+    id: 420, genre: '前置詞', level: '中級',
+    q: 'The manager spoke ___ confidence.',
+    choices: ['with', 'for', 'during', 'between'],
+    answer: 'with',
+    explain: 'with confidence で「自信を持って」という慣用表現。'
+  },
+  // ===== 前置詞 上級 (id 421-430) =====
+  {
+    id: 421, genre: '前置詞', level: '上級',
+    q: 'The project was completed ___ schedule.',
+    choices: ['in', 'on', 'at', 'during'],
+    answer: 'on',
+    explain: 'on schedule で「予定通りに」という慣用表現。'
+  },
+  {
+    id: 422, genre: '前置詞', level: '上級',
+    q: 'The company suffered losses ___ the recession.',
+    choices: ['because', 'because of', 'despite', 'although'],
+    answer: 'because of',
+    explain: '名詞（the recession）の前に置く原因表現は because of。'
+  },
+  {
+    id: 423, genre: '前置詞', level: '上級',
+    q: 'He insisted ___ paying the bill.',
+    choices: ['to', 'on', 'for', 'with'],
+    answer: 'on',
+    explain: 'insist on で「〜を主張する・強く求める」。'
+  },
+  {
+    id: 424, genre: '前置詞', level: '上級',
+    q: 'The negotiations continued ___ the night.',
+    choices: ['through', 'between', 'since', 'among'],
+    answer: 'through',
+    explain: 'through the night で「夜通し」という表現。'
+  },
+  {
+    id: 425, genre: '前置詞', level: '上級',
+    q: 'She is familiar ___ the new system.',
+    choices: ['to', 'with', 'for', 'about'],
+    answer: 'with',
+    explain: 'be familiar with で「〜をよく知っている・精通している」。'
+  },
+  {
+    id: 426, genre: '前置詞', level: '上級',
+    q: 'The report was submitted ___ behalf of the team.',
+    choices: ['on', 'in', 'at', 'through'],
+    answer: 'on',
+    explain: 'on behalf of で「〜を代表して・〜のために」。'
+  },
+  {
+    id: 427, genre: '前置詞', level: '上級',
+    q: 'The CEO arrived ___ a limousine.',
+    choices: ['by', 'with', 'in', 'on'],
+    answer: 'in',
+    explain: '乗用車・タクシーなど囲まれた乗り物の中にいる場合は in を使う。'
+  },
+  {
+    id: 428, genre: '前置詞', level: '上級',
+    q: 'The employees were divided ___ two groups.',
+    choices: ['among', 'between', 'through', 'during'],
+    answer: 'between',
+    explain: '2グループに分けるので between を使う。'
+  },
+  {
+    id: 429, genre: '前置詞', level: '上級',
+    q: 'The policy is effective ___ next month.',
+    choices: ['from', 'since', 'during', 'between'],
+    answer: 'from',
+    explain: 'from next month で「来月から（有効）」という表現。'
+  },
+  {
+    id: 430, genre: '前置詞', level: '上級',
+    q: 'The company is known ___ its excellent service.',
+    choices: ['about', 'for', 'with', 'between'],
+    answer: 'for',
+    explain: 'be known for で「〜で知られている」。'
   }
 ];
 
