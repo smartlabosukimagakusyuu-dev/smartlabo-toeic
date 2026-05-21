@@ -717,6 +717,61 @@
   .btn-today { background: linear-gradient(135deg, #10B981 0%, #047857 100%); color: #fff; border: none; border-radius: var(--radius-sm); padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(16,185,129,.35); transition: transform .1s, box-shadow .1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-today:active { transform: scale(.97); box-shadow: none; }
 
+  /* ===== BOTTOM NAV (improved for mobile) ===== */
+  .bottom-nav { padding-bottom: env(safe-area-inset-bottom, 0); }
+  .nav-btn { padding: 10px 4px 12px; font-size: 11px; min-height: 60px; }
+  .nav-btn .nav-icon { font-size: 22px; }
+  .nav-btn.active .nav-icon { transform: scale(1.1); }
+  .nav-btn:active { opacity: .7; }
+
+  /* ===== GRAMMAR CARD PRACTICE BUTTON ===== */
+  .grammar-card-practice {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 16px 16px;
+    padding: 10px;
+    background: rgba(255,255,255,.18);
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,.45);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: center;
+    transition: background .15s, transform .1s;
+    letter-spacing: .3px;
+  }
+  .grammar-card-practice:active { transform: scale(.97); background: rgba(255,255,255,.3); }
+  .grammar-card-practice.disabled { opacity: .45; cursor: not-allowed; }
+
+  /* ===== FEEDBACK SECTIONS ===== */
+  .fb-section { margin-top: 8px; }
+  .fb-section-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--gray);
+    margin-bottom: 3px;
+  }
+  .fb-reason { font-size: 13px; color: #374151; line-height: 1.65; background: rgba(255,255,255,.75); border-radius: 8px; padding: 8px 12px; }
+  .fb-tip { font-size: 13px; font-weight: 700; color: #92400E; background: var(--gold-light); border-radius: 8px; padding: 8px 12px; line-height: 1.5; }
+  .fb-wrong-added { font-size: 12px; font-weight: 700; color: #B91C1C; background: #FEF2F2; border-radius: 8px; padding: 6px 12px; margin-top: 6px; display: inline-block; }
+  .fb-correct-removed { font-size: 12px; font-weight: 700; color: #047857; background: #ECFDF5; border-radius: 8px; padding: 6px 12px; margin-top: 6px; display: inline-block; }
+
+  /* ===== RESULT SCREEN (enhanced) ===== */
+  .result-hero { background: linear-gradient(160deg, #1E3A8A 0%, #3B82F6 60%, #06B6D4 100%); padding: 36px 24px 28px; text-align: center; color: #fff; }
+  .result-emoji { font-size: 64px; margin-bottom: 10px; animation: splashPop .5s cubic-bezier(.34,1.56,.64,1); }
+  .result-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .result-score { font-size: 52px; font-weight: 900; line-height: 1; }
+  .result-score span { font-size: 22px; opacity: .75; }
+  .result-msg { font-size: 15px; opacity: .85; margin-top: 6px; }
+  .result-exp-badge { background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.5); color: #fff; font-size: 13px; font-weight: 800; padding: 4px 14px; border-radius: 20px; }
+  .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 16px 0; }
+  .result-stat { background: var(--white); border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow); }
+  .result-stat-val { font-size: 26px; font-weight: 800; color: var(--navy); }
+  .result-stat-label { font-size: 11px; color: var(--gray); margin-top: 3px; }
+
   /* ===== WEAK REVIEW BUTTON ===== */
   .btn-weak { background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(239,68,68,.3); transition: transform .1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-weak:active { transform: scale(.97); }
@@ -877,15 +932,15 @@
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
-        <span class="tab-count" id="tab-count-初級">12問</span>
+        <span class="tab-count" id="tab-count-初級">195問</span>
       </button>
       <button class="level-tab" data-level="中級" onclick="selectLevelTab('中級')">
         <span class="tab-icon">📚</span>中級
-        <span class="tab-count" id="tab-count-中級">12問</span>
+        <span class="tab-count" id="tab-count-中級">194問</span>
       </button>
       <button class="level-tab" data-level="上級" onclick="selectLevelTab('上級')">
         <span class="tab-icon">🎯</span>上級
-        <span class="tab-count" id="tab-count-上級">6問</span>
+        <span class="tab-count" id="tab-count-上級">126問</span>
       </button>
     </div>
 
@@ -946,6 +1001,7 @@
       <div class="result-title" id="result-title">お疲れさまでした！</div>
       <div class="result-score" id="result-score">8<span> / 10</span></div>
       <div class="result-msg" id="result-msg">よくできました！</div>
+      <div class="result-exp-row" id="result-exp-row" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;"></div>
     </div>
 
     <div class="result-stats">
@@ -967,9 +1023,11 @@
       </div>
     </div>
 
+    <div id="result-weak-notice" style="display:none;margin:0 16px;background:#FEF2F2;border:1.5px solid #EF4444;border-radius:12px;padding:12px 16px;font-size:13px;color:#B91C1C;font-weight:600;"></div>
+
     <div class="home-btns">
-      <button class="btn-primary" onclick="startNormal()">⚡ もう一度やる</button>
-      <button class="btn-review" id="btn-result-review" onclick="startReview()">🔄 間違えた問題を復習</button>
+      <button class="btn-primary" id="btn-result-retry" onclick="retryQuiz()">⚡ もう一度やる</button>
+      <button class="btn-weak" id="btn-result-review" onclick="startReview()" style="display:none">❌ 苦手復習（<span id="result-wrong-count">0</span>問）</button>
       <button class="btn-secondary" onclick="showScreen('screen-home')">🏠 ホームへ戻る</button>
     </div>
   </div>
@@ -4799,6 +4857,7 @@ const GENRE_COLORS = {
 let state = {
   mode: 'normal', // 'normal' | 'review' | 'genre' | 'today'
   selectedLevel: 'all', // 'all' | '初級' | '中級' | '上級'
+  selectedGenre: null,  // genre name when mode === 'genre'
   questions: [],
   current: 0,
   correct: 0,
@@ -4969,6 +5028,14 @@ function startNormal() {
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
+}
+
+// ===== RETRY same mode =====
+function retryQuiz() {
+  if (state.mode === 'genre' && state.selectedGenre) startGenreQuiz(state.selectedGenre);
+  else if (state.mode === 'review') startReview();
+  else if (state.mode === 'today') startTodayQuiz();
+  else startNormal();
 }
 
 // ===== TODAY'S QUIZ (10 random from all genres) =====
@@ -5160,19 +5227,41 @@ function showFeedback(chosen, q, elapsed, expGain) {
   document.getElementById('feedback-answer').innerHTML =
     timeBadgeHTML + `正解：<strong>${q.answer}</strong>`;
 
-  // Explain
+  // Explain — structured sections
   const explainEl = document.getElementById('feedback-explain-text');
   explainEl.innerHTML = '';
+
+  // 解説 section
   const reasonDiv = document.createElement('div');
-  reasonDiv.style.cssText = 'font-size:13px;color:#374151;line-height:1.6;';
-  reasonDiv.textContent = q.explain;
+  reasonDiv.className = 'fb-section';
+  reasonDiv.innerHTML = `<div class="fb-section-label">📖 解説</div><div class="fb-reason">${q.explain}</div>`;
   explainEl.appendChild(reasonDiv);
+
+  // コツ section (from q.tip if available, otherwise genre hint)
+  if (q.tip) {
+    const tipDiv = document.createElement('div');
+    tipDiv.className = 'fb-section';
+    tipDiv.innerHTML = `<div class="fb-section-label">💡 コツ</div><div class="fb-tip">${q.tip}</div>`;
+    explainEl.appendChild(tipDiv);
+  }
+
+  // Wrong/correct list notice
+  if (!isCorrect && !isTimeUp) {
+    const wrongNote = document.createElement('div');
+    wrongNote.className = 'fb-wrong-added';
+    wrongNote.textContent = '📌 復習リストに追加しました';
+    explainEl.appendChild(wrongNote);
+  } else if (isCorrect) {
+    const d = getData();
+    const wasWrong = (d.wrongIds || []).includes(q.id);
+    // Note: saveAnswer already removed it, so check before it was removed
+  }
 
   // EXP gain row
   if (expGain > 0) {
     const expRow = document.createElement('div');
     expRow.className = 'exp-gain-row';
-    let badges = `<span class="exp-badge">+${expGain} EXP</span>`;
+    let badges = `<span class="exp-badge">⚡ 秒速正解！ +${expGain} EXP</span>`;
     if (state.sessionStreak >= 2) badges += `<span class="streak-badge">🔥 ${state.sessionStreak}連続正解</span>`;
     if (state.sessionStreak === 5) badges += `<span class="bonus-badge">🌟 5連続ボーナス！</span>`;
     expRow.innerHTML = badges;
@@ -5295,37 +5384,72 @@ function finishQuiz() {
 
 // ===== RESULT RENDER =====
 function renderResult() {
-  const correct = state.correct;
+  const d = getData();
   const total = state.questions.length;
-  const pct = Math.round(correct / total * 100);
+  const correct = state.correct;
+  const wrong = total - correct;
+  const acc = total > 0 ? Math.round(correct / total * 100) : 0;
 
-  let emoji = '😊', msg = 'よく頑張りました！';
-  if (pct === 100) { emoji = '🎉'; msg = 'パーフェクト！素晴らしい！'; }
-  else if (pct >= 80) { emoji = '😄'; msg = 'すごい！高正解率です！'; }
-  else if (pct >= 60) { emoji = '👍'; msg = 'なかなかいい感じです！'; }
-  else if (pct >= 40) { emoji = '😤'; msg = '復習でさらに伸びます！'; }
-  else { emoji = '📚'; msg = '丁寧に復習しましょう！'; }
+  const msgs = [
+    [100, '🏆 完璧！満点達成！'],
+    [80,  '🎉 素晴らしい！'],
+    [60,  '👍 よくできました！'],
+    [40,  '📚 もう少し練習しよう！'],
+    [0,   '💪 次は頑張ろう！']
+  ];
+  const msg = msgs.find(([min]) => acc >= min)[1];
+  const emojis = [[100,'🏆'],[80,'🎉'],[60,'😊'],[40,'😅'],[0,'💪']];
+  const emoji = emojis.find(([min]) => acc >= min)[1];
 
   document.getElementById('result-emoji').textContent = emoji;
-  document.getElementById('result-title').textContent = state.mode === 'review' ? '復習完了！' : 'お疲れさまでした！';
+  document.getElementById('result-title').textContent = 'セッション完了！';
   document.getElementById('result-score').innerHTML = `${correct}<span> / ${total}</span>`;
   document.getElementById('result-msg').textContent = msg;
   document.getElementById('result-correct').textContent = correct;
-  document.getElementById('result-acc').textContent = pct + '%';
-
-  const d = getData();
+  document.getElementById('result-acc').textContent = acc + '%';
   document.getElementById('result-total-correct').textContent = d.totalCorrect || 0;
   const totalAcc = d.totalAnswered > 0 ? Math.round(d.totalCorrect / d.totalAnswered * 100) + '%' : '—';
   document.getElementById('result-total-acc').textContent = totalAcc;
 
-  // Review button
-  const d2 = getData();
-  const btn = document.getElementById('btn-result-review');
-  if (d2.wrongIds && d2.wrongIds.length > 0) {
-    btn.style.display = '';
-    btn.textContent = `🔄 間違えた問題を復習（${d2.wrongIds.length}問）`;
+  // EXP row
+  const expRowEl = document.getElementById('result-exp-row');
+  expRowEl.innerHTML = '';
+  const sessionExp = correct * 10 + (state.sessionStreak >= 2 ? (correct - 1) * 5 : 0);
+  if (sessionExp > 0) {
+    expRowEl.innerHTML = `<span class="result-exp-badge">⭐ 今回獲得 ${d.exp || 0} EXP</span>`;
+  }
+  if (acc === 100) expRowEl.innerHTML += `<span class="result-exp-badge">🏆 満点ボーナス！</span>`;
+
+  // Wrong notice
+  const weakNotice = document.getElementById('result-weak-notice');
+  if (wrong > 0) {
+    weakNotice.style.display = 'block';
+    weakNotice.textContent = `📌 ${wrong}問を復習リストに追加しました`;
   } else {
-    btn.style.display = 'none';
+    weakNotice.style.display = 'none';
+  }
+
+  // Review & retry buttons
+  const reviewBtn = document.getElementById('btn-result-review');
+  const wrongCount = (d.wrongIds || []).length;
+  if (wrongCount > 0) {
+    reviewBtn.style.display = '';
+    document.getElementById('result-wrong-count').textContent = wrongCount;
+  } else {
+    reviewBtn.style.display = 'none';
+  }
+
+  // Retry button — same mode
+  const retryBtn = document.getElementById('btn-result-retry');
+  if (state.mode === 'genre' && state.selectedGenre) {
+    retryBtn.textContent = `⚡ ${state.selectedGenre}をもう一度`;
+    retryBtn.onclick = () => startGenreQuiz(state.selectedGenre);
+  } else if (state.mode === 'review') {
+    retryBtn.textContent = '🔄 苦手復習をやり直す';
+    retryBtn.onclick = startReview;
+  } else {
+    retryBtn.textContent = '⚡ もう一度やる';
+    retryBtn.onclick = startNormal;
   }
 }
 
@@ -6018,6 +6142,7 @@ function renderGrammarList() {
     card.className = 'grammar-card';
     card.onclick = () => showGrammarDetail(cat.id);
 
+    const qCount = hasQuestions ? QUESTIONS.filter(q=>q.genre===cat.genre).length : 0;
     card.innerHTML = `
       <div class="grammar-card-header" style="background:${cat.bg}">
         <div class="grammar-card-icon">${cat.icon}</div>
@@ -6027,13 +6152,18 @@ function renderGrammarList() {
       <div class="grammar-card-body">
         <div class="grammar-card-short">${cat.short}</div>
         <div class="grammar-card-meta">
-          <span class="grammar-card-qcount">${hasQuestions ? QUESTIONS.filter(q=>q.genre===cat.genre).length+'問' : '0問'}</span>
-          ${acc !== null ? `<span class="grammar-card-acc" style="background:${cat.accentColor}20;color:${cat.accentColor}">正答率 ${acc}%</span>` : `<span class="grammar-card-acc">未挑戦</span>`}
+          <span class="grammar-card-qcount">${qCount}問</span>
+          ${acc !== null
+            ? `<span class="grammar-card-acc" style="background:${cat.accentColor}20;color:${cat.accentColor}">正答率 ${acc}%　${stats.correct}問クリア</span>`
+            : `<span class="grammar-card-acc">未挑戦</span>`}
         </div>
         <div class="grammar-card-progress">
           <div class="grammar-card-progress-fill" style="width:${mastery}%;background:${cat.accentColor}"></div>
         </div>
       </div>
+      ${hasQuestions
+        ? `<button class="grammar-card-practice" onclick="event.stopPropagation();startGenreQuiz('${cat.genre}')">⚡ この文法を練習する（${qCount}問）</button>`
+        : `<button class="grammar-card-practice disabled" disabled>🔜 準備中</button>`}
     `;
     grid.appendChild(card);
   });
@@ -6104,14 +6234,14 @@ function showGrammarDetail(categoryId) {
   showScreen('screen-grammar-detail');
 }
 
-// ===== START FROM CATEGORY =====
-function startFromCategory() {
-  if (!currentDetailCategory || !currentDetailCategory.genre) return;
-  const genre = currentDetailCategory.genre;
+// ===== START GENRE QUIZ (from card or detail) =====
+function startGenreQuiz(genre) {
+  if (!genre) return;
   const pool = QUESTIONS.filter(q => q.genre === genre);
   if (pool.length === 0) { showToast('この文法の問題は準備中です'); return; }
   const shuffled = [...pool].sort(() => Math.random() - .5);
   state.mode = 'genre';
+  state.selectedGenre = genre;
   state.questions = shuffled.slice(0, Math.min(pool.length, 15));
   state.current = 0;
   state.correct = 0;
@@ -6120,6 +6250,12 @@ function startFromCategory() {
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
+}
+
+// ===== START FROM CATEGORY (detail page button) =====
+function startFromCategory() {
+  if (!currentDetailCategory || !currentDetailCategory.genre) return;
+  startGenreQuiz(currentDetailCategory.genre);
 }
 
 // ===== INIT =====
