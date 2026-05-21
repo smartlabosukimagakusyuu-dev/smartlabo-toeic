@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">350問</span>
+        <span class="tab-count" id="tab-count-all">390問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -3368,6 +3368,289 @@ const QUESTIONS = [
     choices: ['leave', 'to leave', 'leaving', 'left'],
     answer: 'leave',
     explain: '知覚動詞 see の受動態では原形不定詞（動詞の原形）を使う。'
+  },
+  // ===== 仮定法 初級 (id 351-365) =====
+  {
+    id: 351, genre: '時制', level: '初級',
+    q: 'If I ___ rich, I would travel the world.',
+    choices: ['am', 'was', 'were', 'will be'],
+    answer: 'were',
+    explain: '仮定法過去では be動詞は主語に関わらず were を使う。'
+  },
+  {
+    id: 352, genre: '時制', level: '初級',
+    q: 'If she studied harder, she ___ better grades.',
+    choices: ['gets', 'got', 'would get', 'will get'],
+    answer: 'would get',
+    explain: '仮定法過去の帰結節は would + 動詞原形。'
+  },
+  {
+    id: 353, genre: '時制', level: '初級',
+    q: 'If I had time, I ___ help you.',
+    choices: ['can', 'could', 'will', 'am'],
+    answer: 'could',
+    explain: '仮定法の帰結節では could（can の過去形）も使える。'
+  },
+  {
+    id: 354, genre: '時制', level: '初級',
+    q: 'If he were taller, he ___ a basketball player.',
+    choices: ['becomes', 'became', 'would become', 'will become'],
+    answer: 'would become',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 355, genre: '時制', level: '初級',
+    q: 'If I ___ you, I would apologize.',
+    choices: ['am', 'was', 'were', 'be'],
+    answer: 'were',
+    explain: '"If I were you" は「もし私があなたなら」という定番の仮定法表現。'
+  },
+  {
+    id: 356, genre: '時制', level: '初級',
+    q: 'If she had a car, she ___ to work.',
+    choices: ['drives', 'drove', 'would drive', 'will drive'],
+    answer: 'would drive',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 357, genre: '時制', level: '初級',
+    q: 'If we lived near the beach, we ___ swimming every day.',
+    choices: ['go', 'went', 'would go', 'will go'],
+    answer: 'would go',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 358, genre: '時制', level: '初級',
+    q: 'If I knew her phone number, I ___ her.',
+    choices: ['call', 'called', 'would call', 'will call'],
+    answer: 'would call',
+    explain: '仮定法過去。現実には番号を知らないという含意。'
+  },
+  {
+    id: 359, genre: '時制', level: '初級',
+    q: 'If it were sunny, we ___ outside.',
+    choices: ['play', 'played', 'would play', 'will play'],
+    answer: 'would play',
+    explain: '仮定法過去の基本形。if 節は過去形、帰結節は would + 原形。'
+  },
+  {
+    id: 360, genre: '時制', level: '初級',
+    q: 'If he spoke English well, he ___ abroad.',
+    choices: ['works', 'worked', 'would work', 'will work'],
+    answer: 'would work',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 361, genre: '時制', level: '初級',
+    q: 'If I had enough money, I ___ a new computer.',
+    choices: ['buy', 'bought', 'would buy', 'will buy'],
+    answer: 'would buy',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 362, genre: '時制', level: '初級',
+    q: 'If she were here, she ___ happy.',
+    choices: ['is', 'was', 'would be', 'will be'],
+    answer: 'would be',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 363, genre: '時制', level: '初級',
+    q: 'If they practiced more, they ___ better.',
+    choices: ['play', 'played', 'would play', 'will play'],
+    answer: 'would play',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 364, genre: '時制', level: '初級',
+    q: 'If I were younger, I ___ that job.',
+    choices: ['take', 'took', 'would take', 'will take'],
+    answer: 'would take',
+    explain: '仮定法過去。現実には若くないという含意。'
+  },
+  {
+    id: 365, genre: '時制', level: '初級',
+    q: 'If he had more free time, he ___ more books.',
+    choices: ['reads', 'read', 'would read', 'will read'],
+    answer: 'would read',
+    explain: '仮定法過去。帰結節は would + 動詞原形。'
+  },
+  // ===== 仮定法 中級 (id 366-380) =====
+  {
+    id: 366, genre: '時制', level: '中級',
+    q: 'If I ___ earlier, I would not be late now.',
+    choices: ['leave', 'left', 'had left', 'have left'],
+    answer: 'had left',
+    explain: '過去の事実に反する仮定法過去完了。if 節は had + 過去分詞。'
+  },
+  {
+    id: 367, genre: '時制', level: '中級',
+    q: 'If she had studied harder, she ___ the test.',
+    choices: ['passes', 'passed', 'would have passed', 'will pass'],
+    answer: 'would have passed',
+    explain: '仮定法過去完了。帰結節は would have + 過去分詞。'
+  },
+  {
+    id: 368, genre: '時制', level: '中級',
+    q: 'If they had left earlier, they ___ the train.',
+    choices: ['catch', 'caught', 'would have caught', 'will catch'],
+    answer: 'would have caught',
+    explain: '過去の反実仮想。would have + 過去分詞。'
+  },
+  {
+    id: 369, genre: '時制', level: '中級',
+    q: 'If I had known the truth, I ___ differently.',
+    choices: ['act', 'acted', 'would have acted', 'will act'],
+    answer: 'would have acted',
+    explain: '仮定法過去完了。帰結節は would have + 過去分詞。'
+  },
+  {
+    id: 370, genre: '時制', level: '中級',
+    q: 'If he had called me, I ___ him.',
+    choices: ['help', 'helped', 'would have helped', 'will help'],
+    answer: 'would have helped',
+    explain: '仮定法過去完了。would have + 過去分詞。'
+  },
+  {
+    id: 371, genre: '時制', level: '中級',
+    q: 'If I were you, I ___ that offer.',
+    choices: ['accept', 'accepted', 'would accept', 'will accept'],
+    answer: 'would accept',
+    explain: '"If I were you" の定番表現。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 372, genre: '時制', level: '中級',
+    q: 'If she had more experience, she ___ the job.',
+    choices: ['gets', 'got', 'would get', 'will get'],
+    answer: 'would get',
+    explain: '現在の仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 373, genre: '時制', level: '中級',
+    q: 'If we had booked earlier, we ___ cheaper tickets.',
+    choices: ['find', 'found', 'would have found', 'will find'],
+    answer: 'would have found',
+    explain: '過去完了仮定法。would have + 過去分詞。'
+  },
+  {
+    id: 374, genre: '時制', level: '中級',
+    q: 'If I spoke French, I ___ in Paris.',
+    choices: ['work', 'worked', 'would work', 'will work'],
+    answer: 'would work',
+    explain: '現在の仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 375, genre: '時制', level: '中級',
+    q: 'If he had listened to me, he ___ in trouble now.',
+    choices: ["isn't", "wasn't", "wouldn't be", "won't be"],
+    answer: "wouldn't be",
+    explain: '混合仮定法。if 節は過去完了、帰結節は現在のことを表す would。'
+  },
+  {
+    id: 376, genre: '時制', level: '中級',
+    q: 'If the weather had been better, we ___ camping.',
+    choices: ['go', 'went', 'would have gone', 'will go'],
+    answer: 'would have gone',
+    explain: '過去の仮定法過去完了。would have + 過去分詞。'
+  },
+  {
+    id: 377, genre: '時制', level: '中級',
+    q: 'If she were more confident, she ___ better presentations.',
+    choices: ['gives', 'gave', 'would give', 'will give'],
+    answer: 'would give',
+    explain: '現在の仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 378, genre: '時制', level: '中級',
+    q: 'If I had seen him, I ___ hello.',
+    choices: ['say', 'said', 'would have said', 'will say'],
+    answer: 'would have said',
+    explain: '過去の仮定法過去完了。would have + 過去分詞。'
+  },
+  {
+    id: 379, genre: '時制', level: '中級',
+    q: 'If they had enough staff, they ___ the project faster.',
+    choices: ['finish', 'finished', 'would finish', 'will finish'],
+    answer: 'would finish',
+    explain: '現在の仮定法過去。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 380, genre: '時制', level: '中級',
+    q: 'If I were better at math, I ___ an engineer.',
+    choices: ['become', 'became', 'would become', 'will become'],
+    answer: 'would become',
+    explain: '現在の仮定法過去。帰結節は would + 動詞原形。'
+  },
+  // ===== 仮定法 上級 (id 381-390) =====
+  {
+    id: 381, genre: '時制', level: '上級',
+    q: 'Had I known about the meeting, I ___ attended it.',
+    choices: ['will have', 'would have', 'had', 'have'],
+    answer: 'would have',
+    explain: '倒置の仮定法。Had I known = If I had known。帰結節は would have + 過去分詞。'
+  },
+  {
+    id: 382, genre: '時制', level: '上級',
+    q: 'Were I rich, I ___ around the world.',
+    choices: ['travel', 'traveled', 'would travel', 'will travel'],
+    answer: 'would travel',
+    explain: 'Were I = If I were の倒置形。帰結節は would + 動詞原形。'
+  },
+  {
+    id: 383, genre: '時制', level: '上級',
+    q: 'If it ___ for your advice, I would have failed.',
+    choices: ["weren't", "hadn't been", "isn't", "won't be"],
+    answer: "hadn't been",
+    explain: '"If it had not been for ..." = 「もし〜がなければ」。過去の仮定法過去完了。'
+  },
+  {
+    id: 384, genre: '時制', level: '上級',
+    q: 'But for your help, I ___ the project.',
+    choices: ["can't finish", "couldn't finish", "couldn't have finished", "won't finish"],
+    answer: "couldn't have finished",
+    explain: '"But for ..." = "If it had not been for ..." で過去の仮定法。could not have + 過去分詞。'
+  },
+  {
+    id: 385, genre: '時制', level: '上級',
+    q: 'If only I ___ more time yesterday.',
+    choices: ['have', 'had', 'had had', 'would have'],
+    answer: 'had had',
+    explain: '"If only + 過去完了" で過去への強い後悔を表す。'
+  },
+  {
+    id: 386, genre: '時制', level: '上級',
+    q: 'I wish I ___ taller.',
+    choices: ['am', 'was', 'were', 'will be'],
+    answer: 'were',
+    explain: '"I wish + 仮定法過去" で現在の事実に反する願望。be動詞は were。'
+  },
+  {
+    id: 387, genre: '時制', level: '上級',
+    q: 'I wish I ___ harder for the exam.',
+    choices: ['study', 'studied', 'had studied', 'would study'],
+    answer: 'had studied',
+    explain: '"I wish + 仮定法過去完了" で過去への後悔を表す。'
+  },
+  {
+    id: 388, genre: '時制', level: '上級',
+    q: 'If he ___ more careful, the accident would not have happened.',
+    choices: ['is', 'was', 'had been', 'were'],
+    answer: 'had been',
+    explain: '過去の事実に反する仮定法過去完了。if 節は had been + 形容詞。'
+  },
+  {
+    id: 389, genre: '時制', level: '上級',
+    q: 'Had she left earlier, she ___ the flight.',
+    choices: ['would catch', 'would have caught', 'caught', 'will catch'],
+    answer: 'would have caught',
+    explain: '倒置の仮定法過去完了。Had she left = If she had left。帰結節は would have + 過去分詞。'
+  },
+  {
+    id: 390, genre: '時制', level: '上級',
+    q: 'Without your support, we ___ successful.',
+    choices: ["aren't", "weren't", "wouldn't be", "won't be"],
+    answer: "wouldn't be",
+    explain: '"Without ..." は仮定法の条件節として機能する。現在の事実への反実仮想。'
   }
 ];
 
