@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">30問</span>
+        <span class="tab-count" id="tab-count-all">70問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -1114,6 +1114,287 @@ const QUESTIONS = [
     choices: ['to', 'for', 'at', 'on'],
     answer: 'to',
     explain: 'look forward to doing = 「〜を楽しみにしている」。to の後は動名詞(hearing)が来る慣用表現。'
+  },
+  // 時制（追加分）
+  {
+    id: 31, genre: '時制', level: '初級',
+    q: 'She _______ in Tokyo since 2020.',
+    choices: ['live', 'lived', 'has lived', 'will live'],
+    answer: 'has lived',
+    explain: 'since 2020 は現在完了形のサイン。has lived が正解。'
+  },
+  {
+    id: 32, genre: '時制', level: '初級',
+    q: 'I _______ TV when he called me.',
+    choices: ['watch', 'was watching', 'watched', 'have watched'],
+    answer: 'was watching',
+    explain: '電話が来た時に進行中だった動作は過去進行形 was watching が正解。'
+  },
+  {
+    id: 33, genre: '時制', level: '初級',
+    q: 'They _______ soccer every Sunday.',
+    choices: ['play', 'played', 'are playing', 'have played'],
+    answer: 'play',
+    explain: 'every Sunday（毎日曜日）は習慣を表し、現在形 play が正解。'
+  },
+  {
+    id: 34, genre: '時制', level: '初級',
+    q: 'He _______ to school yesterday.',
+    choices: ['go', 'goes', 'went', 'gone'],
+    answer: 'went',
+    explain: 'yesterday（昨日）は過去を示す語句。過去形 went が正解。'
+  },
+  {
+    id: 35, genre: '時制', level: '初級',
+    q: 'We _______ dinner now.',
+    choices: ['eat', 'ate', 'are eating', 'have eaten'],
+    answer: 'are eating',
+    explain: 'now（今）は現在進行中の動作を示す。現在進行形 are eating が正解。'
+  },
+  {
+    id: 36, genre: '時制', level: '初級',
+    q: 'I _______ this movie before.',
+    choices: ['see', 'saw', 'have seen', 'seeing'],
+    answer: 'have seen',
+    explain: 'before（以前に）は現在完了と相性が良い。have seen が正解。'
+  },
+  {
+    id: 37, genre: '時制', level: '初級',
+    q: 'She usually _______ coffee in the morning.',
+    choices: ['drink', 'drinks', 'drank', 'drinking'],
+    answer: 'drinks',
+    explain: 'usually（たいてい）は習慣を示し、現在形。主語が she なので drinks が正解。'
+  },
+  {
+    id: 38, genre: '時制', level: '初級',
+    q: 'They _______ for Osaka tomorrow.',
+    choices: ['leave', 'left', 'are leaving', 'have left'],
+    answer: 'are leaving',
+    explain: '確定した近い未来の予定は現在進行形で表せる。are leaving が正解。'
+  },
+  {
+    id: 39, genre: '時制', level: '初級',
+    q: 'He _______ his homework yet.',
+    choices: ["didn't finish", "hasn't finished", "isn't finishing", "won't finish"],
+    answer: "hasn't finished",
+    explain: 'yet（まだ）は現在完了の否定文で使う。hasn\'t finished が正解。'
+  },
+  {
+    id: 40, genre: '時制', level: '初級',
+    q: 'I _______ him two days ago.',
+    choices: ['meet', 'met', 'have met', 'meeting'],
+    answer: 'met',
+    explain: 'two days ago（2日前）は過去を示す語句。過去形 met が正解。'
+  },
+  {
+    id: 41, genre: '時制', level: '初級',
+    q: 'She _______ English for five years.',
+    choices: ['studies', 'studied', 'has studied', 'study'],
+    answer: 'has studied',
+    explain: 'for five years（5年間）は現在完了のサイン。has studied が正解。'
+  },
+  {
+    id: 42, genre: '時制', level: '初級',
+    q: 'The train _______ at 7 every morning.',
+    choices: ['leave', 'leaves', 'left', 'leaving'],
+    answer: 'leaves',
+    explain: '時刻表・ダイヤは変わらない事実なので現在形。主語が The train なので leaves が正解。'
+  },
+  {
+    id: 43, genre: '時制', level: '初級',
+    q: 'When I arrived, they _______ dinner.',
+    choices: ['have', 'had', 'were having', 'having'],
+    answer: 'were having',
+    explain: '私が到着したとき進行中だった動作は過去進行形。were having が正解。'
+  },
+  {
+    id: 44, genre: '時制', level: '初級',
+    q: 'He _______ busy recently.',
+    choices: ['is', 'was', 'has been', 'being'],
+    answer: 'has been',
+    explain: 'recently（最近）は現在完了と相性が良い。has been が正解。'
+  },
+  {
+    id: 45, genre: '時制', level: '初級',
+    q: 'We _______ a meeting next Monday.',
+    choices: ['have', 'had', 'are having', 'have had'],
+    answer: 'are having',
+    explain: '確定した未来の予定は現在進行形で表せる。are having が正解。'
+  },
+  {
+    id: 46, genre: '時制', level: '中級',
+    q: 'By next year, she _______ here for ten years.',
+    choices: ['works', 'worked', 'will have worked', 'has worked'],
+    answer: 'will have worked',
+    explain: 'by next year（来年までに）は未来完了のサイン。will have worked が正解。'
+  },
+  {
+    id: 47, genre: '時制', level: '中級',
+    q: 'I _______ him before the party started.',
+    choices: ['leave', 'had left', 'have left', 'leaving'],
+    answer: 'had left',
+    explain: 'パーティーが始まる（過去）よりさらに前の出来事は過去完了。had left が正解。'
+  },
+  {
+    id: 48, genre: '時制', level: '中級',
+    q: 'She _______ dinner when I got home.',
+    choices: ['cooks', 'cooked', 'was cooking', 'has cooked'],
+    answer: 'was cooking',
+    explain: '帰宅した時点で進行中だった動作は過去進行形。was cooking が正解。'
+  },
+  {
+    id: 49, genre: '時制', level: '中級',
+    q: 'They _______ the project by Friday.',
+    choices: ['finish', 'finished', 'will have finished', 'finishing'],
+    answer: 'will have finished',
+    explain: 'by Friday（金曜日までに）は未来完了のサイン。will have finished が正解。'
+  },
+  {
+    id: 50, genre: '時制', level: '中級',
+    q: 'He _______ in this company since 2015.',
+    choices: ['works', 'worked', 'has worked', 'working'],
+    answer: 'has worked',
+    explain: 'since 2015（2015年から）は現在完了のサイン。has worked が正解。'
+  },
+  {
+    id: 51, genre: '時制', level: '中級',
+    q: 'I _______ my keys, so I can\'t open the door.',
+    choices: ['lose', 'lost', 'have lost', 'losing'],
+    answer: 'have lost',
+    explain: '現在も影響が続いている（今も鍵がない）ので現在完了。have lost が正解。'
+  },
+  {
+    id: 52, genre: '時制', level: '中級',
+    q: 'At this time tomorrow, we _______ on the beach.',
+    choices: ['relax', 'relaxed', 'will be relaxing', 'have relaxed'],
+    answer: 'will be relaxing',
+    explain: '明日のある時点に進行中の動作は未来進行形。will be relaxing が正解。'
+  },
+  {
+    id: 53, genre: '時制', level: '中級',
+    q: 'She _______ her report before the meeting yesterday.',
+    choices: ['finishes', 'finished', 'had finished', 'has finished'],
+    answer: 'had finished',
+    explain: '会議（過去）よりさらに前に完了していた動作は過去完了。had finished が正解。'
+  },
+  {
+    id: 54, genre: '時制', level: '中級',
+    q: 'I _______ him for a long time before we met again.',
+    choices: ["didn't see", "haven't seen", "hadn't seen", "don't see"],
+    answer: "hadn't seen",
+    explain: '再会（過去）よりさらに前の継続は過去完了。hadn\'t seen が正解。'
+  },
+  {
+    id: 55, genre: '時制', level: '中級',
+    q: 'They _______ lunch when the fire alarm rang.',
+    choices: ['had', 'have', 'were having', 'having'],
+    answer: 'were having',
+    explain: '火災警報が鳴った時点で進行中だった動作は過去進行形。were having が正解。'
+  },
+  {
+    id: 56, genre: '時制', level: '中級',
+    q: 'The store _______ by the time we arrived.',
+    choices: ['closes', 'closed', 'had closed', 'has closed'],
+    answer: 'had closed',
+    explain: '到着（過去）より前に閉店していたので過去完了。had closed が正解。'
+  },
+  {
+    id: 57, genre: '時制', level: '中級',
+    q: 'I think it _______ tomorrow.',
+    choices: ['rains', 'rained', 'will rain', 'has rained'],
+    answer: 'will rain',
+    explain: 'tomorrow（明日）は未来を示す語句。will rain が正解。'
+  },
+  {
+    id: 58, genre: '時制', level: '中級',
+    q: 'She _______ all day, so she was tired.',
+    choices: ['works', 'worked', 'had been working', 'has worked'],
+    answer: 'had been working',
+    explain: '過去の時点まで継続していた動作を強調するのは過去完了進行形。had been working が正解。'
+  },
+  {
+    id: 59, genre: '時制', level: '中級',
+    q: 'By noon, we _______ three meetings.',
+    choices: ['have', 'had', 'will have had', 'having'],
+    answer: 'will have had',
+    explain: '未来のある時点（正午）までに完了する動作は未来完了。will have had が正解。'
+  },
+  {
+    id: 60, genre: '時制', level: '中級',
+    q: 'He _______ asleep when I entered the room.',
+    choices: ['falls', 'fell', 'was falling', 'had fallen'],
+    answer: 'had fallen',
+    explain: '私が部屋に入る（過去）より前に眠りについていたので過去完了。had fallen が正解。'
+  },
+  {
+    id: 61, genre: '時制', level: '上級',
+    q: 'If she _______ earlier, she would have caught the train.',
+    choices: ['left', 'had left', 'has left', 'leaves'],
+    answer: 'had left',
+    explain: '過去の事実に反する仮定は仮定法過去完了。If + had + 過去分詞で had left が正解。'
+  },
+  {
+    id: 62, genre: '時制', level: '上級',
+    q: 'Hardly _______ the station when it started raining.',
+    choices: ['I reached', 'had I reached', 'have I reached', 'I had reached'],
+    answer: 'had I reached',
+    explain: 'Hardly が文頭に来ると助動詞+主語の倒置が起きる。had I reached が正解。'
+  },
+  {
+    id: 63, genre: '時制', level: '上級',
+    q: 'No sooner _______ dinner than the phone rang.',
+    choices: ['we finished', 'had we finished', 'have we finished', 'we had finished'],
+    answer: 'had we finished',
+    explain: 'No sooner が文頭に来ると倒置が起きる。No sooner had S + 過去分詞 than... が正解。'
+  },
+  {
+    id: 64, genre: '時制', level: '上級',
+    q: 'By the end of this month, I _______ here for exactly ten years.',
+    choices: ['work', 'worked', 'will have worked', 'have worked'],
+    answer: 'will have worked',
+    explain: 'by the end of this month（今月末までに）は未来完了のサイン。will have worked が正解。'
+  },
+  {
+    id: 65, genre: '時制', level: '上級',
+    q: 'Scarcely _______ the speech when the audience applauded.',
+    choices: ['he finished', 'had he finished', 'he had finished', 'has he finished'],
+    answer: 'had he finished',
+    explain: 'Scarcely が文頭に来ると倒置が起きる。had he finished が正解。'
+  },
+  {
+    id: 66, genre: '時制', level: '上級',
+    q: 'She looked as if she _______ a ghost.',
+    choices: ['sees', 'saw', 'had seen', 'has seen'],
+    answer: 'had seen',
+    explain: 'as if の後の仮定表現で、主節より前の出来事を表すので過去完了 had seen が正解。'
+  },
+  {
+    id: 67, genre: '時制', level: '上級',
+    q: 'Until yesterday, I _______ such a beautiful place.',
+    choices: ['never saw', 'had never seen', 'have never seen', 'never see'],
+    answer: 'had never seen',
+    explain: '昨日（過去の時点）を基準にそれ以前のことを表すので過去完了 had never seen が正解。'
+  },
+  {
+    id: 68, genre: '時制', level: '上級',
+    q: 'When you arrive tonight, we _______ for two hours.',
+    choices: ['study', 'studied', 'will have been studying', 'have studied'],
+    answer: 'will have been studying',
+    explain: '未来のある時点まで継続している動作は未来完了進行形。will have been studying が正解。'
+  },
+  {
+    id: 69, genre: '時制', level: '上級',
+    q: 'Had I known the truth, I _______ differently.',
+    choices: ['act', 'acted', 'would have acted', 'will act'],
+    answer: 'would have acted',
+    explain: 'Had I known... は If I had known... の倒置形（仮定法過去完了）。would have acted が正解。'
+  },
+  {
+    id: 70, genre: '時制', level: '上級',
+    q: 'Rarely _______ such an impressive performance.',
+    choices: ['I have seen', 'have I seen', 'I saw', 'did I saw'],
+    answer: 'have I seen',
+    explain: 'Rarely が文頭に来ると助動詞+主語の倒置が起きる。have I seen が正解。'
   }
 ];
 
