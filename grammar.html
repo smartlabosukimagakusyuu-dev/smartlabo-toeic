@@ -795,6 +795,104 @@
     line-height: 1.5;
   }
 
+  /* ===== RULE CARD CHECK ===== */
+  .rule-card { position: relative; }
+  .rule-check-btn {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    background: #F9FAFB;
+    font-size: 14px; font-weight: 800;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s cubic-bezier(.34,1.56,.64,1);
+    -webkit-tap-highlight-color: transparent;
+    z-index: 1;
+    color: transparent;
+    line-height: 1;
+  }
+  .rule-check-btn:active { transform: scale(.85); }
+  .rule-check-btn.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    box-shadow: 0 2px 8px rgba(16,185,129,.4);
+  }
+  .rule-card.checked { opacity: .55; background: #FAFAFA; }
+  .rule-card.checked .rule-title { text-decoration: line-through; color: var(--gray); }
+
+  /* ===== POINTS TOC ===== */
+  .points-toc-wrap {
+    margin: 0 16px 8px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .points-toc-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 14px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .points-toc-head:active { background: #F9FAFB; }
+  .points-toc-head-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--navy); }
+  .points-progress-badge {
+    font-size: 11px; font-weight: 700;
+    padding: 2px 9px; border-radius: 20px;
+  }
+  .points-toc-body { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+  .points-toc-body.open { max-height: 1200px; }
+  .points-toc-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px;
+    border-top: 1px solid #F3F4F6;
+    cursor: pointer;
+    transition: background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .points-toc-row:active { background: #EFF6FF; }
+  .points-toc-row.checked { background: #F9FAF9; }
+  .points-toc-check-dot {
+    width: 20px; height: 20px; flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; color: transparent;
+    transition: all .2s;
+  }
+  .points-toc-check-dot.done { background: var(--green); border-color: var(--green); color: white; }
+  .points-toc-num { font-size: 10px; font-weight: 800; color: #D1D5DB; min-width: 18px; }
+  .points-toc-title { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; line-height: 1.4; }
+  .points-toc-row.checked .points-toc-title { color: var(--gray); text-decoration: line-through; }
+
+  /* ===== POINTS FILTER TABS ===== */
+  .points-filter-row {
+    display: flex; gap: 6px;
+    margin: 0 16px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .points-filter-row::-webkit-scrollbar { display: none; }
+  .points-filter-tab {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #E5E7EB;
+    background: var(--white);
+    font-size: 12px; font-weight: 700;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .points-filter-tab:active { transform: scale(.93); }
+  .points-filter-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
+
   .btn-practice {
     background: white;
     border: none;
@@ -1362,7 +1460,10 @@
         <div class="detail-stat-label">クリア数</div>
       </div>
     </div>
-    <div class="section-title">文法ポイント</div>
+    <!-- Points TOC (collapsible) -->
+    <div id="points-toc-wrap" class="points-toc-wrap"></div>
+    <!-- Filter tabs -->
+    <div class="points-filter-row" id="points-filter-row"></div>
     <div id="detail-rules"></div>
     <button class="btn-practice" id="btn-practice" onclick="startFromCategory()">
       ⚡ この文法を練習する
@@ -5096,7 +5197,8 @@ const STORE = {
       todayCount: 0,
       todayDate: null,
       exp: 0,             // experience points
-      dailyHistory: {}    // { 'YYYY-MM-DD': { answered, correct } }
+      dailyHistory: {},   // { 'YYYY-MM-DD': { answered, correct } }
+      checkedPoints: {}   // { 'tense': [0, 2], 'pos': [...] } — checked rule indices
     };
   },
   get() {
@@ -6351,6 +6453,151 @@ const GRAMMAR_CATEGORIES = [
 ];
 
 let currentDetailCategory = null;
+let currentDetailFilter = 'all'; // 'all' | 'unchecked' | 'checked'
+let pointsTocOpen = false;
+
+// ===== CHECKED POINTS HELPERS =====
+function getCheckedSet(catId) {
+  const d = getData();
+  return new Set((d.checkedPoints || {})[catId] || []);
+}
+
+function togglePointCheck(catId, idx) {
+  const d = getData();
+  if (!d.checkedPoints) d.checkedPoints = {};
+  if (!d.checkedPoints[catId]) d.checkedPoints[catId] = [];
+  const arr = d.checkedPoints[catId];
+  const pos = arr.indexOf(idx);
+  if (pos === -1) arr.push(idx);
+  else arr.splice(pos, 1);
+  saveData(d);
+  renderDetailRules(currentDetailCategory, currentDetailFilter);
+  renderPointsToc(currentDetailCategory);
+  renderFilterTabs(currentDetailCategory, currentDetailFilter);
+}
+
+function setPointsFilter(filter) {
+  currentDetailFilter = filter;
+  renderDetailRules(currentDetailCategory, filter);
+  renderFilterTabs(currentDetailCategory, filter);
+}
+
+function togglePointsToc() {
+  pointsTocOpen = !pointsTocOpen;
+  const body = document.getElementById('points-toc-body');
+  const toggle = document.getElementById('points-toc-toggle-arrow');
+  if (body) body.classList.toggle('open', pointsTocOpen);
+  if (toggle) toggle.classList.toggle('open', pointsTocOpen);
+}
+
+function renderPointsToc(cat) {
+  const wrap = document.getElementById('points-toc-wrap');
+  if (!wrap || !cat) return;
+  const checked = getCheckedSet(cat.id);
+  const total = cat.rules.length;
+  const checkedCount = checked.size;
+  const pct = total > 0 ? Math.round(checkedCount / total * 100) : 0;
+
+  wrap.innerHTML = `
+    <div class="points-toc-head" onclick="togglePointsToc()">
+      <div class="points-toc-head-left">
+        <span>📝</span>
+        <span>ポイント目次</span>
+        <span class="points-progress-badge" style="background:${cat.accentColor}18;color:${cat.accentColor}">
+          ${checkedCount}/${total} 済 (${pct}%)
+        </span>
+      </div>
+      <span class="grammar-toc-toggle ${pointsTocOpen ? 'open' : ''}" id="points-toc-toggle-arrow">▼</span>
+    </div>
+    <div class="points-toc-body ${pointsTocOpen ? 'open' : ''}" id="points-toc-body">
+      ${cat.rules.map((rule, i) => `
+        <div class="points-toc-row ${checked.has(i) ? 'checked' : ''}" onclick="scrollToRuleCard('${cat.id}', ${i})">
+          <div class="points-toc-check-dot ${checked.has(i) ? 'done' : ''}">✓</div>
+          <span class="points-toc-num">${String(i + 1).padStart(2, '0')}</span>
+          <span class="points-toc-title">${rule.title}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderFilterTabs(cat, filter) {
+  const row = document.getElementById('points-filter-row');
+  if (!row || !cat) return;
+  const checked = getCheckedSet(cat.id);
+  const total = cat.rules.length;
+  const checkedCount = checked.size;
+  const uncheckedCount = total - checkedCount;
+
+  const tabs = [
+    { key: 'all',       label: `全て（${total}）` },
+    { key: 'unchecked', label: `未チェック（${uncheckedCount}）` },
+    { key: 'checked',   label: `チェック済み（${checkedCount}）` }
+  ];
+  row.innerHTML = tabs.map(t =>
+    `<button class="points-filter-tab${filter === t.key ? ' active' : ''}" onclick="setPointsFilter('${t.key}')">${t.label}</button>`
+  ).join('');
+}
+
+function renderDetailRules(cat, filter) {
+  const rulesEl = document.getElementById('detail-rules');
+  if (!rulesEl || !cat) return;
+  rulesEl.innerHTML = '';
+  const checked = getCheckedSet(cat.id);
+
+  let rulesToShow = cat.rules.map((rule, i) => ({ rule, i }));
+  if (filter === 'unchecked') rulesToShow = rulesToShow.filter(({ i }) => !checked.has(i));
+  else if (filter === 'checked') rulesToShow = rulesToShow.filter(({ i }) => checked.has(i));
+
+  if (rulesToShow.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'text-align:center;padding:40px 16px;color:var(--gray);font-size:14px;font-weight:700;';
+    empty.innerHTML = filter === 'unchecked'
+      ? '🎉 全ポイントをチェック済みです！'
+      : '📌 まだチェックしたポイントがありません';
+    rulesEl.appendChild(empty);
+    return;
+  }
+
+  rulesToShow.forEach(({ rule, i }, animIdx) => {
+    const isChecked = checked.has(i);
+    const el = document.createElement('div');
+    el.className = 'rule-card' + (isChecked ? ' checked' : '');
+    el.style.borderLeftColor = cat.accentColor;
+    el.style.animationDelay = (animIdx * 0.06) + 's';
+    el.id = `rule-card-${cat.id}-${i}`;
+    el.innerHTML = `
+      <button class="rule-check-btn ${isChecked ? 'done' : ''}"
+              onclick="togglePointCheck('${cat.id}', ${i})">✓</button>
+      <div class="rule-number" style="color:${cat.accentColor}">POINT ${i + 1}</div>
+      <div class="rule-title">${rule.title}</div>
+      <div class="rule-formula" style="background:${cat.accentColor}18;color:${cat.accentColor === '#FFFFFF' ? '#1E3A8A' : cat.accentColor}">${rule.formula}</div>
+      <div class="rule-desc">${rule.desc}</div>
+      <div class="rule-example-wrap">
+        <div class="rule-example-en">${rule.ex}</div>
+        <div class="rule-example-jp">${rule.exJp}</div>
+      </div>
+      <div class="rule-point">${rule.point}</div>
+    `;
+    rulesEl.appendChild(el);
+  });
+}
+
+function scrollToRuleCard(catId, idx) {
+  // Close TOC
+  if (pointsTocOpen) togglePointsToc();
+  // If filtered view doesn't include this card, switch to 'all'
+  const el = document.getElementById(`rule-card-${catId}-${idx}`);
+  if (!el) {
+    setPointsFilter('all');
+    setTimeout(() => {
+      const el2 = document.getElementById(`rule-card-${catId}-${idx}`);
+      if (el2) el2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 350);
+  } else {
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+  }
+}
 
 // ===== GRAMMAR TOC TOGGLE =====
 let grammarTocOpen = false;
@@ -6484,27 +6731,14 @@ function showGrammarDetail(categoryId) {
   document.getElementById('detail-acc').textContent = acc !== null ? acc + '%' : '—';
   document.getElementById('detail-clear').textContent = stats.correct || 0;
 
-  // Rules
-  const rulesEl = document.getElementById('detail-rules');
-  rulesEl.innerHTML = '';
-  cat.rules.forEach((rule, i) => {
-    const el = document.createElement('div');
-    el.className = 'rule-card';
-    el.style.borderLeftColor = cat.accentColor;
-    el.style.animationDelay = (i * 0.08) + 's';
-    el.innerHTML = `
-      <div class="rule-number">POINT ${i + 1}</div>
-      <div class="rule-title">${rule.title}</div>
-      <div class="rule-formula">${rule.formula}</div>
-      <div class="rule-desc">${rule.desc}</div>
-      <div class="rule-example-wrap">
-        <div class="rule-example-en">${rule.ex}</div>
-        <div class="rule-example-jp">${rule.exJp}</div>
-      </div>
-      <div class="rule-point">${rule.point}</div>
-    `;
-    rulesEl.appendChild(el);
-  });
+  // Reset filter & TOC state when switching categories
+  currentDetailFilter = 'all';
+  pointsTocOpen = false;
+
+  // Points TOC, Filter tabs, Rules (all via helpers)
+  renderPointsToc(cat);
+  renderFilterTabs(cat, 'all');
+  renderDetailRules(cat, 'all');
 
   // Practice button
   const btn = document.getElementById('btn-practice');
