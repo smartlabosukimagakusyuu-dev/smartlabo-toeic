@@ -893,6 +893,112 @@
   .points-filter-tab:active { transform: scale(.93); }
   .points-filter-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
 
+  /* ===== FLOATING TOC BUTTON & DRAWER ===== */
+  .detail-fab {
+    position: fixed;
+    bottom: 90px; right: 16px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 16px rgba(30,58,138,.45);
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 200;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .detail-fab.visible { display: flex; }
+  .detail-fab:active { transform: scale(.88); box-shadow: 0 2px 8px rgba(30,58,138,.3); }
+
+  .points-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+  }
+  .points-drawer-backdrop.open { opacity: 1; pointer-events: all; }
+
+  .points-drawer {
+    position: fixed;
+    bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+    width: 100%; max-width: 480px;
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+    z-index: 400;
+    max-height: 80vh;
+    display: flex; flex-direction: column;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 -4px 32px rgba(0,0,0,.18);
+  }
+  .points-drawer.open { transform: translateX(-50%) translateY(0); }
+
+  .points-drawer-handle {
+    width: 40px; height: 4px;
+    background: #E5E7EB; border-radius: 2px;
+    margin: 10px auto 0;
+    flex-shrink: 0;
+  }
+  .points-drawer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid #F3F4F6;
+    flex-shrink: 0;
+  }
+  .points-drawer-title {
+    font-size: 15px; font-weight: 800; color: var(--navy);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .points-drawer-close {
+    width: 28px; height: 28px;
+    border-radius: 50%; border: none;
+    background: #F3F4F6; color: var(--gray);
+    font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .points-drawer-close:active { background: #E5E7EB; }
+
+  .points-drawer-list {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    padding: 6px 0 16px;
+  }
+  .points-drawer-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #F9FAFB;
+    transition: background .12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .points-drawer-item:active { background: #EFF6FF; }
+  .points-drawer-item.checked { opacity: .6; }
+  .points-drawer-dot {
+    width: 22px; height: 22px; flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid #D1D5DB;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: transparent;
+    transition: all .15s;
+  }
+  .points-drawer-dot.done { background: var(--green); border-color: var(--green); color: white; }
+  .points-drawer-num { font-size: 11px; font-weight: 800; color: #CBD5E1; min-width: 22px; }
+  .points-drawer-text {
+    flex: 1;
+    font-size: 13px; font-weight: 700; color: var(--navy);
+    line-height: 1.4;
+  }
+  .points-drawer-item.checked .points-drawer-text { text-decoration: line-through; color: var(--gray); }
+  .points-drawer-arrow { font-size: 11px; color: #CBD5E1; }
+
   .btn-practice {
     background: white;
     border: none;
@@ -1490,6 +1596,23 @@
   </div>
 
 </div><!-- /app -->
+
+<!-- Floating TOC button (grammar detail) -->
+<button class="detail-fab" id="detail-fab" onclick="openPointsDrawer()" title="ポイント一覧">📋</button>
+
+<!-- Points Drawer -->
+<div class="points-drawer-backdrop" id="points-drawer-backdrop" onclick="closePointsDrawer()"></div>
+<div class="points-drawer" id="points-drawer">
+  <div class="points-drawer-handle"></div>
+  <div class="points-drawer-header">
+    <div class="points-drawer-title">
+      <span>📋</span>
+      <span id="points-drawer-title-text">ポイント一覧</span>
+    </div>
+    <button class="points-drawer-close" onclick="closePointsDrawer()">✕</button>
+  </div>
+  <div class="points-drawer-list" id="points-drawer-list"></div>
+</div>
 
 <nav class="bottom-nav" id="bottom-nav" style="display:none;">
   <button class="nav-btn active" id="nav-home" onclick="showScreen('screen-home')">
@@ -5214,6 +5337,9 @@ function saveData(d) { STORE.save(d); }
 // ===== SCREEN ROUTING =====
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  // Hide FAB & close drawer when leaving grammar detail
+  document.getElementById('detail-fab')?.classList.remove('visible');
+  if (typeof closePointsDrawer === 'function') closePointsDrawer();
   const el = document.getElementById(id);
   if (el) {
     el.classList.add('active');
@@ -5238,6 +5364,7 @@ function showScreen(id) {
   }
   else if (id === 'screen-grammar-detail') {
     document.getElementById('nav-grammar')?.classList.add('active');
+    document.getElementById('detail-fab')?.classList.add('visible');
   }
   // Hide nav on quiz/result
   const nav = document.getElementById('bottom-nav');
@@ -7090,6 +7217,49 @@ function startGenreQuiz(genre) {
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
+}
+
+// ===== FLOATING TOC DRAWER =====
+function openPointsDrawer() {
+  if (!currentDetailCategory) return;
+  const cat = currentDetailCategory;
+  const checked = getCheckedSet(cat.id);
+  const total = cat.rules.length;
+  const checkedCount = checked.size;
+
+  // Title
+  document.getElementById('points-drawer-title-text').textContent =
+    `${cat.icon} ${cat.name} — ${checkedCount}/${total} 済`;
+
+  // List
+  const list = document.getElementById('points-drawer-list');
+  list.innerHTML = '';
+  cat.rules.forEach((rule, i) => {
+    const isDone = checked.has(i);
+    const item = document.createElement('div');
+    item.className = 'points-drawer-item' + (isDone ? ' checked' : '');
+    item.innerHTML = `
+      <div class="points-drawer-dot ${isDone ? 'done' : ''}">✓</div>
+      <span class="points-drawer-num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="points-drawer-text">${rule.title}</span>
+      <span class="points-drawer-arrow">▶</span>
+    `;
+    item.onclick = () => {
+      closePointsDrawer();
+      setTimeout(() => scrollToRuleCard(cat.id, i), 300);
+    };
+    list.appendChild(item);
+  });
+
+  document.getElementById('points-drawer-backdrop').classList.add('open');
+  document.getElementById('points-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePointsDrawer() {
+  document.getElementById('points-drawer-backdrop').classList.remove('open');
+  document.getElementById('points-drawer').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 // ===== NAVIGATE DETAIL CATEGORY (prev/next) =====
