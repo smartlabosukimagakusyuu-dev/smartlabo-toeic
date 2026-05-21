@@ -6726,6 +6726,8 @@ function renderHome() {
   }
 
   // Level tab counts
+  const elAll = document.getElementById('tab-count-all');
+  if (elAll) elAll.textContent = QUESTIONS.length + '問';
   ['初級','中級','上級'].forEach(lv => {
     const el = document.getElementById('tab-count-' + lv);
     if (el) el.textContent = QUESTIONS.filter(q => q.level === lv).length + '問';
