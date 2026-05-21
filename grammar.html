@@ -5062,7 +5062,23 @@ const GRAMMAR_CATEGORIES = [
       { title:'時制の一致', formula:'主節が過去形 → 従属節も過去形にずらす',
         desc:'主節が過去形のとき、that節や間接話法の中の動詞も過去形にする。',
         ex:'He said that he was busy.', exJp:'彼は忙しいと言った。',
-        point:'💡 said / told / thought の後は was / had done など過去形！' }
+        point:'💡 said / told / thought の後は was / had done など過去形！' },
+      { title:'現在進行形・過去進行形', formula:'am/is/are + doing / was/were + doing',
+        desc:'現在進行形は「今〜している」、過去進行形は「そのとき〜していた」。',
+        ex:'She was preparing the report when he called.', exJp:'彼が電話したとき、彼女はレポートを準備していた。',
+        point:'💡 when + 過去形 → 過去進行形（was/were doing）が呼応！' },
+      { title:'助動詞 + 完了形', formula:'should / must / may have + 過去分詞',
+        desc:'過去の出来事への推測・後悔・非難を表す。TOEICリスニングでも頻出。',
+        ex:'You should have submitted the form earlier.', exJp:'もっと早く書類を提出すべきだったのに。',
+        point:'💡 should have done = 〜すべきだったのに / must have done = 〜したに違いない！' },
+      { title:'時・条件の副詞節の時制', formula:'when / if 節 → 未来の意味でも現在形',
+        desc:'時・条件を表す副詞節の中では will を使わず現在形にする。',
+        ex:'I will call you when I arrive at the office.', exJp:'オフィスに着いたら電話します。',
+        point:'💡 when / if / after / before の後に will は使えない！現在形で未来を表す！' },
+      { title:'未来進行形・未来完了進行形', formula:'will be doing / will have been doing',
+        desc:'未来進行形は「〜しているだろう」、未来完了進行形は「〜し続けているだろう」という意味。',
+        ex:'By this time tomorrow, I will be flying to New York.', exJp:'明日の今頃、私はニューヨーク行きの飛行機に乗っているだろう。',
+        point:'💡 will be doing（未来の進行中）/ will have been doing（未来の継続完了）！' }
     ]
   },
   {
@@ -5093,7 +5109,23 @@ const GRAMMAR_CATEGORIES = [
       { title:'形容詞 vs 副詞の判別', formula:'修飾対象が名詞 → 形容詞 / 動詞・形容詞 → 副詞',
         desc:'空欄の前後を見て、何を修飾しているかで判断する。',
         ex:'The manager made a significant contribution.', exJp:'部長は重要な貢献をした。',
-        point:'💡 名詞の前 → 形容詞（significant）、動詞の前 → 副詞（significantly）！' }
+        point:'💡 名詞の前 → 形容詞（significant）、動詞の前 → 副詞（significantly）！' },
+      { title:'数量表現と品詞', formula:'many/few（可算）/ much/little（不可算）',
+        desc:'数えられる名詞には many/few、数えられない名詞には much/little を使う。',
+        ex:'We have received many inquiries about the product.', exJp:'その製品についての問い合わせをたくさん受けている。',
+        point:'💡 many + 複数名詞 / much + 単数名詞（不可算）！a number of = many！' },
+      { title:'複合名詞', formula:'名詞 + 名詞 → 複合名詞（前の名詞が形容詞的に機能）',
+        desc:'二つの名詞が組み合わさって一つの意味を表す。前の名詞は修飾語になる。',
+        ex:'Please review the sales report before the staff meeting.', exJp:'スタッフ会議の前に営業報告書を確認してください。',
+        point:'💡 名詞 + 名詞の組み合わせ → 前の名詞は形容詞扱い！複数形にしない！' },
+      { title:'前置詞の後の品詞', formula:'前置詞 + 名詞（または動名詞）',
+        desc:'前置詞の直後には必ず名詞（または動名詞）が来る。形容詞・副詞は不可。',
+        ex:'The project was completed with great efficiency.', exJp:'そのプロジェクトは非常に効率よく完了した。',
+        point:'💡 前置詞の後の空欄 → 名詞！形容詞・副詞は入れない！' },
+      { title:'間違えやすい品詞ペア', formula:'economic（経済の）vs economical（節約な）/ historic vs historical',
+        desc:'語尾が似ていても意味が異なる形容詞ペア。文脈で判断する。TOEICの難問で頻出。',
+        ex:'We need a more economical approach to save costs.', exJp:'コスト削減のためにより節約的なアプローチが必要だ。',
+        point:'💡 economic（経済に関する）/ economical（倹約な）/ respective（それぞれの）/ respectful（丁寧な）！' }
     ]
   },
   {
@@ -5124,7 +5156,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'不定詞の完了形・否定形', formula:'to have done（完了）/ not to do（否定）',
         desc:'述語動詞より前の時制を表すときは to have + 過去分詞を使う。',
         ex:'She seems to have forgotten the appointment.', exJp:'彼女は約束を忘れてしまったようだ。',
-        point:'💡 seem to have done = 「〜したようだ（過去のこと）」！' }
+        point:'💡 seem to have done = 「〜したようだ（過去のこと）」！' },
+      { title:'使役動詞・知覚動詞 + 原形', formula:'make / let / have + O + 動詞原形',
+        desc:'使役動詞（make/let/have）と知覚動詞（see/hear/feel）の後は原形不定詞。',
+        ex:'The manager had his assistant prepare the report.', exJp:'部長はアシスタントにレポートを準備させた。',
+        point:'💡 make/let/have + 人 + 動詞原形（to なし）！get + 人 + to do（to あり）！' },
+      { title:'独立不定詞（慣用表現）', formula:'to be honest / to tell the truth / to begin with',
+        desc:'文全体を修飾する慣用的な to不定詞。主語と無関係に文頭に置く。',
+        ex:'To be honest, I found the task quite difficult.', exJp:'正直に言うと、その課題はかなり難しかった。',
+        point:'💡 to be honest / to tell the truth / needless to say は慣用句として丸ごと覚える！' }
     ]
   },
   {
@@ -5155,7 +5195,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'動名詞の慣用表現', formula:'have difficulty / trouble / fun + doing',
         desc:'「〜するのに苦労する」などの慣用表現。ing形とセットで覚える。',
         ex:'She had difficulty finding the right candidate.', exJp:'彼女は適切な候補者を見つけるのに苦労した。',
-        point:'💡 have difficulty/trouble doing / spend time doing は頻出！' }
+        point:'💡 have difficulty/trouble doing / spend time doing は頻出！' },
+      { title:'動名詞の意味上の主語', formula:'所有格（my/his）または目的格 + doing',
+        desc:'動名詞の動作の主体を明示したいときは、動名詞の前に所有格を置く。',
+        ex:'We appreciate your attending the meeting.', exJp:'ご出席いただいたことに感謝申し上げます。',
+        point:'💡 your / his / her + doing で「誰がすること」かを明示！ビジネス英語頻出！' },
+      { title:'without / on + 動名詞', formula:'without doing = 〜せずに / on doing = 〜するとすぐに',
+        desc:'前置詞 without / on の後は動名詞。on doing はフォーマルな表現。',
+        ex:'On receiving the order, we will process it immediately.', exJp:'ご注文を受け次第、すぐに処理いたします。',
+        point:'💡 without saying / without fail / on arrival（doing→名詞も可）は超頻出！' }
     ]
   },
   {
@@ -5186,7 +5234,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'with + 名詞 + 分詞', formula:'with + 名詞 + doing / done（付帯状況）',
         desc:'「〜が〜した状態で」という付帯状況を表す。',
         ex:'He sat with his arms folded.', exJp:'彼は腕を組んで座っていた。',
-        point:'💡 with + 名詞 + 過去分詞 → 受動の状態！with + 名詞 + ing → 能動の状態！' }
+        point:'💡 with + 名詞 + 過去分詞 → 受動の状態！with + 名詞 + ing → 能動の状態！' },
+      { title:'完了分詞構文', formula:'Having done..., 主語 + 動詞（主節より前の行為）',
+        desc:'分詞構文の動作が主節より前に起きたことを表す。',
+        ex:'Having finished the report, she sent it to her manager.', exJp:'レポートを書き終えてから、彼女は上司に送った。',
+        point:'💡 Having done = 「〜し終えてから」という完了・原因の意味！' },
+      { title:'受動の分詞構文', formula:'Being + 過去分詞 / Having been + 過去分詞',
+        desc:'分詞構文の意味上の主語が「〜される」側のときは being done を使う。Being は省略されることも多い。',
+        ex:'(Being) Asked for his opinion, he gave a detailed answer.', exJp:'意見を求められて、彼は詳しく答えた。',
+        point:'💡 文頭の Being done は「〜されて/されたので」！Being は省略可！' }
     ]
   },
   {
@@ -5217,7 +5273,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'倍数比較・最上級の強調', formula:'twice as ... as / by far the + 最上級',
         desc:'倍数を表す twice / three times を as...as の前に置く。by far は最上級を強調。',
         ex:'This office is twice as large as the old one.', exJp:'このオフィスは旧オフィスの2倍の広さだ。',
-        point:'💡 twice as 〜 as = 2倍 / by far the best = 断然最高！' }
+        point:'💡 twice as 〜 as = 2倍 / by far the best = 断然最高！' },
+      { title:'原級・比較級で最上級を表す', formula:'No other... as + 原級 + as / 比較級 + than any other',
+        desc:'最上級を使わずに「最も〜だ」という意味を表せる。TOEICの難問で頻出。',
+        ex:'No other city is as large as Tokyo.', exJp:'東京ほど大きな都市はない（＝東京が最大）。',
+        point:'💡 No other + 単数名詞 + is as ... as = 最上級と同じ意味！' },
+      { title:'比較の慣用表現', formula:'as ... as possible / superior to / inferior to',
+        desc:'「できる限り〜」や「〜より優れた/劣った」など比較を使った頻出慣用表現。',
+        ex:'Please reply as soon as possible.', exJp:'できるだけ早く返信してください。',
+        point:'💡 as soon as possible（ASAP）/ superior to（〜より優れた）/ inferior to（〜より劣った）はTOEIC頻出！' }
     ]
   },
   {
@@ -5248,7 +5312,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'前置詞 + 関係代名詞', formula:'前置詞 + which / whom（フォーマル表現）',
         desc:'関係詞節内の前置詞を関係代名詞の前に出すフォーマルな形。',
         ex:'This is the company for which I work.', exJp:'これが私の勤める会社です。',
-        point:'💡 for which = where（場所）の代わりに使える！with whom = 一緒に〜した人！' }
+        point:'💡 for which = where（場所）の代わりに使える！with whom = 一緒に〜した人！' },
+      { title:'関係代名詞 what', formula:'what + S + V = 「〜すること/もの」（先行詞を含む）',
+        desc:'whatは先行詞を含む関係代名詞。「the thing(s) which」と言い換えられる。',
+        ex:'What surprised everyone was the sudden announcement.', exJp:'みんなを驚かせたのは突然の発表だった。',
+        point:'💡 what = the thing(s) which！主語や目的語として文全体で使える！' },
+      { title:'複合関係詞', formula:'whoever（〜する人は誰でも）/ whatever / whenever / wherever',
+        desc:'複合関係詞は「〜するものは何でも/誰でも」という譲歩・条件の意味。',
+        ex:'You can bring whoever you want to the party.', exJp:'パーティーには誰でも連れてきていいですよ。',
+        point:'💡 whoever = anyone who / whatever = anything that！howeverは「どれほど〜でも」！' }
     ]
   },
   {
@@ -5279,7 +5351,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'完了形の受動態', formula:'have / has been + 過去分詞',
         desc:'「（すでに）〜された」という完了を表す受動態。',
         ex:'The report has been submitted to the board.', exJp:'報告書は取締役会に提出されました。',
-        point:'💡 has been done = 完了受動態！already / yet と一緒によく使う！' }
+        point:'💡 has been done = 完了受動態！already / yet と一緒によく使う！' },
+      { title:'知覚・使役動詞の受動態', formula:'be seen to do / be made to do（to が必要になる）',
+        desc:'能動態では原形だった動詞も、受動態になると to不定詞に変わる。',
+        ex:'She was made to work late by her boss.', exJp:'彼女は上司に遅くまで働かされた。',
+        point:'💡 make → be made to do / see → be seen to do！受動態でtoが復活！' },
+      { title:'by以外の前置詞を使う受動態', formula:'be known for（〜で知られる）/ be made of（〜からできている）',
+        desc:'「by+行為者」以外の前置詞を伴う受動態表現。前置詞は固定されているので丸ごと覚える。',
+        ex:'The area is known for its beautiful scenery.', exJp:'その地域は美しい景色で知られている。',
+        point:'💡 be known for（特徴）/ be satisfied with（満足）/ be made from（化学変化）！前置詞は固定！' }
     ]
   },
   {
@@ -5310,7 +5390,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'as if / as though', formula:'as if / as though + 仮定法過去（現在）',
         desc:'「まるで〜であるかのように」という様子を表す。',
         ex:'He talks as if he knew everything.', exJp:'彼はまるで何でも知っているかのように話す。',
-        point:'💡 as if の後の動詞が過去形 → 仮定法のサイン！' }
+        point:'💡 as if の後の動詞が過去形 → 仮定法のサイン！' },
+      { title:'without / but for（仮定法の代用）', formula:'Without / But for + 名詞, 主語 + would do',
+        desc:'if節を使わずに「〜がなければ」という仮定を表す。フォーマルな書き言葉でも頻出。',
+        ex:'Without your help, I would have failed.', exJp:'あなたの助けがなければ、失敗していただろう。',
+        point:'💡 Without = If it were not for（現在）/ If it had not been for（過去）！' },
+      { title:'混合仮定法', formula:'If + had done（過去の条件）, would do（現在の結果）',
+        desc:'過去の出来事が現在に影響を与える場合、if節と主節で時制をずらす。',
+        ex:'If I had studied harder, I would be in a better position now.', exJp:'もっと勉強していたら、今頃もっといいポジションにいるのに。',
+        point:'💡 if節が過去完了＋主節が would do → 混合仮定法！now / todayがヒント！' }
     ]
   },
   {
@@ -5341,7 +5429,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'動詞と前置詞の組み合わせ', formula:'apply for / agree with / depend on など',
         desc:'動詞と前置詞がセットで意味を持つ熟語。前置詞は固定されている。',
         ex:'Please apply for the position by the deadline.', exJp:'締め切りまでにそのポジションに応募してください。',
-        point:'💡 apply for / result in / consist of / refer to をまとめて覚えよう！' }
+        point:'💡 apply for / result in / consist of / refer to をまとめて覚えよう！' },
+      { title:'during / through / throughout', formula:'during（期間中の特定の時）/ throughout（〜を通じてずっと）',
+        desc:'during はある期間の「ある時点」、throughout は「始めから終わりまでずっと」の意味。',
+        ex:'The store will remain open throughout the holiday season.', exJp:'その店は休暇シーズンを通じて営業し続ける。',
+        point:'💡 during the meeting（会議中のある時）/ throughout the year（1年を通じてずっと）！' },
+      { title:'形容詞 + 前置詞の組み合わせ', formula:'be satisfied with / be aware of / be familiar with',
+        desc:'形容詞と前置詞がセットで意味を成す表現。前置詞は固定されている。',
+        ex:'She is familiar with the new software.', exJp:'彼女は新しいソフトウェアに精通している。',
+        point:'💡 be aware of（気づいている）/ be capable of（能力がある）/ be satisfied with（満足）は必須！' }
     ]
   },
   {
@@ -5372,7 +5468,15 @@ const GRAMMAR_CATEGORIES = [
       { title:'譲歩（however/whatever）', formula:'however + 形容詞/副詞 / whatever + S V',
         desc:'「どれほど〜でも」「何が〜でも」という譲歩の意味。',
         ex:'However difficult it is, we must complete the project.', exJp:'どれほど難しくても、プロジェクトを完成させなければならない。',
-        point:'💡 however + 形容詞 → 「どれほど〜でも」！whatever = 「何が〜でも」！' }
+        point:'💡 however + 形容詞 → 「どれほど〜でも」！whatever = 「何が〜でも」！' },
+      { title:'相関接続詞', formula:'both A and B / either A or B / neither A nor B / not only A but also B',
+        desc:'2つの語句を対で結ぶ接続詞。主語に使う場合は動詞の数の一致に注意。',
+        ex:'Not only the manager but also the employees were informed.', exJp:'マネージャーだけでなく従業員も通知を受けた。',
+        point:'💡 not only A but (also) B → 動詞はBに合わせる！neither A nor B も同様！' },
+      { title:'接続副詞', formula:'therefore / however / moreover / furthermore（文と文をつなぐ副詞）',
+        desc:'文頭や文中に置き、前の文との論理関係を示す。接続詞ではないので節をつなぐ用法はない。',
+        ex:'The project was delayed; therefore, the deadline was extended.', exJp:'プロジェクトが遅れた。そのため、締め切りが延長された。',
+        point:'💡 therefore（だから）/ however（しかし）/ moreover（さらに）はセミコロン/コンマとセット！' }
     ]
   },
   {
@@ -5403,7 +5507,23 @@ const GRAMMAR_CATEGORIES = [
       { title:'make sure / make use of', formula:'make sure（that）= 確認する / make use of = 活用する',
         desc:'make を使った重要熟語。TOEIC頻出のビジネス表現。',
         ex:'Please make sure that all documents are ready.', exJp:'すべての書類が準備できているか確認してください。',
-        point:'💡 make sure = 確認 / make use of = 活用 / make progress = 進歩する！' }
+        point:'💡 make sure = 確認 / make use of = 活用 / make progress = 進歩する！' },
+      { title:'take advantage of / take part in', formula:'take advantage of = 活用する / take part in = 参加する',
+        desc:'take を使った頻出句動詞。ビジネス英語やPart 5・7 で頻繁に登場する。',
+        ex:'We should take advantage of this opportunity.', exJp:'この機会を活用すべきだ。',
+        point:'💡 take advantage of（機会・特典を活かす）/ take part in（活動・会議に参加する）は必須！' },
+      { title:'be aware of / be familiar with', formula:'be aware of = 〜を知っている / be familiar with = 〜に詳しい',
+        desc:'知識・認識を表す頻出形容詞熟語。TOEICのPart 5 で選択肢に出やすい。',
+        ex:'All employees should be aware of the new policy.', exJp:'全従業員は新しい方針を把握しておくべきだ。',
+        point:'💡 be aware of（気づいている・知っている）/ be familiar with（精通している）は区別して覚えよう！' },
+      { title:'as long as / as far as', formula:'as long as = 〜する限り / as far as = 〜する範囲では',
+        desc:'条件・範囲を表す重要表現。as long as は条件、as far as は範囲・限度を示す。',
+        ex:'You can use the room as long as you clean up afterward.', exJp:'後片付けをする限り、部屋を使っていいですよ。',
+        point:'💡 as long as（条件：〜する限り）/ as far as I know（知る限り）は超頻出！' },
+      { title:'regardless of / in terms of', formula:'regardless of = 〜にかかわらず / in terms of = 〜の観点から',
+        desc:'TOEICのビジネス文書・メールで頻出の前置詞句。意味をしっかり区別する。',
+        ex:'The policy applies to all employees regardless of their position.', exJp:'その方針は役職にかかわらず全従業員に適用される。',
+        point:'💡 regardless of（〜を問わず）/ in terms of（〜の点で）/ with regard to（〜に関して）！' }
     ]
   }
 ];
