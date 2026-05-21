@@ -468,6 +468,200 @@
   .empty-state { text-align: center; padding: 40px 20px; color: var(--gray); }
   .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
   .empty-state-text { font-size: 14px; line-height: 1.6; }
+
+  /* ===== GRAMMAR LIST ===== */
+  .grammar-list-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    padding: 20px 20px 28px;
+    color: white;
+  }
+  .grammar-list-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .grammar-list-sub { font-size: 13px; opacity: .75; }
+
+  .grammar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .grammar-card {
+    background: var(--white);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+  .grammar-card:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-lg); }
+  .grammar-card:active { transform: scale(.95); box-shadow: none; }
+
+  .grammar-card-header {
+    padding: 14px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    position: relative;
+    min-height: 72px;
+  }
+  .grammar-card-icon { font-size: 26px; margin-bottom: 2px; }
+  .grammar-card-name { font-size: 15px; font-weight: 800; color: #fff; }
+  .grammar-card-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(255,255,255,.25);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .grammar-card-badge.coming { background: rgba(0,0,0,.2); }
+
+  .grammar-card-body { padding: 10px 12px 12px; }
+  .grammar-card-short { font-size: 11px; color: var(--gray); line-height: 1.5; margin-bottom: 8px; }
+  .grammar-card-meta { display: flex; align-items: center; justify-content: space-between; }
+  .grammar-card-qcount { font-size: 11px; color: var(--gray); font-weight: 600; }
+  .grammar-card-acc {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: var(--blue-mid);
+    color: var(--navy);
+  }
+
+  .grammar-card-progress {
+    height: 4px;
+    background: #F3F4F6;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .grammar-card-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width .6s ease;
+  }
+
+  /* ===== GRAMMAR DETAIL ===== */
+  .grammar-detail-header {
+    padding: 16px 16px 24px;
+    color: white;
+    position: relative;
+  }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.2);
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    width: fit-content;
+    transition: background .15s;
+  }
+  .back-btn:active { background: rgba(255,255,255,.35); }
+  .detail-icon { font-size: 40px; margin-bottom: 8px; }
+  .detail-title { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .detail-short { font-size: 13px; opacity: .8; }
+
+  .detail-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 0 16px;
+    transform: translateY(-16px);
+  }
+  .detail-stat {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .detail-stat-val { font-size: 18px; font-weight: 800; color: var(--navy); }
+  .detail-stat-label { font-size: 10px; color: var(--gray); margin-top: 2px; }
+
+  .rule-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    margin: 0 16px 12px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--blue);
+    animation: fadeIn .3s ease;
+  }
+  .rule-number {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .rule-title { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+  .rule-formula {
+    background: var(--blue-mid);
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+  }
+  .rule-desc { font-size: 13px; color: #374151; line-height: 1.6; margin-bottom: 10px; }
+  .rule-example-wrap {
+    background: #F8FAFC;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #E2E8F0;
+  }
+  .rule-example-en { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+  .rule-example-jp { font-size: 12px; color: var(--gray); }
+  .rule-point {
+    font-size: 12px;
+    color: #D97706;
+    font-weight: 700;
+    background: var(--gold-light);
+    padding: 8px 12px;
+    border-radius: 8px;
+    line-height: 1.5;
+  }
+
+  .btn-practice {
+    background: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    width: calc(100% - 32px);
+    margin: 4px 16px 16px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.15);
+    transition: transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-practice:active { transform: scale(.97); }
+  .btn-practice.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 </style>
 </head>
 <body>
@@ -643,11 +837,52 @@
     </div>
   </div>
 
+  <!-- GRAMMAR LIST -->
+  <div id="screen-grammar-list" class="screen">
+    <div class="grammar-list-header">
+      <div class="grammar-list-title">📖 文法一覧</div>
+      <div class="grammar-list-sub">文法を理解して、即演習！</div>
+    </div>
+    <div class="grammar-grid" id="grammar-grid"></div>
+  </div>
+
+  <!-- GRAMMAR DETAIL -->
+  <div id="screen-grammar-detail" class="screen">
+    <div class="grammar-detail-header" id="detail-header">
+      <button class="back-btn" onclick="showScreen('screen-grammar-list')">← 一覧へ戻る</button>
+      <div class="detail-icon" id="detail-icon">📘</div>
+      <div class="detail-title" id="detail-title">時制</div>
+      <div class="detail-short" id="detail-short">現在完了・過去形を攻略</div>
+    </div>
+    <div class="detail-stats-row">
+      <div class="detail-stat">
+        <div class="detail-stat-val" id="detail-mastery">—</div>
+        <div class="detail-stat-label">習得率</div>
+      </div>
+      <div class="detail-stat">
+        <div class="detail-stat-val" id="detail-acc">—</div>
+        <div class="detail-stat-label">正答率</div>
+      </div>
+      <div class="detail-stat">
+        <div class="detail-stat-val" id="detail-clear">0</div>
+        <div class="detail-stat-label">クリア数</div>
+      </div>
+    </div>
+    <div class="section-title">文法ポイント</div>
+    <div id="detail-rules"></div>
+    <button class="btn-practice" id="btn-practice" onclick="startFromCategory()">
+      ⚡ この文法を練習する
+    </button>
+  </div>
+
 </div><!-- /app -->
 
 <nav class="bottom-nav" id="bottom-nav" style="display:none;">
   <button class="nav-btn active" id="nav-home" onclick="showScreen('screen-home')">
     <span class="nav-icon">🏠</span>ホーム
+  </button>
+  <button class="nav-btn" id="nav-grammar" onclick="showScreen('screen-grammar-list')">
+    <span class="nav-icon">📖</span>文法
   </button>
   <button class="nav-btn" id="nav-quiz" onclick="startNormal()">
     <span class="nav-icon">⚡</span>学習
@@ -950,6 +1185,13 @@ function showScreen(id) {
   else if (id === 'screen-analysis') {
     document.getElementById('nav-analysis')?.classList.add('active');
     renderAnalysis();
+  }
+  else if (id === 'screen-grammar-list') {
+    document.getElementById('nav-grammar')?.classList.add('active');
+    renderGrammarList();
+  }
+  else if (id === 'screen-grammar-detail') {
+    document.getElementById('nav-grammar')?.classList.add('active');
   }
   // Hide nav on quiz/result
   const nav = document.getElementById('bottom-nav');
@@ -1362,6 +1604,359 @@ function launchConfetti() {
   }
   draw();
   setTimeout(() => { cancelAnimationFrame(frame); ctx.clearRect(0, 0, canvas.width, canvas.height); }, 3500);
+}
+
+// ===== GRAMMAR CATEGORIES DATA =====
+const GRAMMAR_CATEGORIES = [
+  {
+    id:'tense', name:'時制', genre:'時制', icon:'⏰',
+    bg:'linear-gradient(135deg,#3B82F6,#1E3A8A)', accentColor:'#3B82F6',
+    short:'現在完了・過去形・未来完了を攻略',
+    rules:[
+      { title:'過去形', formula:'動詞の過去形（+ ed / 不規則変化）',
+        desc:'過去の一時点での動作・状態を表す。',
+        ex:'The company opened last year.', exJp:'その会社は去年オープンした。',
+        point:'💡 yesterday / last ~ / ~ ago があれば過去形！' },
+      { title:'現在完了', formula:'have / has + 過去分詞',
+        desc:'過去から現在まで続く動作・経験・完了を表す。',
+        ex:'She has worked here since 2015.', exJp:'彼女は2015年からここで働いている。',
+        point:'💡 since / for / already / yet / ever がキーワード！' },
+      { title:'未来完了', formula:'will have + 過去分詞',
+        desc:'未来のある時点までに完了する動作を表す。',
+        ex:'The meeting will have ended by the time you arrive.', exJp:'あなたが着く頃には会議は終わっているだろう。',
+        point:'💡 by the time... が出たら未来完了を疑え！' }
+    ]
+  },
+  {
+    id:'pos', name:'品詞', genre:'品詞', icon:'🔤',
+    bg:'linear-gradient(135deg,#8B5CF6,#5B21B6)', accentColor:'#8B5CF6',
+    short:'名詞・形容詞・副詞を瞬時に見抜く',
+    rules:[
+      { title:'名詞の位置', formula:'冠詞(a/the) + [名詞] / 前置詞 + [名詞]',
+        desc:'冠詞の後、前置詞の後、動詞の目的語の位置には名詞。',
+        ex:'The completion of the project was delayed.', exJp:'プロジェクトの完了が遅れた。',
+        point:'💡 the ＿＿ of の空欄 → 名詞！-tion / -ment / -ness が目印！' },
+      { title:'形容詞の位置', formula:'[形容詞] + 名詞 / be動詞 + [形容詞]',
+        desc:'名詞を直前から修飾するか、be動詞の後に置く。',
+        ex:'Employees must wear protective clothing.', exJp:'従業員は保護用の服を着なければならない。',
+        point:'💡 名詞の前の空欄 → 形容詞！-ive / -al / -ful が目印！' },
+      { title:'副詞の位置', formula:'動詞・形容詞・文全体を修飾',
+        desc:'動詞の前後や文頭に置く。語尾が -ly のことが多い。',
+        ex:'The report was successfully submitted.', exJp:'報告書は首尾よく提出された。',
+        point:'💡 動詞の前後の空欄 → 副詞（-ly）！' }
+    ]
+  },
+  {
+    id:'infinitive', name:'不定詞', genre:null, icon:'➡️',
+    bg:'linear-gradient(135deg,#10B981,#047857)', accentColor:'#10B981',
+    short:'to + 動詞を瞬間理解',
+    rules:[
+      { title:'名詞的用法「〜すること」', formula:'to + 動詞の原形 → 主語・目的語・補語',
+        desc:'「〜すること」という意味で名詞のように使う。',
+        ex:'I want to improve my TOEIC score.', exJp:'TOEICスコアを上げたい。',
+        point:'💡 want / need / decide / plan の後は to + 動詞の原形！' },
+      { title:'副詞的用法「〜するために」', formula:'to + 動詞の原形 → 目的・理由',
+        desc:'「〜するために」という目的や「〜して（感情）」という理由を表す。',
+        ex:'She studied hard to pass the exam.', exJp:'試験に合格するために懸命に勉強した。',
+        point:'💡 目的を強調するときは in order to も使える！' },
+      { title:'be + 形容詞 + to不定詞', formula:'be pleased / able / likely / willing + to do',
+        desc:'TOEICで最頻出のパターン。感情や能力を表す。',
+        ex:'We are pleased to inform you of the decision.', exJp:'ご決定をお知らせできて光栄です。',
+        point:'💡 be pleased/happy/glad to... はビジネス英語の定番！' }
+    ]
+  },
+  {
+    id:'gerund', name:'動名詞', genre:null, icon:'🔄',
+    bg:'linear-gradient(135deg,#06B6D4,#0E7490)', accentColor:'#06B6D4',
+    short:'動詞+ingを名詞として使う',
+    rules:[
+      { title:'動名詞の基本', formula:'動詞 + ing → 「〜すること」',
+        desc:'動詞をing形にして名詞として使う。主語・目的語になる。',
+        ex:'We look forward to hearing from you.', exJp:'ご連絡をお待ちしております。',
+        point:'💡 look forward to の後はing形！（to は前置詞）' },
+      { title:'動名詞を取る動詞', formula:'enjoy / finish / avoid / consider + doing',
+        desc:'これらの動詞の後ろは必ずing形（to不定詞は不可）。',
+        ex:'Please avoid using your phone during meetings.', exJp:'会議中は電話を使用するのを避けてください。',
+        point:'💡 enjoy doing / finish doing / avoid doing は超頻出！' },
+      { title:'前置詞 + 動名詞', formula:'前置詞 + doing（名詞の役割）',
+        desc:'前置詞の後ろに動詞が来るときは必ずing形。',
+        ex:'Thank you for attending the meeting.', exJp:'会議にご参加いただきありがとうございます。',
+        point:'💡 前置詞(for/in/on/to)の後 → ing形！' }
+    ]
+  },
+  {
+    id:'participle', name:'分詞', genre:null, icon:'✂️',
+    bg:'linear-gradient(135deg,#F97316,#C2410C)', accentColor:'#F97316',
+    short:'現在分詞・過去分詞で名詞を修飾',
+    rules:[
+      { title:'現在分詞（ing形）', formula:'名詞 + doing → 「〜している名詞」',
+        desc:'能動的・進行中の状態を表す。名詞を後ろから修飾する。',
+        ex:'The employee working overtime is Mr. Lee.', exJp:'残業している従業員はリーさんです。',
+        point:'💡 名詞の後ろのing形 → 「〜している」の意味！' },
+      { title:'過去分詞（ed形）', formula:'名詞 + done → 「〜された名詞」',
+        desc:'受動的・完了した状態を表す。名詞を後ろから修飾する。',
+        ex:'The report submitted yesterday was excellent.', exJp:'昨日提出された報告書は素晴らしかった。',
+        point:'💡 名詞の後ろのed形 → 「〜された」の意味！' },
+      { title:'分詞構文', formula:'Doing... / Done..., 主語 + 動詞',
+        desc:'文頭のing形/ed形で付帯状況・理由・条件を表す。',
+        ex:'Finishing early, she decided to review her notes.', exJp:'早く終わったので、彼女はノートを見直すことにした。',
+        point:'💡 文頭のing形 → 「〜して/〜しながら/〜したので」！' }
+    ]
+  },
+  {
+    id:'comparison', name:'比較', genre:'比較', icon:'⚖️',
+    bg:'linear-gradient(135deg,#EF4444,#991B1B)', accentColor:'#EF4444',
+    short:'比較級・最上級・同等比較',
+    rules:[
+      { title:'比較級', formula:'形容詞 + er / more + 形容詞 + than',
+        desc:'2つのものを比べて「より〜だ」を表す。',
+        ex:'This laptop is lighter than the previous model.', exJp:'このノートPCは前のモデルより軽い。',
+        point:'💡 than があれば比較級！短い語はer、長い語はmore！' },
+      { title:'最上級', formula:'the + 形容詞 + est / the most + 形容詞',
+        desc:'3つ以上の中で「最も〜だ」を表す。',
+        ex:'She is the most experienced employee in our department.', exJp:'彼女は部門で最も経験豊富な従業員だ。',
+        point:'💡 the + 最上級 はセット！in / of もセットで覚えよう！' },
+      { title:'同等比較', formula:'as + 形容詞 + as / not so[as] + 形容詞 + as',
+        desc:'「同じくらい〜」または「〜ほど...でない」を表す。',
+        ex:'This model is not so efficient as the old one.', exJp:'このモデルは旧型ほど効率的ではない。',
+        point:'💡 not so[as]...as は「〜ほど...でない」！' }
+    ]
+  },
+  {
+    id:'relative', name:'関係詞', genre:'関係詞', icon:'🔗',
+    bg:'linear-gradient(135deg,#6366F1,#3730A3)', accentColor:'#6366F1',
+    short:'who/which/that/whose/whereを使い分ける',
+    rules:[
+      { title:'who（人・主格）', formula:'先行詞（人）+ who + 動詞...',
+        desc:'人を先行詞にとる主格の関係代名詞。後ろに動詞が来る。',
+        ex:'The employee who received the award is Mr. Park.', exJp:'賞を受けた従業員はパークさんです。',
+        point:'💡 先行詞が人 + 後ろに動詞 → who！' },
+      { title:'which / that（物）', formula:'先行詞（物/事）+ which[that] + ...',
+        desc:'物・事を先行詞にとる関係代名詞。主格・目的格どちらも使える。',
+        ex:'The document that you requested has been sent.', exJp:'ご要望の書類を送りました。',
+        point:'💡 先行詞が物 → which か that！口語ではthatが多い！' },
+      { title:'whose（所有格）/ where（場所）', formula:'先行詞 + whose + 名詞 / 場所 + where + 節',
+        desc:'whoseは後ろに名詞が続く。whereは場所を先行詞にとる関係副詞。',
+        ex:'The candidate whose experience matches will be hired.', exJp:'経験が条件に合う候補者が採用される。',
+        point:'💡 空欄の後ろに名詞 → whose！先行詞が場所 → where！' }
+    ]
+  },
+  {
+    id:'passive', name:'受動態', genre:'受動態', icon:'🔃',
+    bg:'linear-gradient(135deg,#EC4899,#9D174D)', accentColor:'#EC4899',
+    short:'be動詞 + 過去分詞で「〜される」',
+    rules:[
+      { title:'受動態の基本', formula:'be動詞 + 過去分詞（+ by ...）',
+        desc:'「〜される・〜された」という受け身を表す。主語が「される側」のとき使う。',
+        ex:'The report is prepared by the team every month.', exJp:'レポートは毎月チームによって作成される。',
+        point:'💡 主語が「される側」なら受動態！by以下は省略も可！' },
+      { title:'受動態の時制変化', formula:'is/are → was/were → has/have been + 過去分詞',
+        desc:'時制に合わせてbe動詞を変化させる。時制の目印に注意。',
+        ex:'The new building was completed last month.', exJp:'新ビルは先月完成した。',
+        point:'💡 last ~ があれば was/were + 過去分詞！' },
+      { title:'be required/expected to', formula:'be required / expected / asked + to do',
+        desc:'TOEICで超頻出の受動態パターン。義務・期待を表す。',
+        ex:'Customers are required to register first.', exJp:'お客様はまず登録することが求められます。',
+        point:'💡 be required/asked/expected to... はTOEIC必須セット！' }
+    ]
+  },
+  {
+    id:'subjunctive', name:'仮定法', genre:null, icon:'💭',
+    bg:'linear-gradient(135deg,#F59E0B,#92400E)', accentColor:'#F59E0B',
+    short:'現実と異なる仮定を表す',
+    rules:[
+      { title:'if 現在形（直接条件）', formula:'If + 現在形, will + 動詞の原形',
+        desc:'現実に起こりうる条件を表す。if節は現在形でも未来の意味。',
+        ex:'If you finish early, you can leave.', exJp:'早く終わったら帰っていいよ。',
+        point:'💡 if節には will を使わない！現在形で未来を表す！' },
+      { title:'仮定法過去', formula:'If + 過去形（were）, would + 動詞の原形',
+        desc:'現在の事実に反する仮定を表す。「もし〜なら（実際はそうでないが）」。',
+        ex:'If I had more time, I would study more.', exJp:'時間がもっとあれば、もっと勉強するのに。',
+        point:'💡 were / had などが出たら仮定法のサイン！' },
+      { title:'shouldを使った仮定法', formula:'should + 動詞の原形 / It is important that S (should) do',
+        desc:'提案・要求・命令の動詞の後の that 節では動詞が原形になる。',
+        ex:'It is necessary that he attend the meeting.', exJp:'彼が会議に出席することが必要だ。',
+        point:'💡 suggest / recommend / require + that + S + 動詞原形！' }
+    ]
+  },
+  {
+    id:'preposition', name:'前置詞', genre:'前置詞', icon:'📍',
+    bg:'linear-gradient(135deg,#14B8A6,#0F766E)', accentColor:'#14B8A6',
+    short:'in / on / at / by / for を使い分ける',
+    rules:[
+      { title:'時間の前置詞', formula:'at（時刻）/ on（日・曜日）/ in（月・年・季節）',
+        desc:'時間の大きさで使い分ける。小さいほどatに近づく。',
+        ex:'The office is closed on national holidays.', exJp:'祝日はオフィスが閉まっています。',
+        point:'💡 at 3pm / on Monday / in January と声に出して覚えよう！' },
+      { title:'by と until', formula:'by = 〜までに（期限）/ until = 〜まで（継続）',
+        desc:'byは締め切り、untilは動作の継続する終点を表す。',
+        ex:'Please submit your application by Friday.', exJp:'金曜日までに申込書を提出してください。',
+        point:'💡 締め切りは by！「ずっと〜まで」は until！' },
+      { title:'for と since', formula:'for + 期間の長さ / since + 起点の時点',
+        desc:'現在完了と一緒に使うことが多い。',
+        ex:'She has worked here for three months.', exJp:'彼女はここで3ヶ月働いている。',
+        point:'💡 for three years / since 2020 をセットで覚えよう！' }
+    ]
+  },
+  {
+    id:'conjunction', name:'接続詞', genre:'接続詞', icon:'➕',
+    bg:'linear-gradient(135deg,#84CC16,#3F6212)', accentColor:'#84CC16',
+    short:'although/because/while/unlessを攻略',
+    rules:[
+      { title:'理由（because/since）', formula:'because / since / as + S + V',
+        desc:'「〜なので・〜だから」という理由を表す。',
+        ex:'The event was postponed because the weather was bad.', exJp:'天気が悪かったのでイベントは延期された。',
+        point:'💡 「なぜなら〜」→ because！文頭にも文中にも使える！' },
+      { title:'逆接（although/while）', formula:'although / even though / while + S + V',
+        desc:'「〜にもかかわらず」という逆接・対比を表す。',
+        ex:'Although it was raining, the event continued.', exJp:'雨が降っていたにもかかわらず、イベントは続いた。',
+        point:'💡 althoughの後は「意外な結果」が続く！however と混同注意！' },
+      { title:'条件（unless/once）', formula:'unless（〜でない限り）/ once（〜したら）',
+        desc:'unlessはif notとほぼ同じ。onceは完了を条件とする。',
+        ex:'The store will remain open unless there is a warning.', exJp:'警報が出ない限り店は営業を続ける。',
+        point:'💡 unless = if not！「〜でない限り」と覚えよう！' }
+    ]
+  },
+  {
+    id:'idioms', name:'TOEIC頻出熟語', genre:'語法', icon:'📚',
+    bg:'linear-gradient(135deg,#D97706,#78350F)', accentColor:'#D97706',
+    short:'覚えれば即得点アップ！',
+    rules:[
+      { title:'look forward to doing', formula:'look forward to + 動名詞（ing形）',
+        desc:'「〜を楽しみにしている」。to は前置詞なのでing形が必要。',
+        ex:'We look forward to hearing from you.', exJp:'ご連絡をお待ちしております。',
+        point:'💡 to の後は動詞の原形ではなくing形！TOEIC超頻出！' },
+      { title:'be responsible for', formula:'be responsible for + 名詞 / doing',
+        desc:'「〜に責任がある・〜を担当している」。ビジネス英語の定番。',
+        ex:'She is responsible for managing the accounts.', exJp:'彼女は経理を担当している。',
+        point:'💡 for の後は名詞かing形！担当・責任の表現！' },
+      { title:'in addition to / as well as', formula:'in addition to + 名詞/doing = 「〜に加えて」',
+        desc:'追加情報を表す。TOEICの接続表現として頻出。',
+        ex:'In addition to English, she speaks French.', exJp:'英語に加えて、彼女はフランス語も話す。',
+        point:'💡 in addition to の後は名詞かing形！' }
+    ]
+  }
+];
+
+let currentDetailCategory = null;
+
+// ===== GRAMMAR LIST RENDER =====
+function renderGrammarList() {
+  const grid = document.getElementById('grammar-grid');
+  const d = getData();
+  grid.innerHTML = '';
+
+  GRAMMAR_CATEGORIES.forEach(cat => {
+    const stats = (d.genreStats || {})[cat.genre] || { correct: 0, total: 0 };
+    const acc = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) : null;
+    const mastery = acc !== null ? Math.min(100, Math.round(acc * 0.7 + (Math.min(stats.total, 20) / 20 * 30))) : 0;
+    const hasQuestions = cat.genre && QUESTIONS.some(q => q.genre === cat.genre);
+
+    const card = document.createElement('div');
+    card.className = 'grammar-card';
+    card.onclick = () => showGrammarDetail(cat.id);
+
+    card.innerHTML = `
+      <div class="grammar-card-header" style="background:${cat.bg}">
+        <div class="grammar-card-icon">${cat.icon}</div>
+        <div class="grammar-card-name">${cat.name}</div>
+        ${!hasQuestions ? `<span class="grammar-card-badge coming">準備中</span>` : (acc !== null ? `<span class="grammar-card-badge">${acc}%</span>` : '')}
+      </div>
+      <div class="grammar-card-body">
+        <div class="grammar-card-short">${cat.short}</div>
+        <div class="grammar-card-meta">
+          <span class="grammar-card-qcount">${hasQuestions ? QUESTIONS.filter(q=>q.genre===cat.genre).length+'問' : '0問'}</span>
+          ${acc !== null ? `<span class="grammar-card-acc" style="background:${cat.accentColor}20;color:${cat.accentColor}">正答率 ${acc}%</span>` : `<span class="grammar-card-acc">未挑戦</span>`}
+        </div>
+        <div class="grammar-card-progress">
+          <div class="grammar-card-progress-fill" style="width:${mastery}%;background:${cat.accentColor}"></div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ===== GRAMMAR DETAIL RENDER =====
+function showGrammarDetail(categoryId) {
+  const cat = GRAMMAR_CATEGORIES.find(c => c.id === categoryId);
+  if (!cat) return;
+  currentDetailCategory = cat;
+
+  // Header
+  document.getElementById('detail-header').style.background = cat.bg;
+  document.getElementById('detail-icon').textContent = cat.icon;
+  document.getElementById('detail-title').textContent = cat.name;
+  document.getElementById('detail-short').textContent = cat.short;
+
+  // Stats from localStorage
+  const d = getData();
+  const stats = (d.genreStats || {})[cat.genre] || { correct: 0, total: 0 };
+  const acc = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) : null;
+  const mastery = acc !== null ? Math.min(100, Math.round(acc * 0.7 + (Math.min(stats.total, 20) / 20 * 30))) : null;
+  document.getElementById('detail-mastery').textContent = mastery !== null ? mastery + '%' : '—';
+  document.getElementById('detail-acc').textContent = acc !== null ? acc + '%' : '—';
+  document.getElementById('detail-clear').textContent = stats.correct || 0;
+
+  // Rules
+  const rulesEl = document.getElementById('detail-rules');
+  rulesEl.innerHTML = '';
+  cat.rules.forEach((rule, i) => {
+    const el = document.createElement('div');
+    el.className = 'rule-card';
+    el.style.borderLeftColor = cat.accentColor;
+    el.style.animationDelay = (i * 0.08) + 's';
+    el.innerHTML = `
+      <div class="rule-number">POINT ${i + 1}</div>
+      <div class="rule-title">${rule.title}</div>
+      <div class="rule-formula">${rule.formula}</div>
+      <div class="rule-desc">${rule.desc}</div>
+      <div class="rule-example-wrap">
+        <div class="rule-example-en">${rule.ex}</div>
+        <div class="rule-example-jp">${rule.exJp}</div>
+      </div>
+      <div class="rule-point">${rule.point}</div>
+    `;
+    rulesEl.appendChild(el);
+  });
+
+  // Practice button
+  const btn = document.getElementById('btn-practice');
+  const hasQ = cat.genre && QUESTIONS.some(q => q.genre === cat.genre);
+  if (hasQ) {
+    btn.classList.remove('disabled');
+    btn.style.background = `linear-gradient(135deg, ${cat.accentColor}, ${cat.bg.match(/#[0-9A-Fa-f]{6}/g)?.[1] || '#1E3A8A'})`;
+    btn.style.color = '#fff';
+    btn.style.boxShadow = `0 4px 18px ${cat.accentColor}55`;
+    btn.textContent = `⚡ この文法を練習する（${QUESTIONS.filter(q=>q.genre===cat.genre).length}問）`;
+    btn.onclick = startFromCategory;
+  } else {
+    btn.classList.add('disabled');
+    btn.style.background = '#F3F4F6';
+    btn.style.color = '#9CA3AF';
+    btn.style.boxShadow = 'none';
+    btn.textContent = '🔜 問題を準備中...';
+    btn.onclick = () => showToast('この文法の問題は近日追加予定です！');
+  }
+
+  showScreen('screen-grammar-detail');
+}
+
+// ===== START FROM CATEGORY =====
+function startFromCategory() {
+  if (!currentDetailCategory || !currentDetailCategory.genre) return;
+  const genre = currentDetailCategory.genre;
+  const pool = QUESTIONS.filter(q => q.genre === genre);
+  if (pool.length === 0) { showToast('この文法の問題は準備中です'); return; }
+  const shuffled = [...pool].sort(() => Math.random() - .5);
+  state.mode = 'normal';
+  state.questions = shuffled.slice(0, 10);
+  state.current = 0;
+  state.correct = 0;
+  state.answered = false;
+  document.getElementById('screen-quiz').classList.remove('review-mode');
+  showScreen('screen-quiz');
+  renderQuestion();
 }
 
 // ===== INIT =====
