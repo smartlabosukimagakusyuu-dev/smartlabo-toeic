@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">70問</span>
+        <span class="tab-count" id="tab-count-all">110問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -1395,6 +1395,287 @@ const QUESTIONS = [
     choices: ['I have seen', 'have I seen', 'I saw', 'did I saw'],
     answer: 'have I seen',
     explain: 'Rarely が文頭に来ると助動詞+主語の倒置が起きる。have I seen が正解。'
+  },
+  // 品詞（追加分）
+  {
+    id: 71, genre: '品詞', level: '初級',
+    q: 'She is a very _______ student.',
+    choices: ['smart', 'smartly', 'smartness', 'smarten'],
+    answer: 'smart',
+    explain: '名詞 student を修飾するのは形容詞。smart が正解。'
+  },
+  {
+    id: 72, genre: '品詞', level: '初級',
+    q: 'He speaks English very _______.',
+    choices: ['good', 'well', 'better', 'best'],
+    answer: 'well',
+    explain: '動詞 speaks を修飾するのは副詞。well（上手に）が正解。good は形容詞。'
+  },
+  {
+    id: 73, genre: '品詞', level: '初級',
+    q: 'The movie was very _______.',
+    choices: ['interest', 'interested', 'interesting', 'interestingly'],
+    answer: 'interesting',
+    explain: '物・事が「面白い」は interesting（形容詞）。人が「興味を持った」は interested。'
+  },
+  {
+    id: 74, genre: '品詞', level: '初級',
+    q: 'She answered the question _______.',
+    choices: ['correct', 'correctly', 'correction', 'corrected'],
+    answer: 'correctly',
+    explain: '動詞 answered を修飾するのは副詞。correctly（正確に）が正解。'
+  },
+  {
+    id: 75, genre: '品詞', level: '初級',
+    q: 'This is an _______ story.',
+    choices: ['excite', 'excited', 'exciting', 'excitement'],
+    answer: 'exciting',
+    explain: '名詞 story を修飾するのは形容詞。物が「わくわくさせる」は exciting。'
+  },
+  {
+    id: 76, genre: '品詞', level: '初級',
+    q: 'He was _______ by the news.',
+    choices: ['surprise', 'surprised', 'surprising', 'surprisingly'],
+    answer: 'surprised',
+    explain: '人が「驚いた」は surprised（過去分詞形の形容詞）。be + surprised が正解。'
+  },
+  {
+    id: 77, genre: '品詞', level: '初級',
+    q: 'She sings very _______.',
+    choices: ['beautiful', 'beauty', 'beautifully', 'beautify'],
+    answer: 'beautifully',
+    explain: '動詞 sings を修飾するのは副詞。beautifully（美しく）が正解。'
+  },
+  {
+    id: 78, genre: '品詞', level: '初級',
+    q: 'The test was too _______.',
+    choices: ['difficulty', 'difficult', 'difficultly', 'differ'],
+    answer: 'difficult',
+    explain: 'be動詞(was)の後ろには形容詞が入る。difficult（難しい）が正解。'
+  },
+  {
+    id: 79, genre: '品詞', level: '初級',
+    q: 'He made a good _______.',
+    choices: ['decide', 'decision', 'decisive', 'deciding'],
+    answer: 'decision',
+    explain: '冠詞 a と形容詞 good の後ろには名詞が入る。decision（決断）が正解。'
+  },
+  {
+    id: 80, genre: '品詞', level: '初級',
+    q: 'She looked at me _______.',
+    choices: ['angry', 'anger', 'angrily', 'angered'],
+    answer: 'angrily',
+    explain: '動詞 looked を修飾するのは副詞。angrily（怒って）が正解。'
+  },
+  {
+    id: 81, genre: '品詞', level: '初級',
+    q: 'This machine is very _______.',
+    choices: ['use', 'useful', 'usefully', 'usage'],
+    answer: 'useful',
+    explain: 'be動詞(is)の後ろには形容詞が入る。useful（便利な）が正解。'
+  },
+  {
+    id: 82, genre: '品詞', level: '初級',
+    q: 'The teacher gave us useful _______.',
+    choices: ['advise', 'advice', 'advisable', 'advising'],
+    answer: 'advice',
+    explain: '形容詞 useful の後ろには名詞が入る。advice（アドバイス）が正解。advise は動詞。'
+  },
+  {
+    id: 83, genre: '品詞', level: '初級',
+    q: 'He completed the task _______.',
+    choices: ['success', 'successful', 'successfully', 'succeed'],
+    answer: 'successfully',
+    explain: '動詞 completed を修飾するのは副詞。successfully（首尾よく）が正解。'
+  },
+  {
+    id: 84, genre: '品詞', level: '初級',
+    q: 'She is very _______ to everyone.',
+    choices: ['kindness', 'kind', 'kindly', 'kinder'],
+    answer: 'kind',
+    explain: 'be動詞(is)の後ろには形容詞が入る。kind（親切な）が正解。'
+  },
+  {
+    id: 85, genre: '品詞', level: '初級',
+    q: 'The company showed rapid _______.',
+    choices: ['grow', 'growth', 'growing', 'grown'],
+    answer: 'growth',
+    explain: '形容詞 rapid の後ろには名詞が入る。growth（成長）が正解。grow は動詞。'
+  },
+  {
+    id: 86, genre: '品詞', level: '中級',
+    q: 'The presentation was extremely _______.',
+    choices: ['effect', 'effective', 'effectively', 'effectiveness'],
+    answer: 'effective',
+    explain: 'be動詞(was)の後ろには形容詞が入る。effective（効果的な）が正解。'
+  },
+  {
+    id: 87, genre: '品詞', level: '中級',
+    q: 'She explained the rule very _______.',
+    choices: ['clear', 'clearly', 'clarity', 'clearness'],
+    answer: 'clearly',
+    explain: '動詞 explained を修飾するのは副詞。clearly（明確に）が正解。'
+  },
+  {
+    id: 88, genre: '品詞', level: '中級',
+    q: 'His _______ surprised everyone.',
+    choices: ['arrive', 'arrival', 'arriving', 'arrived'],
+    answer: 'arrival',
+    explain: '所有格 His の後ろには名詞が入る。arrival（到着）が正解。arrive は動詞。'
+  },
+  {
+    id: 89, genre: '品詞', level: '中級',
+    q: 'The instructions were easy to _______.',
+    choices: ['understanding', 'understand', 'understood', 'understands'],
+    answer: 'understand',
+    explain: 'easy to の後ろには動詞の原形が入る。understand が正解。'
+  },
+  {
+    id: 90, genre: '品詞', level: '中級',
+    q: 'The workers acted very _______ during the emergency.',
+    choices: ['calm', 'calmly', 'calmness', 'calmed'],
+    answer: 'calmly',
+    explain: '動詞 acted を修飾するのは副詞。calmly（冷静に）が正解。'
+  },
+  {
+    id: 91, genre: '品詞', level: '中級',
+    q: 'She gave me a _______ explanation.',
+    choices: ['detail', 'detailed', 'detailly', 'detailing'],
+    answer: 'detailed',
+    explain: '名詞 explanation を修飾するのは形容詞。detailed（詳細な）が正解。'
+  },
+  {
+    id: 92, genre: '品詞', level: '中級',
+    q: 'His speech was very _______.',
+    choices: ['convince', 'convincing', 'convincingly', 'conviction'],
+    answer: 'convincing',
+    explain: 'be動詞の後ろには形容詞が入る。convincing（説得力のある）が正解。'
+  },
+  {
+    id: 93, genre: '品詞', level: '中級',
+    q: 'We need more _______ before making a decision.',
+    choices: ['inform', 'information', 'informative', 'informed'],
+    answer: 'information',
+    explain: '形容詞 more の後ろには名詞が入る。information（情報）が正解。inform は動詞。'
+  },
+  {
+    id: 94, genre: '品詞', level: '中級',
+    q: 'She responded very _______ to the criticism.',
+    choices: ['professional', 'professionally', 'profession', 'professor'],
+    answer: 'professionally',
+    explain: '動詞 responded を修飾するのは副詞。professionally（プロとして）が正解。'
+  },
+  {
+    id: 95, genre: '品詞', level: '中級',
+    q: 'The room was completely _______.',
+    choices: ['silence', 'silent', 'silently', 'silencing'],
+    answer: 'silent',
+    explain: 'be動詞(was)の後ろには形容詞が入る。silent（静かな）が正解。silence は名詞。'
+  },
+  {
+    id: 96, genre: '品詞', level: '中級',
+    q: 'He has great _______ in marketing.',
+    choices: ['experience', 'experienced', 'experiencing', 'experiential'],
+    answer: 'experience',
+    explain: '形容詞 great の後ろには名詞が入る。experience（経験）が正解。'
+  },
+  {
+    id: 97, genre: '品詞', level: '中級',
+    q: 'The manager spoke very _______ about the new policy.',
+    choices: ['confidence', 'confident', 'confidently', 'confidential'],
+    answer: 'confidently',
+    explain: '動詞 spoke を修飾するのは副詞。confidently（自信を持って）が正解。'
+  },
+  {
+    id: 98, genre: '品詞', level: '中級',
+    q: 'This product is highly _______.',
+    choices: ['recommend', 'recommended', 'recommendation', 'recommending'],
+    answer: 'recommended',
+    explain: 'highly（非常に）の後ろは形容詞。受け身の形容詞 recommended（推奨される）が正解。'
+  },
+  {
+    id: 99, genre: '品詞', level: '中級',
+    q: 'Their _______ improved sales significantly.',
+    choices: ['strategic', 'strategy', 'strategically', 'strategist'],
+    answer: 'strategy',
+    explain: '所有格 Their の後ろには名詞が入る。strategy（戦略）が正解。'
+  },
+  {
+    id: 100, genre: '品詞', level: '中級',
+    q: 'The employee handled the complaint _______.',
+    choices: ['effective', 'effectiveness', 'effectively', 'effect'],
+    answer: 'effectively',
+    explain: '動詞 handled を修飾するのは副詞。effectively（効果的に）が正解。'
+  },
+  {
+    id: 101, genre: '品詞', level: '上級',
+    q: 'The CEO made an _______ announcement yesterday.',
+    choices: ['importance', 'important', 'importantly', 'import'],
+    answer: 'important',
+    explain: '名詞 announcement を修飾するのは形容詞。important（重要な）が正解。'
+  },
+  {
+    id: 102, genre: '品詞', level: '上級',
+    q: 'Her explanation was surprisingly _______.',
+    choices: ['persuade', 'persuasion', 'persuasive', 'persuasively'],
+    answer: 'persuasive',
+    explain: 'be動詞の後ろには形容詞が入る。persuasive（説得力のある）が正解。'
+  },
+  {
+    id: 103, genre: '品詞', level: '上級',
+    q: 'The committee reached a _______ acceptable solution.',
+    choices: ['mutual', 'mutually', 'mutuality', 'mutualism'],
+    answer: 'mutually',
+    explain: '形容詞 acceptable を修飾するのは副詞。mutually（互いに）が正解。'
+  },
+  {
+    id: 104, genre: '品詞', level: '上級',
+    q: 'We appreciate your _______ in this matter.',
+    choices: ['cooperate', 'cooperation', 'cooperative', 'cooperatively'],
+    answer: 'cooperation',
+    explain: '所有格 your の後ろには名詞が入る。cooperation（協力）が正解。cooperate は動詞。'
+  },
+  {
+    id: 105, genre: '品詞', level: '上級',
+    q: 'The proposal was financially _______.',
+    choices: ['benefit', 'beneficial', 'beneficially', 'beneficiary'],
+    answer: 'beneficial',
+    explain: 'be動詞の後ろには形容詞が入る。beneficial（有益な）が正解。'
+  },
+  {
+    id: 106, genre: '品詞', level: '上級',
+    q: 'She reacted _______ to the unexpected news.',
+    choices: ['emotion', 'emotional', 'emotionally', 'emotions'],
+    answer: 'emotionally',
+    explain: '動詞 reacted を修飾するのは副詞。emotionally（感情的に）が正解。'
+  },
+  {
+    id: 107, genre: '品詞', level: '上級',
+    q: 'The new policy created considerable _______ among employees.',
+    choices: ['confuse', 'confused', 'confusion', 'confusing'],
+    answer: 'confusion',
+    explain: '形容詞 considerable の後ろには名詞が入る。confusion（混乱）が正解。'
+  },
+  {
+    id: 108, genre: '品詞', level: '上級',
+    q: 'His comments were highly _______.',
+    choices: ['critic', 'critical', 'critically', 'criticism'],
+    answer: 'critical',
+    explain: 'be動詞の後ろには形容詞が入る。critical（批判的な／重要な）が正解。'
+  },
+  {
+    id: 109, genre: '品詞', level: '上級',
+    q: 'The data was analyzed very _______.',
+    choices: ['accurate', 'accuracy', 'accurately', 'accurateness'],
+    answer: 'accurately',
+    explain: '動詞 analyzed を修飾するのは副詞。accurately（正確に）が正解。'
+  },
+  {
+    id: 110, genre: '品詞', level: '上級',
+    q: 'Their sudden _______ shocked the entire office.',
+    choices: ['resign', 'resigned', 'resignation', 'resigning'],
+    answer: 'resignation',
+    explain: '形容詞 sudden の後ろには名詞が入る。resignation（辞任）が正解。resign は動詞。'
   }
 ];
 
