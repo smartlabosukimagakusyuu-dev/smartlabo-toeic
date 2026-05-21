@@ -261,6 +261,7 @@
   }
   .timer-arc.warning { stroke: var(--gold); }
   .timer-arc.danger { stroke: var(--red); }
+  .timer-arc.expired { stroke: var(--red); stroke-dashoffset: 138; }
   .timer-num {
     position: absolute;
     inset: 0;
@@ -271,6 +272,8 @@
     font-weight: 800;
     color: white;
   }
+  .timer-num.expired { animation: timerPulse .6s ease-in-out infinite; font-size: 16px; }
+  @keyframes timerPulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
 
   .quiz-question-card {
     background: var(--white);
@@ -4885,6 +4888,7 @@ let state = {
   current: 0,
   correct: 0,
   answered: false,
+  timeUp: false,        // true when timer expired but user hasn't answered yet
   timerInterval: null,
   timerSec: 3,
   sessionStreak: 0,     // consecutive correct in this session
@@ -5103,6 +5107,7 @@ function renderQuestion() {
   }
   const q = state.questions[state.current];
   state.answered = false;
+  state.timeUp = false;
 
   // Header
   document.getElementById('quiz-progress').textContent = `${state.current + 1} / ${state.questions.length}`;
@@ -5166,14 +5171,9 @@ function startTimer(q, choices) {
     if (state.timerSec <= 0) {
       clearInterval(state.timerInterval);
       if (!state.answered) {
-        state.answered = true;
-        state.sessionStreak = 0;
-        const btns = document.querySelectorAll('.choice-btn');
-        btns.forEach((btn, i) => {
-          btn.disabled = true;
-          if (choices[i] === q.answer) btn.classList.add('reveal');
-        });
-        showFeedback(null, q, undefined, 0);
+        // Time expired — show expired UI but keep buttons enabled so user can still answer
+        state.timeUp = true;
+        updateTimerUI(0);
       }
     }
   }, 1000);
@@ -5184,10 +5184,21 @@ function updateTimerUI(sec) {
   const num = document.getElementById('timer-num');
   const circumference = 138;
   const total = getTimerSeconds();
+
+  if (state.timeUp) {
+    arc.classList.remove('warning', 'danger');
+    arc.classList.add('expired');
+    num.textContent = '⏰';
+    num.classList.add('expired');
+    arc.style.strokeDashoffset = circumference; // empty ring
+    return;
+  }
+
   const pct = sec / total;
   arc.style.strokeDashoffset = circumference * (1 - pct);
   num.textContent = Math.max(0, sec);
-  arc.classList.remove('warning', 'danger');
+  num.classList.remove('expired');
+  arc.classList.remove('warning', 'danger', 'expired');
   if (sec <= Math.ceil(total * 0.3)) arc.classList.add('warning');
   if (sec <= Math.ceil(total * 0.15)) arc.classList.add('danger');
 }
@@ -5200,6 +5211,7 @@ function selectAnswer(chosen, q, shuffledChoices) {
 
   const elapsed = ((Date.now() - state.questionStartTime) / 1000).toFixed(1);
   const isCorrect = chosen === q.answer;
+  const timeUp = state.timeUp;
 
   const btns = document.querySelectorAll('.choice-btn');
   btns.forEach((btn, i) => {
@@ -5213,33 +5225,38 @@ function selectAnswer(chosen, q, shuffledChoices) {
     }
   });
 
-  // EXP
-  const expGain = calcExpGain(isCorrect);
-  const isBonus = state.sessionStreak === 5;
+  // EXP (reduced if time already expired)
+  const expGain = calcExpGain(isCorrect, timeUp);
+  const isBonus = !timeUp && state.sessionStreak === 5;
   if (expGain > 0) {
     addExp(expGain);
     showExpPopup(expGain, isBonus, window.innerWidth * 0.75, 160);
-    if (parseFloat(elapsed) <= 5 && isCorrect) {
+    // No speed flash for overtime answers
+    if (!timeUp && parseFloat(elapsed) <= 5 && isCorrect) {
       showSpeedFlash(parseFloat(elapsed) <= 2 ? '⚡ 秒速正解！' : '✨ 速い！正解！');
     }
   }
 
-  showFeedback(isCorrect ? chosen : null, q, elapsed, expGain);
+  showFeedback(isCorrect ? chosen : null, q, elapsed, expGain, timeUp);
   saveAnswer(isCorrect, q);
 }
 
-function showFeedback(chosen, q, elapsed, expGain) {
+function showFeedback(chosen, q, elapsed, expGain, timeUp) {
   const isCorrect = chosen !== null;
-  const isTimeUp = chosen === null && elapsed === undefined;
   const fb = document.getElementById('feedback-card');
   fb.className = 'feedback-card show ' + (isCorrect ? 'correct' : 'wrong');
 
   // Header: result + time badge
-  let headerHTML = isCorrect ? '⭕ 正解！' : (isTimeUp ? '⏰ 時間切れ！' : '✖ 惜しい！');
+  let headerHTML;
+  if (timeUp) {
+    headerHTML = isCorrect ? '⏰ 時間オーバー正解！' : '⏰ 時間オーバー・不正解';
+  } else {
+    headerHTML = isCorrect ? '⭕ 正解！' : '✖ 惜しい！';
+  }
   let timeBadgeHTML = '';
   if (elapsed !== undefined) {
-    if (isTimeUp) {
-      timeBadgeHTML = `<span class="timeup-badge">TIME UP!</span>`;
+    if (timeUp) {
+      timeBadgeHTML = `<span class="timeup-badge">⏰ TIME OVER</span>`;
     } else {
       timeBadgeHTML = `<span class="answer-time-badge">⏱ ${elapsed}秒</span>`;
     }
@@ -5269,24 +5286,25 @@ function showFeedback(chosen, q, elapsed, expGain) {
   }
 
   // Wrong/correct list notice
-  if (!isCorrect && !isTimeUp) {
+  if (!isCorrect) {
     const wrongNote = document.createElement('div');
     wrongNote.className = 'fb-wrong-added';
     wrongNote.textContent = '📌 復習リストに追加しました';
     explainEl.appendChild(wrongNote);
-  } else if (isCorrect) {
-    const d = getData();
-    const wasWrong = (d.wrongIds || []).includes(q.id);
-    // Note: saveAnswer already removed it, so check before it was removed
   }
 
   // EXP gain row
   if (expGain > 0) {
     const expRow = document.createElement('div');
     expRow.className = 'exp-gain-row';
-    let badges = `<span class="exp-badge">⚡ 秒速正解！ +${expGain} EXP</span>`;
-    if (state.sessionStreak >= 2) badges += `<span class="streak-badge">🔥 ${state.sessionStreak}連続正解</span>`;
-    if (state.sessionStreak === 5) badges += `<span class="bonus-badge">🌟 5連続ボーナス！</span>`;
+    let badges;
+    if (timeUp) {
+      badges = `<span class="exp-badge" style="background:#F59E0B20;color:#B45309;">⏰ 時間オーバー +${expGain} EXP</span>`;
+    } else {
+      badges = `<span class="exp-badge">⚡ 秒速正解！ +${expGain} EXP</span>`;
+      if (state.sessionStreak >= 2) badges += `<span class="streak-badge">🔥 ${state.sessionStreak}連続正解</span>`;
+      if (state.sessionStreak === 5) badges += `<span class="bonus-badge">🌟 5連続ボーナス！</span>`;
+    }
     expRow.innerHTML = badges;
     explainEl.appendChild(expRow);
   }
@@ -5354,8 +5372,13 @@ function saveAnswer(isCorrect, q) {
 }
 
 // ===== EXP SYSTEM =====
-function calcExpGain(isCorrect) {
+function calcExpGain(isCorrect, timeUp) {
   if (!isCorrect) { state.sessionStreak = 0; return 0; }
+  if (timeUp) {
+    // Correct but after time expired: reduced EXP, no streak bonus, reset streak
+    state.sessionStreak = 0;
+    return 5;
+  }
   state.sessionStreak++;
   let exp = state.sessionStreak >= 2 ? 15 : 10;
   let bonus = 0;
