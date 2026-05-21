@@ -667,6 +667,59 @@
     cursor: not-allowed;
     box-shadow: none;
   }
+
+  /* ===== QUIZ STATUS BAR ===== */
+  .quiz-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 20px 0;
+    font-size: 12px;
+    color: rgba(255,255,255,.85);
+    gap: 8px;
+  }
+  .quiz-status-correct { font-weight: 800; color: #4ADE80; font-size: 13px; }
+  .quiz-status-acc { font-weight: 700; }
+  .quiz-status-level { background: rgba(255,255,255,.2); padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+
+  /* ===== SPEED ELEMENTS ===== */
+  .speed-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 0; }
+  .speed-label { font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: .3px; }
+
+  /* ===== ANSWER TIME ===== */
+  .answer-time-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .answer-time-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--navy); color: #fff; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; }
+  .timeup-badge { background: var(--red); color: #fff; font-size: 14px; font-weight: 900; padding: 4px 12px; border-radius: 20px; letter-spacing: 1px; }
+
+  /* ===== EXP ===== */
+  @keyframes expPop {
+    0% { opacity: 0; transform: translateY(0) scale(.8); }
+    25% { opacity: 1; transform: translateY(-28px) scale(1.15); }
+    65% { opacity: 1; transform: translateY(-40px) scale(1); }
+    100% { opacity: 0; transform: translateY(-60px); }
+  }
+  .exp-popup { position: fixed; font-size: 18px; font-weight: 900; color: var(--gold); text-shadow: 0 2px 6px rgba(0,0,0,.25); pointer-events: none; z-index: 9998; animation: expPop 1s ease forwards; }
+  .exp-gain-row { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,.08); flex-wrap: wrap; }
+  .exp-badge { background: linear-gradient(135deg, var(--gold), #F97316); color: #fff; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+  .streak-badge { background: linear-gradient(135deg, #EF4444, #B91C1C); color: #fff; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+  .bonus-badge { background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: #fff; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+
+  /* ===== SPEED CORRECT FLASH ===== */
+  @keyframes speedFlash {
+    0% { opacity: 0; transform: translate(-50%,-50%) scale(.7); }
+    20% { opacity: 1; transform: translate(-50%,-50%) scale(1.1); }
+    60% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(.9); }
+  }
+  .speed-correct-flash { position: fixed; top: 40%; left: 50%; transform: translate(-50%,-50%); background: linear-gradient(135deg, #10B981, #047857); color: #fff; font-size: 20px; font-weight: 900; padding: 14px 28px; border-radius: 20px; pointer-events: none; z-index: 9997; box-shadow: 0 8px 32px rgba(16,185,129,.5); animation: speedFlash .85s ease forwards; letter-spacing: .5px; }
+
+  /* ===== TODAY QUIZ BUTTON ===== */
+  .btn-today { background: linear-gradient(135deg, #10B981 0%, #047857 100%); color: #fff; border: none; border-radius: var(--radius-sm); padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(16,185,129,.35); transition: transform .1s, box-shadow .1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-today:active { transform: scale(.97); box-shadow: none; }
+
+  /* ===== WEAK REVIEW BUTTON ===== */
+  .btn-weak { background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(239,68,68,.3); transition: transform .1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-weak:active { transform: scale(.97); }
 </style>
 </head>
 <body>
@@ -736,8 +789,9 @@
     </div>
 
     <div class="home-btns">
+      <button class="btn-today" onclick="startTodayQuiz()">📅 今日の10問（全ジャンルランダム）</button>
       <button class="btn-primary" id="btn-start" onclick="startNormal()">⚡ 学習を始める</button>
-      <button class="btn-review" id="btn-review-home" onclick="startReview()">🔄 間違えた問題を復習</button>
+      <button class="btn-weak" id="btn-review-home" onclick="startReview()" style="display:none">❌ 苦手復習</button>
       <button class="btn-secondary" onclick="showScreen('screen-analysis')">📊 弱点分析を見る</button>
     </div>
   </div>
@@ -751,6 +805,11 @@
       </div>
       <div class="quiz-progress-bar">
         <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="quiz-status-bar">
+        <span class="quiz-status-correct" id="quiz-status-correct">✅ 正解 0</span>
+        <span class="quiz-status-acc" id="quiz-status-acc">正答率 —</span>
+        <span class="quiz-status-level" id="quiz-status-level">全問題</span>
       </div>
       <div class="timer-wrap">
         <div class="timer-ring">
@@ -4553,14 +4612,16 @@ const GENRE_COLORS = {
 
 // ===== STATE =====
 let state = {
-  mode: 'normal', // 'normal' | 'review'
+  mode: 'normal', // 'normal' | 'review' | 'genre' | 'today'
   selectedLevel: 'all', // 'all' | '初級' | '中級' | '上級'
   questions: [],
   current: 0,
   correct: 0,
   answered: false,
   timerInterval: null,
-  timerSec: 3
+  timerSec: 3,
+  sessionStreak: 0,     // consecutive correct in this session
+  questionStartTime: 0  // timestamp when question was shown
 };
 
 // ===== STORAGE =====
@@ -4582,7 +4643,8 @@ const STORE = {
       streak: 0,
       lastDate: null,
       todayCount: 0,
-      todayDate: null
+      todayDate: null,
+      exp: 0              // experience points
     };
   },
   get() {
@@ -4639,12 +4701,22 @@ function selectLevelTab(level) {
   document.getElementById('btn-start').textContent = `⚡ ${level === 'all' ? '全問題' : level}を学習する（${count}問）`;
 }
 
-// ===== LEVEL =====
-function getLevel(totalCorrect) {
-  if (totalCorrect < 10) return { lv: 1, name: 'Lv.1 TOEIC初心者', icon: '🌱', next: 10, min: 0 };
-  if (totalCorrect < 30) return { lv: 2, name: 'Lv.2 Part5練習中', icon: '📚', next: 30, min: 10 };
-  if (totalCorrect < 60) return { lv: 3, name: 'Lv.3 TOEIC600挑戦', icon: '🎯', next: 60, min: 30 };
-  return { lv: 4, name: 'Lv.4 文法マスター', icon: '🏆', next: null, min: 60 };
+// ===== LEVEL (EXP-based) =====
+const EXP_TABLE = [
+  { lv: 1, name: 'Lv.1 TOEIC初心者',   icon: '🌱', min: 0,    max: 100  },
+  { lv: 2, name: 'Lv.2 Part5練習中',   icon: '📚', min: 100,  max: 300  },
+  { lv: 3, name: 'Lv.3 TOEIC600挑戦',  icon: '🎯', min: 300,  max: 600  },
+  { lv: 4, name: 'Lv.4 TOEIC730突破',  icon: '🏅', min: 600,  max: 1000 },
+  { lv: 5, name: 'Lv.5 文法マスター',   icon: '🏆', min: 1000, max: null }
+];
+function getLevel(exp) {
+  for (let i = EXP_TABLE.length - 1; i >= 0; i--) {
+    if (exp >= EXP_TABLE[i].min) {
+      const t = EXP_TABLE[i];
+      return { lv: t.lv, name: t.name, icon: t.icon, next: t.max, min: t.min };
+    }
+  }
+  return { lv: 1, name: EXP_TABLE[0].name, icon: EXP_TABLE[0].icon, next: 100, min: 0 };
 }
 
 // ===== HOME RENDER =====
@@ -4659,16 +4731,17 @@ function renderHome() {
   document.getElementById('stat-acc').textContent = acc;
   document.getElementById('stat-streak').textContent = d.streak;
 
-  const lv = getLevel(d.totalCorrect);
+  const exp = d.exp || 0;
+  const lv = getLevel(exp);
   document.getElementById('level-icon').textContent = lv.icon;
   document.getElementById('level-name').textContent = lv.name;
   if (lv.next) {
-    const remain = lv.next - d.totalCorrect;
-    document.getElementById('level-sub').textContent = `次のレベルまで あと${remain}問正解`;
-    const pct = ((d.totalCorrect - lv.min) / (lv.next - lv.min) * 100).toFixed(0);
+    const remain = lv.next - exp;
+    document.getElementById('level-sub').textContent = `${exp} / ${lv.next} EXP　次のレベルまで ${remain} EXP`;
+    const pct = ((exp - lv.min) / (lv.next - lv.min) * 100).toFixed(0);
     document.getElementById('level-bar').style.width = pct + '%';
   } else {
-    document.getElementById('level-sub').textContent = '最高レベル達成！おめでとう🎉';
+    document.getElementById('level-sub').textContent = `${exp} EXP 　最高レベル達成！🎉`;
     document.getElementById('level-bar').style.width = '100%';
   }
 
@@ -4685,7 +4758,7 @@ function renderHome() {
   const btn = document.getElementById('btn-review-home');
   if (d.wrongIds && d.wrongIds.length > 0) {
     btn.style.display = '';
-    btn.textContent = `🔄 間違えた問題を復習（${d.wrongIds.length}問）`;
+    btn.innerHTML = `❌ 苦手復習（${d.wrongIds.length}問）`;
   } else {
     btn.style.display = 'none';
   }
@@ -4702,6 +4775,21 @@ function startNormal() {
   state.current = 0;
   state.correct = 0;
   state.answered = false;
+  state.sessionStreak = 0;
+  document.getElementById('screen-quiz').classList.remove('review-mode');
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+// ===== TODAY'S QUIZ (10 random from all genres) =====
+function startTodayQuiz() {
+  const shuffled = [...QUESTIONS].sort(() => Math.random() - .5);
+  state.mode = 'today';
+  state.questions = shuffled.slice(0, 10);
+  state.current = 0;
+  state.correct = 0;
+  state.answered = false;
+  state.sessionStreak = 0;
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
@@ -4721,6 +4809,7 @@ function startReview() {
   state.current = 0;
   state.correct = 0;
   state.answered = false;
+  state.sessionStreak = 0;
   document.getElementById('screen-quiz').classList.add('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
@@ -4741,9 +4830,20 @@ function renderQuestion() {
   const pct = (state.current / state.questions.length * 100).toFixed(0);
   document.getElementById('quiz-progress-fill').style.width = pct + '%';
 
-  // Question text — replace blank
+  // Status bar
+  const acc = state.current > 0 ? Math.round(state.correct / state.current * 100) : null;
+  document.getElementById('quiz-status-correct').textContent = `✅ 正解 ${state.correct}`;
+  document.getElementById('quiz-status-acc').textContent = acc !== null ? `正答率 ${acc}%` : '正答率 —';
+  document.getElementById('quiz-status-level').textContent = q.level || (state.mode === 'today' ? '今日の10問' : state.mode === 'review' ? '苦手復習' : '全問題');
+
+  // Start timing
+  state.questionStartTime = Date.now();
+
+  // Question text — replace blank (add speed header)
+  const timerSecs = getTimerSeconds();
   const qText = q.q.replace('_______', '<span class="blank">  ？  </span>');
-  document.getElementById('quiz-question').innerHTML = qText;
+  document.getElementById('quiz-question').innerHTML =
+    `<div class="speed-header"><span class="speed-label">⚡ ${timerSecs}秒で見抜け！</span><span style="font-size:11px;color:var(--gray);">${q.level || ''}</span></div>${qText}`;
 
   // Choices — shuffle
   const choices = [...q.choices].sort(() => Math.random() - .5);
@@ -4770,8 +4870,8 @@ function renderQuestion() {
 // ===== TIMER =====
 function getTimerSeconds() {
   const d = getData();
-  const lv = getLevel(d.totalCorrect).lv;
-  return { 1: 20, 2: 15, 3: 12, 4: 10 }[lv] || 15;
+  const lv = getLevel(d.exp || 0).lv;
+  return { 1: 20, 2: 18, 3: 15, 4: 12, 5: 10 }[lv] || 15;
 }
 
 function startTimer(q, choices) {
@@ -4786,8 +4886,14 @@ function startTimer(q, choices) {
     if (state.timerSec <= 0) {
       clearInterval(state.timerInterval);
       if (!state.answered) {
-        // Time up — auto skip
-        showFeedback(null, q);
+        state.answered = true;
+        state.sessionStreak = 0;
+        const btns = document.querySelectorAll('.choice-btn');
+        btns.forEach((btn, i) => {
+          btn.disabled = true;
+          if (choices[i] === q.answer) btn.classList.add('reveal');
+        });
+        showFeedback(null, q, undefined, 0);
       }
     }
   }, 1000);
@@ -4812,10 +4918,10 @@ function selectAnswer(chosen, q, shuffledChoices) {
   state.answered = true;
   clearInterval(state.timerInterval);
 
-  const labels = ['A', 'B', 'C', 'D'];
-  const btns = document.querySelectorAll('.choice-btn');
+  const elapsed = ((Date.now() - state.questionStartTime) / 1000).toFixed(1);
   const isCorrect = chosen === q.answer;
 
+  const btns = document.querySelectorAll('.choice-btn');
   btns.forEach((btn, i) => {
     const val = shuffledChoices[i];
     btn.disabled = true;
@@ -4827,22 +4933,61 @@ function selectAnswer(chosen, q, shuffledChoices) {
     }
   });
 
-  showFeedback(isCorrect ? chosen : null, q);
+  // EXP
+  const expGain = calcExpGain(isCorrect);
+  const isBonus = state.sessionStreak === 5;
+  if (expGain > 0) {
+    addExp(expGain);
+    showExpPopup(expGain, isBonus, window.innerWidth * 0.75, 160);
+    if (parseFloat(elapsed) <= 5 && isCorrect) {
+      showSpeedFlash(parseFloat(elapsed) <= 2 ? '⚡ 秒速正解！' : '✨ 速い！正解！');
+    }
+  }
+
+  showFeedback(isCorrect ? chosen : null, q, elapsed, expGain);
   saveAnswer(isCorrect, q);
 }
 
-function showFeedback(chosen, q) {
+function showFeedback(chosen, q, elapsed, expGain) {
   const isCorrect = chosen !== null;
+  const isTimeUp = chosen === null && elapsed === undefined;
   const fb = document.getElementById('feedback-card');
   fb.className = 'feedback-card show ' + (isCorrect ? 'correct' : 'wrong');
 
-  document.getElementById('feedback-header').innerHTML =
-    isCorrect ? '⭕ 正解！' : (chosen === null ? '⏰ 時間切れ！' : '✖ 惜しい！');
+  // Header: result + time badge
+  let headerHTML = isCorrect ? '⭕ 正解！' : (isTimeUp ? '⏰ 時間切れ！' : '✖ 惜しい！');
+  let timeBadgeHTML = '';
+  if (elapsed !== undefined) {
+    if (isTimeUp) {
+      timeBadgeHTML = `<span class="timeup-badge">TIME UP!</span>`;
+    } else {
+      timeBadgeHTML = `<span class="answer-time-badge">⏱ ${elapsed}秒</span>`;
+    }
+  }
+  document.getElementById('feedback-header').innerHTML = headerHTML;
 
+  // Answer
   document.getElementById('feedback-answer').innerHTML =
-    `正解：<strong>${q.answer}</strong>`;
+    timeBadgeHTML + `正解：<strong>${q.answer}</strong>`;
 
-  document.getElementById('feedback-explain-text').textContent = q.explain;
+  // Explain
+  const explainEl = document.getElementById('feedback-explain-text');
+  explainEl.innerHTML = '';
+  const reasonDiv = document.createElement('div');
+  reasonDiv.style.cssText = 'font-size:13px;color:#374151;line-height:1.6;';
+  reasonDiv.textContent = q.explain;
+  explainEl.appendChild(reasonDiv);
+
+  // EXP gain row
+  if (expGain > 0) {
+    const expRow = document.createElement('div');
+    expRow.className = 'exp-gain-row';
+    let badges = `<span class="exp-badge">+${expGain} EXP</span>`;
+    if (state.sessionStreak >= 2) badges += `<span class="streak-badge">🔥 ${state.sessionStreak}連続正解</span>`;
+    if (state.sessionStreak === 5) badges += `<span class="bonus-badge">🌟 5連続ボーナス！</span>`;
+    expRow.innerHTML = badges;
+    explainEl.appendChild(expRow);
+  }
 
   document.getElementById('btn-next').classList.add('show');
 
@@ -4897,6 +5042,42 @@ function saveAnswer(isCorrect, q) {
   }
 
   saveData(d);
+}
+
+// ===== EXP SYSTEM =====
+function calcExpGain(isCorrect) {
+  if (!isCorrect) { state.sessionStreak = 0; return 0; }
+  state.sessionStreak++;
+  let exp = state.sessionStreak >= 2 ? 15 : 10;
+  let bonus = 0;
+  if (state.sessionStreak === 5) bonus = 30;
+  return exp + bonus;
+}
+
+function addExp(gain) {
+  if (gain <= 0) return;
+  const d = getData();
+  d.exp = (d.exp || 0) + gain;
+  saveData(d);
+}
+
+function showExpPopup(gain, isBonus, x, y) {
+  if (gain <= 0) return;
+  const el = document.createElement('div');
+  el.className = 'exp-popup';
+  el.textContent = isBonus ? `⭐ +${gain} EXP BONUS!` : `+${gain} EXP`;
+  el.style.left = (x || window.innerWidth / 2) + 'px';
+  el.style.top = (y || 200) + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1100);
+}
+
+function showSpeedFlash(text) {
+  const el = document.createElement('div');
+  el.className = 'speed-correct-flash';
+  el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 900);
 }
 
 // ===== NEXT QUESTION =====
@@ -5642,11 +5823,12 @@ function startFromCategory() {
   const pool = QUESTIONS.filter(q => q.genre === genre);
   if (pool.length === 0) { showToast('この文法の問題は準備中です'); return; }
   const shuffled = [...pool].sort(() => Math.random() - .5);
-  state.mode = 'normal';
-  state.questions = shuffled.slice(0, 10);
+  state.mode = 'genre';
+  state.questions = shuffled.slice(0, Math.min(pool.length, 15));
   state.current = 0;
   state.correct = 0;
   state.answered = false;
+  state.sessionStreak = 0;
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
