@@ -725,28 +725,47 @@
   .nav-btn.active .nav-icon { transform: scale(1.1); }
   .nav-btn:active { opacity: .7; }
 
-  /* ===== GRAMMAR CARD PRACTICE BUTTON ===== */
-  .grammar-card-practice {
-    display: block;
-    width: calc(100% - 16px);
-    margin: 0 8px 10px;
-    padding: 8px 4px;
-    background: rgba(255,255,255,.18);
+  /* ===== GRAMMAR CARD ACTION FOOTER ===== */
+  .grammar-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #F0F4FF;
+  }
+  .grammar-card-btn-point {
+    padding: 10px 4px;
+    border: none;
+    background: #F8FAFF;
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    border-right: 1px solid #F0F4FF;
+    border-radius: 0 0 0 18px;
+    transition: background .15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    letter-spacing: .2px;
+  }
+  .grammar-card-btn-point:active { background: #E0E7FF; transform: scale(.97); }
+  .grammar-card-btn-practice {
+    padding: 10px 4px;
+    border: none;
     color: #fff;
-    border: 1.5px solid rgba(255,255,255,.45);
-    border-radius: 10px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
     cursor: pointer;
-    text-align: center;
-    transition: background .15s, transform .1s;
+    border-radius: 0 0 18px 0;
+    transition: opacity .15s, transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
     letter-spacing: .2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
-  .grammar-card-practice:active { transform: scale(.97); background: rgba(255,255,255,.3); }
-  .grammar-card-practice.disabled { opacity: .45; cursor: not-allowed; }
+  .grammar-card-btn-practice:active { opacity: .8; transform: scale(.97); }
+  .grammar-card-btn-practice.disabled { opacity: .4; cursor: not-allowed; }
 
   /* ===== FEEDBACK SECTIONS ===== */
   .fb-section { margin-top: 8px; }
@@ -6144,7 +6163,6 @@ function renderGrammarList() {
 
     const card = document.createElement('div');
     card.className = 'grammar-card';
-    card.onclick = () => showGrammarDetail(cat.id);
 
     const qCount = hasQuestions ? QUESTIONS.filter(q=>q.genre===cat.genre).length : 0;
     card.innerHTML = `
@@ -6152,9 +6170,6 @@ function renderGrammarList() {
         <div class="grammar-card-icon">${cat.icon}</div>
         <div class="grammar-card-name">${cat.name}</div>
         ${!hasQuestions ? `<span class="grammar-card-badge coming">準備中</span>` : (acc !== null ? `<span class="grammar-card-badge">${acc}%</span>` : '')}
-        ${hasQuestions
-          ? `<button class="grammar-card-practice" onclick="event.stopPropagation();startGenreQuiz('${cat.genre}')">⚡ 練習する（${qCount}問）</button>`
-          : `<button class="grammar-card-practice disabled" disabled>🔜 準備中</button>`}
       </div>
       <div class="grammar-card-body">
         <div class="grammar-card-short">${cat.short}</div>
@@ -6167,6 +6182,12 @@ function renderGrammarList() {
         <div class="grammar-card-progress">
           <div class="grammar-card-progress-fill" style="width:${mastery}%;background:${cat.accentColor}"></div>
         </div>
+      </div>
+      <div class="grammar-card-actions">
+        <button class="grammar-card-btn-point" onclick="showGrammarDetail('${cat.id}')">📖 ポイント</button>
+        ${hasQuestions
+          ? `<button class="grammar-card-btn-practice" style="background:${cat.accentColor}" onclick="startGenreQuiz('${cat.genre}')">⚡ 練習する</button>`
+          : `<button class="grammar-card-btn-practice disabled" style="background:#9CA3AF" disabled>🔜 準備中</button>`}
       </div>
     `;
     grid.appendChild(card);
