@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">230問</span>
+        <span class="tab-count" id="tab-count-all">270問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -2519,6 +2519,289 @@ const QUESTIONS = [
     choices: ['drain', 'draining', 'drained', 'drainage'],
     answer: 'drained',
     explain: '人が「エネルギーを使い果たした」は -ed 形。drained = 「消耗した・疲れ果てた」。'
+  },
+  // ===== 比較 初級 (id 231-245) =====
+  {
+    id: 231, genre: '比較', level: '初級',
+    q: 'This bag is ___ than mine.',
+    choices: ['expensive', 'more expensive', 'most expensive', 'as expensive'],
+    answer: 'more expensive',
+    explain: 'than があるので比較級。expensive は長い形容詞なので more を使う。'
+  },
+  {
+    id: 232, genre: '比較', level: '初級',
+    q: 'She is ___ student in the class.',
+    choices: ['smart', 'smarter', 'smartest', 'the smartest'],
+    answer: 'the smartest',
+    explain: 'in the class があるので最上級。the + 最上級の形。'
+  },
+  {
+    id: 233, genre: '比較', level: '初級',
+    q: 'Tom is as ___ as his brother.',
+    choices: ['tall', 'taller', 'tallest', 'the tallest'],
+    answer: 'tall',
+    explain: 'as ... as の原級比較。間には形容詞の原形を入れる。'
+  },
+  {
+    id: 234, genre: '比較', level: '初級',
+    q: 'This test is ___ than the last one.',
+    choices: ['easy', 'easier', 'easiest', 'more easiest'],
+    answer: 'easier',
+    explain: 'easy の比較級は easier（y → i + er）。'
+  },
+  {
+    id: 235, genre: '比較', level: '初級',
+    q: 'He runs ___ than me.',
+    choices: ['fast', 'faster', 'fastest', 'more fast'],
+    answer: 'faster',
+    explain: 'than があるので比較級。fast → faster。'
+  },
+  {
+    id: 236, genre: '比較', level: '初級',
+    q: 'This is the ___ movie I have ever seen.',
+    choices: ['funny', 'funnier', 'funniest', 'the funniest'],
+    answer: 'the funniest',
+    explain: 'ever seen があるので最上級。the funniest が正解。'
+  },
+  {
+    id: 237, genre: '比較', level: '初級',
+    q: 'My car is ___ yours.',
+    choices: ['as big as', 'bigger', 'biggest', 'more big'],
+    answer: 'as big as',
+    explain: 'as ... as の形。「あなたのと同じくらい大きい」。'
+  },
+  {
+    id: 238, genre: '比較', level: '初級',
+    q: 'She studies ___ than her classmates.',
+    choices: ['hard', 'harder', 'hardest', 'more hard'],
+    answer: 'harder',
+    explain: 'hard の比較級は harder。than があるので比較級。'
+  },
+  {
+    id: 239, genre: '比較', level: '初級',
+    q: 'Winter is the ___ season for me.',
+    choices: ['cold', 'colder', 'coldest', 'more cold'],
+    answer: 'coldest',
+    explain: 'the + 最上級。cold → coldest。'
+  },
+  {
+    id: 240, genre: '比較', level: '初級',
+    q: 'This problem is ___ than I expected.',
+    choices: ['difficult', 'more difficult', 'most difficult', 'difficulter'],
+    answer: 'more difficult',
+    explain: '長い形容詞は more を使って比較級にする。'
+  },
+  {
+    id: 241, genre: '比較', level: '初級',
+    q: 'He is one of the ___ players on the team.',
+    choices: ['good', 'better', 'best', 'well'],
+    answer: 'best',
+    explain: 'one of the + 最上級。good の最上級は best。'
+  },
+  {
+    id: 242, genre: '比較', level: '初級',
+    q: 'Your English is getting ___.',
+    choices: ['good', 'better', 'best', 'more good'],
+    answer: 'better',
+    explain: '比較級で変化・改善を表す。good の比較級は better。'
+  },
+  {
+    id: 243, genre: '比較', level: '初級',
+    q: 'This book is not as ___ as that one.',
+    choices: ['interesting', 'more interesting', 'most interesting', 'interest'],
+    answer: 'interesting',
+    explain: 'not as ... as の形。間には原級（形容詞の原形）を入れる。'
+  },
+  {
+    id: 244, genre: '比較', level: '初級',
+    q: 'Today is ___ than yesterday.',
+    choices: ['hot', 'hotter', 'hottest', 'more hot'],
+    answer: 'hotter',
+    explain: '短い形容詞は -er で比較級。hot → hotter（t を重ねる）。'
+  },
+  {
+    id: 245, genre: '比較', level: '初級',
+    q: 'She sings the ___ in our group.',
+    choices: ['beautiful', 'more beautifully', 'most beautifully', 'beautifully'],
+    answer: 'most beautifully',
+    explain: '副詞 beautifully の最上級は most beautifully。'
+  },
+  // ===== 比較 中級 (id 246-260) =====
+  {
+    id: 246, genre: '比較', level: '中級',
+    q: 'This laptop is far ___ than the old one.',
+    choices: ['good', 'better', 'best', 'well'],
+    answer: 'better',
+    explain: 'far を使って比較を強調。far better = 「はるかに良い」。'
+  },
+  {
+    id: 247, genre: '比較', level: '中級',
+    q: 'No other city in Japan is ___ than Tokyo.',
+    choices: ['large', 'larger', 'largest', 'more large'],
+    answer: 'larger',
+    explain: '比較級を使った最上級表現。「東京より大きい都市は他にない」。'
+  },
+  {
+    id: 248, genre: '比較', level: '中級',
+    q: 'The weather today is ___ it was yesterday.',
+    choices: ['better than', 'best', 'good as', 'better'],
+    answer: 'better than',
+    explain: '比較する対象があるので than が必要。better than が正解。'
+  },
+  {
+    id: 249, genre: '比較', level: '中級',
+    q: 'He arrived ___ than expected.',
+    choices: ['early', 'earlier', 'earliest', 'more early'],
+    answer: 'earlier',
+    explain: 'than があるので比較級。early → earlier。'
+  },
+  {
+    id: 250, genre: '比較', level: '中級',
+    q: 'This is by far the ___ restaurant in town.',
+    choices: ['good', 'better', 'best', 'well'],
+    answer: 'best',
+    explain: 'by far + 最上級で「断然〜だ」と強調する表現。'
+  },
+  {
+    id: 251, genre: '比較', level: '中級',
+    q: 'She is much ___ at math than I am.',
+    choices: ['good', 'better', 'best', 'well'],
+    answer: 'better',
+    explain: 'much + 比較級で「ずっと〜だ」と強調。'
+  },
+  {
+    id: 252, genre: '比較', level: '中級',
+    q: 'The second question was ___ difficult than the first.',
+    choices: ['little', 'less', 'least', 'few'],
+    answer: 'less',
+    explain: 'less + 形容詞で「より〜でない」。than があるので比較級。'
+  },
+  {
+    id: 253, genre: '比較', level: '中級',
+    q: 'My new phone is twice as ___ as my old one.',
+    choices: ['fast', 'faster', 'fastest', 'more fast'],
+    answer: 'fast',
+    explain: 'twice as ... as は「2倍〜だ」。as の間には原級を入れる。'
+  },
+  {
+    id: 254, genre: '比較', level: '中級',
+    q: 'This problem is one of the ___ ones in the book.',
+    choices: ['difficult', 'more difficult', 'most difficult', 'difficulty'],
+    answer: 'most difficult',
+    explain: 'one of the + 最上級 + 複数名詞。'
+  },
+  {
+    id: 255, genre: '比較', level: '中級',
+    q: 'She can type ___ than anyone else here.',
+    choices: ['quick', 'quicker', 'quickest', 'more quickly'],
+    answer: 'more quickly',
+    explain: '副詞 quickly の比較級は more quickly。'
+  },
+  {
+    id: 256, genre: '比較', level: '中級',
+    q: 'The movie was far ___ than I expected.',
+    choices: ['interesting', 'more interesting', 'most interesting', 'interest'],
+    answer: 'more interesting',
+    explain: 'far + 比較級で強調。長い形容詞は more を使う。'
+  },
+  {
+    id: 257, genre: '比較', level: '中級',
+    q: 'The older he gets, the ___ he becomes.',
+    choices: ['wise', 'wiser', 'wisest', 'more wise'],
+    answer: 'wiser',
+    explain: 'the + 比較級, the + 比較級 の構文。「〜すればするほど〜だ」。'
+  },
+  {
+    id: 258, genre: '比較', level: '中級',
+    q: 'This exam was not nearly as ___ as the last one.',
+    choices: ['hard', 'harder', 'hardest', 'more hard'],
+    answer: 'hard',
+    explain: 'not nearly as ... as で「〜ほど〜ではない」。as の間は原級。'
+  },
+  {
+    id: 259, genre: '比較', level: '中級',
+    q: 'Your presentation was ___ than mine.',
+    choices: ['organized', 'more organized', 'most organized', 'organize'],
+    answer: 'more organized',
+    explain: '長い形容詞は more + 形容詞で比較級を作る。'
+  },
+  {
+    id: 260, genre: '比較', level: '中級',
+    q: 'He works ___ of all the employees.',
+    choices: ['hard', 'harder', 'hardest', 'more hard'],
+    answer: 'hardest',
+    explain: 'of all があるので最上級。hard → hardest。'
+  },
+  // ===== 比較 上級 (id 261-270) =====
+  {
+    id: 261, genre: '比較', level: '上級',
+    q: 'The situation became ___ complicated as time passed.',
+    choices: ['more and more', 'most', 'many', 'much'],
+    answer: 'more and more',
+    explain: 'more and more + 形容詞で「ますます〜だ」という表現。'
+  },
+  {
+    id: 262, genre: '比較', level: '上級',
+    q: 'No sooner had he arrived ___ it started raining.',
+    choices: ['than', 'when', 'that', 'as'],
+    answer: 'than',
+    explain: 'no sooner ... than で「〜するとすぐに〜した」という慣用表現。'
+  },
+  {
+    id: 263, genre: '比較', level: '上級',
+    q: 'This proposal is ___ preferable to the previous one.',
+    choices: ['far', 'more', 'most', 'very'],
+    answer: 'far',
+    explain: 'preferable は already 比較の意味を含むので far で強調する。very は使えない。'
+  },
+  {
+    id: 264, genre: '比較', level: '上級',
+    q: 'The more you practice, the ___ you improve.',
+    choices: ['good', 'better', 'best', 'well'],
+    answer: 'better',
+    explain: 'the + 比較級, the + 比較級 の構文。「練習するほど上達する」。'
+  },
+  {
+    id: 265, genre: '比較', level: '上級',
+    q: 'Few cities are as ___ as Kyoto in autumn.',
+    choices: ['beauty', 'beautiful', 'beautifully', 'more beautiful'],
+    answer: 'beautiful',
+    explain: 'as ... as の原級比較。形容詞 beautiful を使う。'
+  },
+  {
+    id: 266, genre: '比較', level: '上級',
+    q: 'This issue is becoming increasingly ___.',
+    choices: ['importance', 'important', 'importantly', 'import'],
+    answer: 'important',
+    explain: 'becoming の後は形容詞。increasingly = 「ますます」。'
+  },
+  {
+    id: 267, genre: '比較', level: '上級',
+    q: 'The CEO is one of the ___ leaders in the industry.',
+    choices: ['influential', 'more influential', 'most influential', 'influence'],
+    answer: 'most influential',
+    explain: 'one of the + 最上級 + 複数名詞。influential の最上級は most influential。'
+  },
+  {
+    id: 268, genre: '比較', level: '上級',
+    q: 'The newer model is slightly ___ than the previous one.',
+    choices: ['efficient', 'more efficient', 'most efficient', 'efficiency'],
+    answer: 'more efficient',
+    explain: 'slightly + 比較級で「わずかに〜だ」。長い形容詞は more を使う。'
+  },
+  {
+    id: 269, genre: '比較', level: '上級',
+    q: 'This software is no ___ than the old version.',
+    choices: ['good', 'better', 'best', 'well'],
+    answer: 'better',
+    explain: 'no better than で「〜と変わらない・大差ない」という表現。'
+  },
+  {
+    id: 270, genre: '比較', level: '上級',
+    q: 'The less you worry, the ___ you will feel.',
+    choices: ['relaxed', 'more relaxed', 'most relaxed', 'relaxing'],
+    answer: 'more relaxed',
+    explain: 'the + 比較級, the + 比較級 の構文。「心配するほど〜だ」。'
   }
 ];
 
