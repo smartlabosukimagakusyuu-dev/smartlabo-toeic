@@ -714,7 +714,7 @@
     <div class="level-tabs" id="level-tabs">
       <button class="level-tab active" data-level="all" onclick="selectLevelTab('all')">
         <span class="tab-icon">⚡</span>全問題
-        <span class="tab-count" id="tab-count-all">310問</span>
+        <span class="tab-count" id="tab-count-all">350問</span>
       </button>
       <button class="level-tab" data-level="初級" onclick="selectLevelTab('初級')">
         <span class="tab-icon">🌱</span>初級
@@ -3085,6 +3085,289 @@ const QUESTIONS = [
     choices: ['who', 'whose', 'which', 'where'],
     answer: 'whose',
     explain: '所有を表す whose。「発見が医学を変えた科学者」。'
+  },
+  // ===== 受動態 初級 (id 311-325) =====
+  {
+    id: 311, genre: '受動態', level: '初級',
+    q: 'English ___ all over the world.',
+    choices: ['speak', 'speaks', 'is spoken', 'spoken'],
+    answer: 'is spoken',
+    explain: '英語は「話される」対象なので受動態 is spoken を使う。'
+  },
+  {
+    id: 312, genre: '受動態', level: '初級',
+    q: 'The room ___ every day.',
+    choices: ['clean', 'cleans', 'is cleaned', 'cleaned'],
+    answer: 'is cleaned',
+    explain: '部屋は「掃除される」側なので受動態 is cleaned を使う。'
+  },
+  {
+    id: 313, genre: '受動態', level: '初級',
+    q: 'This book ___ by many students.',
+    choices: ['reads', 'is read', 'read', 'reading'],
+    answer: 'is read',
+    explain: '本は「読まれる」側なので受動態 is read を使う。'
+  },
+  {
+    id: 314, genre: '受動態', level: '初級',
+    q: 'The letters ___ yesterday.',
+    choices: ['send', 'sent', 'were sent', 'sending'],
+    answer: 'were sent',
+    explain: '昨日送られたので過去受動態 were sent を使う。'
+  },
+  {
+    id: 315, genre: '受動態', level: '初級',
+    q: 'The cake ___ by my mother.',
+    choices: ['made', 'was made', 'make', 'making'],
+    answer: 'was made',
+    explain: 'ケーキは「作られた」ので過去受動態 was made を使う。'
+  },
+  {
+    id: 316, genre: '受動態', level: '初級',
+    q: 'The windows ___ every morning.',
+    choices: ['open', 'opens', 'are opened', 'opening'],
+    answer: 'are opened',
+    explain: '窓は「開けられる」ので現在受動態 are opened を使う。'
+  },
+  {
+    id: 317, genre: '受動態', level: '初級',
+    q: 'The meeting ___ next week.',
+    choices: ['holds', 'held', 'will be held', 'holding'],
+    answer: 'will be held',
+    explain: '未来の受動態は will be + 過去分詞。'
+  },
+  {
+    id: 318, genre: '受動態', level: '初級',
+    q: 'The homework ___ already.',
+    choices: ['finished', 'has finished', 'has been finished', 'finishing'],
+    answer: 'has been finished',
+    explain: '現在完了受動態は have/has been + 過去分詞。'
+  },
+  {
+    id: 319, genre: '受動態', level: '初級',
+    q: 'Rice ___ in many countries.',
+    choices: ['eat', 'eats', 'is eaten', 'eating'],
+    answer: 'is eaten',
+    explain: '米は「食べられる」ので現在受動態 is eaten を使う。'
+  },
+  {
+    id: 320, genre: '受動態', level: '初級',
+    q: 'The door ___ by Tom.',
+    choices: ['opened', 'was opened', 'open', 'opening'],
+    answer: 'was opened',
+    explain: 'ドアは「開けられた」ので過去受動態 was opened を使う。'
+  },
+  {
+    id: 321, genre: '受動態', level: '初級',
+    q: 'The song ___ by everyone.',
+    choices: ['likes', 'liked', 'is liked', 'liking'],
+    answer: 'is liked',
+    explain: '歌は「好かれている」ので現在受動態 is liked を使う。'
+  },
+  {
+    id: 322, genre: '受動態', level: '初級',
+    q: 'The package ___ tomorrow.',
+    choices: ['delivers', 'delivered', 'will be delivered', 'delivering'],
+    answer: 'will be delivered',
+    explain: '未来受動態は will be + 過去分詞。'
+  },
+  {
+    id: 323, genre: '受動態', level: '初級',
+    q: 'The classroom ___ now.',
+    choices: ['clean', 'cleaned', 'is being cleaned', 'cleaning'],
+    answer: 'is being cleaned',
+    explain: '現在進行形の受動態は is/are being + 過去分詞。'
+  },
+  {
+    id: 324, genre: '受動態', level: '初級',
+    q: 'The report ___ last night.',
+    choices: ['completed', 'was completed', 'completes', 'completing'],
+    answer: 'was completed',
+    explain: '昨夜完成されたので過去受動態 was completed を使う。'
+  },
+  {
+    id: 325, genre: '受動態', level: '初級',
+    q: 'Many cars ___ in Japan.',
+    choices: ['make', 'makes', 'are made', 'making'],
+    answer: 'are made',
+    explain: '車は「作られる」ので現在受動態 are made を使う。'
+  },
+  // ===== 受動態 中級 (id 326-340) =====
+  {
+    id: 326, genre: '受動態', level: '中級',
+    q: 'The project ___ by Friday.',
+    choices: ['finishes', 'finished', 'will be finished', 'finishing'],
+    answer: 'will be finished',
+    explain: '未来受動態 will be + 過去分詞。'
+  },
+  {
+    id: 327, genre: '受動態', level: '中級',
+    q: 'The problem ___ yet.',
+    choices: ["hasn't solved", "hasn't been solved", "didn't solve", "isn't solving"],
+    answer: "hasn't been solved",
+    explain: '現在完了受動態の否定形は hasn\'t been + 過去分詞。'
+  },
+  {
+    id: 328, genre: '受動態', level: '中級',
+    q: 'The bridge ___ in 1990.',
+    choices: ['build', 'built', 'was built', 'building'],
+    answer: 'was built',
+    explain: '橋は「建設された」ので過去受動態 was built を使う。'
+  },
+  {
+    id: 329, genre: '受動態', level: '中級',
+    q: 'The documents ___ before the meeting.',
+    choices: ['prepared', 'had prepared', 'had been prepared', 'preparing'],
+    answer: 'had been prepared',
+    explain: '過去完了受動態は had been + 過去分詞。'
+  },
+  {
+    id: 330, genre: '受動態', level: '中級',
+    q: 'The movie ___ by millions of people.',
+    choices: ['watch', 'watched', 'is watched', 'watching'],
+    answer: 'is watched',
+    explain: '映画は「見られる」ので現在受動態 is watched を使う。'
+  },
+  {
+    id: 331, genre: '受動態', level: '中級',
+    q: 'The building ___ at the moment.',
+    choices: ['repairs', 'repaired', 'is being repaired', 'repairing'],
+    answer: 'is being repaired',
+    explain: '現在進行形の受動態は is/are being + 過去分詞。'
+  },
+  {
+    id: 332, genre: '受動態', level: '中級',
+    q: 'The tickets ___ out quickly.',
+    choices: ['sell', 'sold', 'were sold', 'selling'],
+    answer: 'were sold',
+    explain: 'チケットは「売られた」ので過去受動態 were sold を使う。'
+  },
+  {
+    id: 333, genre: '受動態', level: '中級',
+    q: 'The room must ___ before noon.',
+    choices: ['clean', 'cleaned', 'be cleaned', 'cleaning'],
+    answer: 'be cleaned',
+    explain: '助動詞の後の受動態は must be + 過去分詞。'
+  },
+  {
+    id: 334, genre: '受動態', level: '中級',
+    q: 'The decision ___ by the manager yesterday.',
+    choices: ['make', 'made', 'was made', 'making'],
+    answer: 'was made',
+    explain: '決定は「下された」ので過去受動態 was made を使う。'
+  },
+  {
+    id: 335, genre: '受動態', level: '中級',
+    q: 'The computer ___ recently.',
+    choices: ['stole', 'has stolen', 'has been stolen', 'stealing'],
+    answer: 'has been stolen',
+    explain: '現在完了受動態は has been + 過去分詞。'
+  },
+  {
+    id: 336, genre: '受動態', level: '中級',
+    q: 'The road ___ because of the snow.',
+    choices: ['closed', 'was closed', 'closes', 'closing'],
+    answer: 'was closed',
+    explain: '道路は「閉鎖された」ので過去受動態 was closed を使う。'
+  },
+  {
+    id: 337, genre: '受動態', level: '中級',
+    q: 'The new product ___ next month.',
+    choices: ['introduces', 'introduced', 'will be introduced', 'introducing'],
+    answer: 'will be introduced',
+    explain: '未来受動態 will be + 過去分詞。'
+  },
+  {
+    id: 338, genre: '受動態', level: '中級',
+    q: 'The office ___ every weekend.',
+    choices: ['cleans', 'cleaned', 'is cleaned', 'cleaning'],
+    answer: 'is cleaned',
+    explain: '定期的な動作の受動態。is cleaned を使う。'
+  },
+  {
+    id: 339, genre: '受動態', level: '中級',
+    q: 'The proposal ___ before the deadline.',
+    choices: ['submit', 'submitted', 'was submitted', 'submitting'],
+    answer: 'was submitted',
+    explain: '提案は「提出された」ので過去受動態 was submitted を使う。'
+  },
+  {
+    id: 340, genre: '受動態', level: '中級',
+    q: 'The rules ___ strictly here.',
+    choices: ['follow', 'follows', 'are followed', 'following'],
+    answer: 'are followed',
+    explain: 'ルールは「守られる」ので現在受動態 are followed を使う。'
+  },
+  // ===== 受動態 上級 (id 341-350) =====
+  {
+    id: 341, genre: '受動態', level: '上級',
+    q: 'The contract should ___ by both parties.',
+    choices: ['sign', 'signed', 'be signed', 'signing'],
+    answer: 'be signed',
+    explain: '助動詞 should の後の受動態は should be + 過去分詞。'
+  },
+  {
+    id: 342, genre: '受動態', level: '上級',
+    q: 'The documents are supposed ___ by tomorrow.',
+    choices: ['submit', 'to submit', 'to be submitted', 'submitted'],
+    answer: 'to be submitted',
+    explain: 'be supposed to の後に受動態を続ける場合は to be + 過去分詞。'
+  },
+  {
+    id: 343, genre: '受動態', level: '上級',
+    q: 'The issue had already ___ before we arrived.',
+    choices: ['discussed', 'been discussed', 'be discussing', 'discuss'],
+    answer: 'been discussed',
+    explain: '過去完了受動態は had been + 過去分詞。'
+  },
+  {
+    id: 344, genre: '受動態', level: '上級',
+    q: 'The meeting is expected ___ next week.',
+    choices: ['hold', 'holding', 'to be held', 'held'],
+    answer: 'to be held',
+    explain: 'be expected to の後に受動態は to be + 過去分詞。'
+  },
+  {
+    id: 345, genre: '受動態', level: '上級',
+    q: 'The data must ___ carefully.',
+    choices: ['analyze', 'analyzed', 'be analyzed', 'analyzing'],
+    answer: 'be analyzed',
+    explain: '助動詞 must の後の受動態は must be + 過去分詞。'
+  },
+  {
+    id: 346, genre: '受動態', level: '上級',
+    q: 'The employees were asked ___ overtime.',
+    choices: ['work', 'working', 'to work', 'worked'],
+    answer: 'to work',
+    explain: 'ask + 人 + to不定詞。受動態でも不定詞の形は変わらない。'
+  },
+  {
+    id: 347, genre: '受動態', level: '上級',
+    q: 'The report is said ___ by the CEO.',
+    choices: ['approve', 'approved', 'to have been approved', 'approving'],
+    answer: 'to have been approved',
+    explain: '完了受動態の不定詞は to have been + 過去分詞。'
+  },
+  {
+    id: 348, genre: '受動態', level: '上級',
+    q: 'The equipment needs ___ immediately.',
+    choices: ['repair', 'repaired', 'to be repaired', 'repairing'],
+    answer: 'to be repaired',
+    explain: 'need to be + 過去分詞で「〜される必要がある」。'
+  },
+  {
+    id: 349, genre: '受動態', level: '上級',
+    q: 'The new system has ___ successfully.',
+    choices: ['implemented', 'been implemented', 'implementing', 'implement'],
+    answer: 'been implemented',
+    explain: '現在完了受動態は has/have been + 過去分詞。'
+  },
+  {
+    id: 350, genre: '受動態', level: '上級',
+    q: 'The suspect was seen ___ the building.',
+    choices: ['leave', 'to leave', 'leaving', 'left'],
+    answer: 'leave',
+    explain: '知覚動詞 see の受動態では原形不定詞（動詞の原形）を使う。'
   }
 ];
 
