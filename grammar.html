@@ -727,19 +727,22 @@
   /* ===== GRAMMAR CARD PRACTICE BUTTON ===== */
   .grammar-card-practice {
     display: block;
-    width: calc(100% - 32px);
-    margin: 0 16px 16px;
-    padding: 10px;
+    width: calc(100% - 16px);
+    margin: 0 8px 10px;
+    padding: 8px 4px;
     background: rgba(255,255,255,.18);
     color: #fff;
     border: 1.5px solid rgba(255,255,255,.45);
     border-radius: 10px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     cursor: pointer;
     text-align: center;
     transition: background .15s, transform .1s;
-    letter-spacing: .3px;
+    letter-spacing: .2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .grammar-card-practice:active { transform: scale(.97); background: rgba(255,255,255,.3); }
   .grammar-card-practice.disabled { opacity: .45; cursor: not-allowed; }
@@ -6162,7 +6165,7 @@ function renderGrammarList() {
         </div>
       </div>
       ${hasQuestions
-        ? `<button class="grammar-card-practice" onclick="event.stopPropagation();startGenreQuiz('${cat.genre}')">⚡ この文法を練習する（${qCount}問）</button>`
+        ? `<button class="grammar-card-practice" onclick="event.stopPropagation();startGenreQuiz('${cat.genre}')">⚡ 練習する（${qCount}問）</button>`
         : `<button class="grammar-card-practice disabled" disabled>🔜 準備中</button>`}
     `;
     grid.appendChild(card);
