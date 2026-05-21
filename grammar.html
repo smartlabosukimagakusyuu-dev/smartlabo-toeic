@@ -4848,8 +4848,10 @@ function showFeedback(chosen, q) {
 
   // Scroll feedback into view
   setTimeout(() => {
-    fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 100);
+    const rect = fb.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    window.scrollTo({ top: scrollTop + rect.top - 16, behavior: 'smooth' });
+  }, 200);
 
   if (isCorrect) state.correct++;
 }
@@ -4900,6 +4902,7 @@ function saveAnswer(isCorrect, q) {
 // ===== NEXT QUESTION =====
 function nextQuestion() {
   state.current++;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   renderQuestion();
 }
 
