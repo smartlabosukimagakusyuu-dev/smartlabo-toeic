@@ -720,6 +720,107 @@
   /* ===== WEAK REVIEW BUTTON ===== */
   .btn-weak { background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(239,68,68,.3); transition: transform .1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-weak:active { transform: scale(.97); }
+
+  /* ===== RECORD SCREEN ===== */
+  .record-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2563EB 100%);
+    padding: 20px 20px 24px;
+    color: white;
+    text-align: center;
+  }
+  .record-header-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .record-header-sub { font-size: 13px; opacity: .75; }
+
+  .record-level-card {
+    background: linear-gradient(135deg, var(--gold) 0%, #F97316 100%);
+    margin: -14px 16px 0;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: 1;
+  }
+  .record-level-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .record-level-icon { font-size: 36px; }
+  .record-level-info { flex: 1; }
+  .record-level-name { color: #fff; font-size: 17px; font-weight: 800; }
+  .record-level-exp { color: rgba(255,255,255,.85); font-size: 12px; margin-top: 3px; }
+  .record-exp-bar-wrap { background: rgba(255,255,255,.3); border-radius: 6px; height: 8px; overflow: hidden; }
+  .record-exp-bar { height: 100%; background: #fff; border-radius: 6px; transition: width .6s ease; }
+
+  .record-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 16px 0;
+  }
+  .record-stat-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .record-stat-icon { font-size: 26px; }
+  .record-stat-val { font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .record-stat-label { font-size: 11px; color: var(--gray); margin-top: 3px; }
+
+  /* Calendar */
+  .record-calendar { margin: 14px 16px 0; }
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .calendar-day-label { text-align: center; font-size: 10px; font-weight: 700; color: var(--gray); padding-bottom: 4px; }
+  .calendar-cell {
+    aspect-ratio: 1;
+    border-radius: 5px;
+    background: #E5E7EB;
+    position: relative;
+  }
+  .calendar-cell.today { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .calendar-cell.lv1 { background: #D1FAE5; }
+  .calendar-cell.lv2 { background: #6EE7B7; }
+  .calendar-cell.lv3 { background: #10B981; }
+  .calendar-cell.lv4 { background: #047857; }
+  .calendar-legend { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 11px; color: var(--gray); }
+  .calendar-legend-cells { display: flex; gap: 3px; }
+  .legend-cell { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* Genre progress */
+  .record-genre-list { margin: 14px 16px 0; }
+  .genre-progress-item {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+  }
+  .genre-progress-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .genre-progress-name { font-size: 13px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  .genre-progress-meta { font-size: 12px; color: var(--gray); }
+  .genre-progress-bar-wrap { background: #F3F4F6; border-radius: 4px; height: 6px; overflow: hidden; }
+  .genre-progress-bar { height: 100%; border-radius: 4px; transition: width .5s ease; }
+
+  .section-title-record {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy);
+    padding: 0 4px;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 </style>
 </head>
 <body>
@@ -873,6 +974,90 @@
     </div>
   </div>
 
+  <!-- RECORD -->
+  <div id="screen-record" class="screen">
+    <div class="record-header">
+      <div class="record-header-title">📊 学習記録</div>
+      <div class="record-header-sub">あなたの成長を確認しよう</div>
+    </div>
+
+    <!-- Level card -->
+    <div class="record-level-card">
+      <div class="record-level-top">
+        <div class="record-level-icon" id="rec-lv-icon">🌱</div>
+        <div class="record-level-info">
+          <div class="record-level-name" id="rec-lv-name">Lv.1 TOEIC初心者</div>
+          <div class="record-level-exp" id="rec-lv-exp">0 / 100 EXP</div>
+        </div>
+      </div>
+      <div class="record-exp-bar-wrap">
+        <div class="record-exp-bar" id="rec-exp-bar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="record-stats-grid">
+      <div class="record-stat-card">
+        <div class="record-stat-icon">📝</div>
+        <div>
+          <div class="record-stat-val" id="rec-total">0</div>
+          <div class="record-stat-label">累計問題数</div>
+        </div>
+      </div>
+      <div class="record-stat-card">
+        <div class="record-stat-icon">🎯</div>
+        <div>
+          <div class="record-stat-val" id="rec-acc">—</div>
+          <div class="record-stat-label">正解率</div>
+        </div>
+      </div>
+      <div class="record-stat-card">
+        <div class="record-stat-icon">🔥</div>
+        <div>
+          <div class="record-stat-val" id="rec-streak">0</div>
+          <div class="record-stat-label">連続学習日数</div>
+        </div>
+      </div>
+      <div class="record-stat-card">
+        <div class="record-stat-icon">⭐</div>
+        <div>
+          <div class="record-stat-val" id="rec-exp">0</div>
+          <div class="record-stat-label">総獲得EXP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="record-calendar card" style="margin-top:14px;">
+      <div class="section-title-record">📅 学習カレンダー（直近28日）</div>
+      <div class="calendar-grid" id="rec-calendar-grid"></div>
+      <div class="calendar-legend">
+        <span>少ない</span>
+        <div class="calendar-legend-cells">
+          <div class="legend-cell" style="background:#E5E7EB"></div>
+          <div class="legend-cell" style="background:#D1FAE5"></div>
+          <div class="legend-cell" style="background:#6EE7B7"></div>
+          <div class="legend-cell" style="background:#10B981"></div>
+          <div class="legend-cell" style="background:#047857"></div>
+        </div>
+        <span>多い</span>
+      </div>
+    </div>
+
+    <!-- Genre progress -->
+    <div class="record-genre-list">
+      <div class="card" style="padding:16px 18px;">
+        <div class="section-title-record" style="margin-bottom:12px;">📚 ジャンル別進捗</div>
+        <div id="rec-genre-list"></div>
+      </div>
+    </div>
+
+    <div class="home-btns">
+      <button class="btn-today" onclick="startTodayQuiz()">📅 今日の10問を解く</button>
+      <button class="btn-primary" onclick="startNormal()">⚡ 学習を始める</button>
+    </div>
+  </div>
+
   <!-- ANALYSIS -->
   <div id="screen-analysis" class="screen">
     <div class="analysis-header">
@@ -948,8 +1133,8 @@
   <button class="nav-btn" id="nav-grammar" onclick="showScreen('screen-grammar-list')">
     <span class="nav-icon">📖</span>文法
   </button>
-  <button class="nav-btn" id="nav-quiz" onclick="startNormal()">
-    <span class="nav-icon">⚡</span>学習
+  <button class="nav-btn" id="nav-record" onclick="showScreen('screen-record')">
+    <span class="nav-icon">📊</span>学習記録
   </button>
   <button class="nav-btn" id="nav-analysis" onclick="showScreen('screen-analysis')">
     <span class="nav-icon">📊</span>分析
@@ -4644,7 +4829,8 @@ const STORE = {
       lastDate: null,
       todayCount: 0,
       todayDate: null,
-      exp: 0              // experience points
+      exp: 0,             // experience points
+      dailyHistory: {}    // { 'YYYY-MM-DD': { answered, correct } }
     };
   },
   get() {
@@ -4669,7 +4855,11 @@ function showScreen(id) {
   // Nav highlight
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   if (id === 'screen-home') document.getElementById('nav-home')?.classList.add('active');
-  else if (id === 'screen-quiz') document.getElementById('nav-quiz')?.classList.add('active');
+  else if (id === 'screen-quiz') document.getElementById('nav-record')?.classList.add('active');
+  else if (id === 'screen-record') {
+    document.getElementById('nav-record')?.classList.add('active');
+    renderRecord();
+  }
   else if (id === 'screen-analysis') {
     document.getElementById('nav-analysis')?.classList.add('active');
     renderAnalysis();
@@ -5041,6 +5231,13 @@ function saveAnswer(isCorrect, q) {
     d.wrongIds = d.wrongIds.filter(id => id !== q.id);
   }
 
+  // Daily history (YYYY-MM-DD key)
+  if (!d.dailyHistory) d.dailyHistory = {};
+  const dateKey = new Date().toISOString().slice(0, 10);
+  if (!d.dailyHistory[dateKey]) d.dailyHistory[dateKey] = { answered: 0, correct: 0 };
+  d.dailyHistory[dateKey].answered++;
+  if (isCorrect) d.dailyHistory[dateKey].correct++;
+
   saveData(d);
 }
 
@@ -5129,6 +5326,97 @@ function renderResult() {
     btn.textContent = `🔄 間違えた問題を復習（${d2.wrongIds.length}問）`;
   } else {
     btn.style.display = 'none';
+  }
+}
+
+// ===== RECORD RENDER =====
+function renderRecord() {
+  const d = getData();
+  const exp = d.exp || 0;
+  const lv = getLevel(exp);
+
+  // Level card
+  document.getElementById('rec-lv-icon').textContent = lv.icon;
+  document.getElementById('rec-lv-name').textContent = lv.name;
+  if (lv.next) {
+    document.getElementById('rec-lv-exp').textContent = `${exp} / ${lv.next} EXP`;
+    const pct = ((exp - lv.min) / (lv.next - lv.min) * 100).toFixed(1);
+    document.getElementById('rec-exp-bar').style.width = Math.min(100, pct) + '%';
+  } else {
+    document.getElementById('rec-lv-exp').textContent = `${exp} EXP — MAX LEVEL`;
+    document.getElementById('rec-exp-bar').style.width = '100%';
+  }
+
+  // Stats
+  document.getElementById('rec-total').textContent = d.totalAnswered || 0;
+  document.getElementById('rec-acc').textContent = d.totalAnswered > 0
+    ? Math.round(d.totalCorrect / d.totalAnswered * 100) + '%' : '—';
+  document.getElementById('rec-streak').textContent = d.streak || 0;
+  document.getElementById('rec-exp').textContent = exp;
+
+  // Calendar (28 days)
+  const grid = document.getElementById('rec-calendar-grid');
+  grid.innerHTML = '';
+  const dayLabels = ['日','月','火','水','木','金','土'];
+  dayLabels.forEach(l => {
+    const lel = document.createElement('div');
+    lel.className = 'calendar-day-label';
+    lel.textContent = l;
+    grid.appendChild(lel);
+  });
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  // Start from the most recent Sunday going back to fill 28 cells
+  const startOffset = today.getDay(); // 0=Sun
+  const startDay = new Date(today);
+  startDay.setDate(today.getDate() - startOffset - 21); // 4 weeks back aligned to Sunday
+
+  for (let i = 0; i < 28; i++) {
+    const day = new Date(startDay);
+    day.setDate(startDay.getDate() + i);
+    const key = day.toISOString().slice(0, 10);
+    const hist = (d.dailyHistory || {})[key];
+    const cell = document.createElement('div');
+    cell.className = 'calendar-cell';
+    if (day.getTime() === today.getTime()) cell.classList.add('today');
+    if (hist) {
+      const n = hist.answered;
+      if (n >= 20) cell.classList.add('lv4');
+      else if (n >= 10) cell.classList.add('lv3');
+      else if (n >= 5)  cell.classList.add('lv2');
+      else              cell.classList.add('lv1');
+    }
+    cell.title = key + (hist ? ` (${hist.answered}問)` : '');
+    grid.appendChild(cell);
+  }
+
+  // Genre progress
+  const genreEl = document.getElementById('rec-genre-list');
+  genreEl.innerHTML = '';
+  const genreColors = GENRE_COLORS;
+  GENRES.forEach(g => {
+    const stats = (d.genreStats || {})[g] || { correct: 0, total: 0 };
+    if (stats.total === 0) return;
+    const acc = Math.round(stats.correct / stats.total * 100);
+    const color = genreColors[g] || '#3B82F6';
+    const item = document.createElement('div');
+    item.className = 'genre-progress-item';
+    item.innerHTML = `
+      <div class="genre-progress-top">
+        <span class="genre-progress-name">
+          <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0"></span>
+          ${g}
+        </span>
+        <span class="genre-progress-meta">${stats.correct}/${stats.total}問 ${acc}%</span>
+      </div>
+      <div class="genre-progress-bar-wrap">
+        <div class="genre-progress-bar" style="width:${acc}%;background:${color}"></div>
+      </div>`;
+    genreEl.appendChild(item);
+  });
+  if (genreEl.children.length === 0) {
+    genreEl.innerHTML = '<div style="text-align:center;color:var(--gray);font-size:13px;padding:16px 0;">まだ解いた問題がありません</div>';
   }
 }
 
