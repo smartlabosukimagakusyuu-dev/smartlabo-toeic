@@ -8961,18 +8961,24 @@ function initPremiumFeatures() {
 <script src="auth.js"></script>
 <script src="stripe.js"></script>
 
-<!-- ===== 初期化（Firebase読み込み完了後） ===== -->
+<!-- ===== 初期化（外部スクリプト読み込み完了後） ===== -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // firebase-config.js が正しく設定されている場合のみ初期化
+  // スクリプトはbody末尾に記述しているためDOMは既に準備済み
+  // window.onload で全リソース読み込み後に確実に実行
+  (function tryInitFirebase() {
     try {
-      if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-        initPremiumFeatures();
+      if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+        if (typeof initPremiumFeatures === 'function') {
+          initPremiumFeatures();
+        }
+      } else {
+        // Firebase SDK読み込み完了を少し待って再試行
+        setTimeout(tryInitFirebase, 200);
       }
     } catch(e) {
-      console.warn('[Premium] Firebase未設定のためスキップ:', e.message);
+      console.warn('[Premium] Firebase初期化スキップ:', e.message);
     }
-  });
+  })();
 </script>
 
 </body>

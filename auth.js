@@ -186,11 +186,19 @@ async function handleAuthSubmit() {
 
   try {
     if (mode === 'signup') {
-      await signUpWithEmail(email, password);
+      const user = await signUpWithEmail(email, password);
+      // Firestoreにユーザードキュメントを明示的に作成（onAuthStateChangedに依存しない）
+      const userData = await ensureUserDoc(user);
+      setPremiumStatus(userData.isPremium === true);
+      updateUserStatusBar(user, userData);
       closeAuthModal();
       showToast('🎉 登録完了！ようこそ');
     } else {
-      await signInWithEmail(email, password);
+      const user = await signInWithEmail(email, password);
+      // ログイン時もFirestoreドキュメントを確認・作成
+      const userData = await ensureUserDoc(user);
+      setPremiumStatus(userData.isPremium === true);
+      updateUserStatusBar(user, userData);
       closeAuthModal();
       showToast('ログインしました！');
     }
