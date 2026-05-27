@@ -17,15 +17,13 @@
  */
 
 // ① Stripe 公開キー（ダッシュボード → 開発者 → APIキー）
-const STRIPE_PUBLIC_KEY = 'pk_test_YOUR_STRIPE_PUBLIC_KEY';
+const STRIPE_PUBLIC_KEY = 'pk_live_51TbEcx8P9AZo2oHh4ZPYl0Xlmh5HqEvmGtZkn3h20GkQIC43aM5boKvbeXzff5SgptPbEDLKHRBrmKq4qchE2sYS00533pfxHF';
 
 // ② 価格ID（ダッシュボード → 商品 → 料金 → ID）
-const STRIPE_PRICE_ID = 'price_YOUR_PRICE_ID';
+const STRIPE_PRICE_ID = 'price_1TbXbi8P9AZo2oHhzIV4qkQg';
 
-// ③ Firebase Cloud Functions の URL
-//    デプロイ後に表示される URL を入力
-//    例: https://us-central1-my-project.cloudfunctions.net
-const FUNCTIONS_BASE_URL = 'https://us-central1-YOUR_PROJECT_ID.cloudfunctions.net';
+// ③ Firebase Cloud Functions の URL（デプロイ後に設定）
+const FUNCTIONS_BASE_URL = 'https://us-central1-smart-labo-aef08.cloudfunctions.net';
 
 /**
  * Stripe Checkout へリダイレクト（プレミアム購入）
