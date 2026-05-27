@@ -4,7 +4,9 @@
  */
 
 // Stripe Payment Link URL（Stripeダッシュボードで作成）
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/9B66oB1ofbb8cbZdoe2Ry00';
+// テスト中: 本番に切り替える場合は下の本番URLに変更
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_9B66oB1ofbb8cbZdoe2Ry00';
+// const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/9B66oB1ofbb8cbZdoe2Ry00'; // 本番URL
 
 /**
  * Stripe Payment Linkへリダイレクト
