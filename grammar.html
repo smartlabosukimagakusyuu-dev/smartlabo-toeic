@@ -1283,7 +1283,7 @@
 
   /* ===== USER STATUS BAR ===== */
   #user-status-bar {
-    display: flex;
+    display: none; /* スプラッシュ後にJSで表示 */
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
@@ -1292,10 +1292,11 @@
     font-size: 12px;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 10000; /* スプラッシュより上 */
     box-shadow: 0 1px 4px rgba(0,0,0,.06);
     flex-wrap: wrap;
   }
+  #user-status-bar.visible { display: flex; }
   .usb-email { color: var(--gray); font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .usb-guest { color: var(--gray); font-size: 12px; flex: 1; }
   .usb-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
@@ -8929,6 +8930,9 @@ window.addEventListener('load', () => {
     setTimeout(() => {
       splash.classList.remove('active');          // 完全非表示
       splash.classList.remove('splash-exit');
+      // スプラッシュ後にユーザーバーを表示
+      const bar = document.getElementById('user-status-bar');
+      if (bar) bar.classList.add('visible');
       showScreen('screen-home');
     }, 420);                                      // transition(.4s) 完了後
   }, 1400);
