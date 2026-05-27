@@ -185,24 +185,31 @@ async function handleAuthSubmit() {
   errEl.textContent = '';
 
   try {
+    let user;
+    // ① まず認証だけ行う
     if (mode === 'signup') {
-      const user = await signUpWithEmail(email, password);
-      // Firestoreにユーザードキュメントを明示的に作成（onAuthStateChangedに依存しない）
-      const userData = await ensureUserDoc(user);
-      setPremiumStatus(userData.isPremium === true);
-      updateUserStatusBar(user, userData);
-      closeAuthModal();
-      showToast('🎉 登録完了！ようこそ');
+      user = await signUpWithEmail(email, password);
     } else {
-      const user = await signInWithEmail(email, password);
-      // ログイン時もFirestoreドキュメントを確認・作成
+      user = await signInWithEmail(email, password);
+    }
+
+    // ② 認証成功 → まずモーダルを閉じてトースト表示
+    closeAuthModal();
+    showToast(mode === 'signup' ? '🎉 登録完了！ようこそ' : 'ログインしました！');
+    updateUserStatusBar(user, { isPremium: false });
+
+    // ③ Firestoreへの書き込みは別途（失敗してもログインは継続）
+    try {
       const userData = await ensureUserDoc(user);
       setPremiumStatus(userData.isPremium === true);
       updateUserStatusBar(user, userData);
-      closeAuthModal();
-      showToast('ログインしました！');
+    } catch (fsErr) {
+      console.warn('[Firestore] ドキュメント作成失敗:', fsErr.message);
+      // Firestoreが失敗してもログインは維持
     }
+
   } catch (err) {
+    // 認証エラーのみここで処理
     errEl.textContent = getAuthErrorMessage(err.code);
   } finally {
     btn.disabled    = false;
