@@ -1280,10 +1280,226 @@
     align-items: center;
     gap: 6px;
   }
+
+  /* ===== USER STATUS BAR ===== */
+  #user-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--white);
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    flex-wrap: wrap;
+  }
+  .usb-email { color: var(--gray); font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .usb-guest { color: var(--gray); font-size: 12px; flex: 1; }
+  .usb-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .usb-badge-free    { background: #f3f4f6; color: var(--gray); }
+  .usb-badge-premium { background: linear-gradient(90deg,#f59e0b,#d97706); color: #fff; }
+  .usb-logout    { font-size: 11px; color: var(--gray); background: none; border: 1px solid #e5e7eb; border-radius: 6px; padding: 3px 8px; cursor: pointer; white-space: nowrap; }
+  .usb-btn-login { font-size: 12px; color: var(--blue); background: none; border: 1px solid var(--blue); border-radius: 6px; padding: 4px 10px; cursor: pointer; white-space: nowrap; font-weight: 600; }
+  .usb-btn-signup { font-size: 12px; color: var(--white); background: var(--blue); border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; white-space: nowrap; font-weight: 600; }
+
+  /* ===== AD AREA ===== */
+  .ad-area {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #fffbeb;
+    border: 1px dashed #f59e0b;
+    border-radius: 10px;
+    margin: 12px 16px;
+    padding: 14px 12px;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .ad-area-icon { font-size: 20px; }
+  .ad-area-text { flex: 1; }
+  .ad-area-text strong { display: block; font-size: 13px; color: #92400e; margin-bottom: 2px; }
+  .ad-upgrade-btn {
+    font-size: 12px; font-weight: 700;
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+    color: white; border: none; border-radius: 8px;
+    padding: 6px 12px; cursor: pointer; white-space: nowrap;
+  }
+
+  /* ===== FREE LIMIT BANNER ===== */
+  .free-limit-banner {
+    display: none;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 1px solid #93c5fd;
+    border-radius: 12px;
+    margin: 8px 16px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+  .free-limit-banner.show { display: block; }
+  .free-limit-banner strong { display: block; font-size: 14px; margin-bottom: 4px; }
+
+  /* ===== AUTH MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn .2s ease;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: 20px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp .25s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; font-size: 20px;
+    cursor: pointer; color: var(--gray); padding: 4px;
+    line-height: 1;
+  }
+  .modal-title { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .modal-subtitle { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .modal-field input {
+    width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb;
+    border-radius: 10px; font-size: 15px; outline: none;
+    transition: border-color .2s;
+  }
+  .modal-field input:focus { border-color: var(--blue); }
+  .modal-error { color: var(--red); font-size: 13px; margin-bottom: 10px; min-height: 18px; }
+  .modal-submit-btn {
+    width: 100%; padding: 14px; background: var(--blue); color: white;
+    border: none; border-radius: 12px; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .modal-submit-btn:hover { opacity: .88; }
+  .modal-submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .modal-switch { text-align: center; font-size: 13px; color: var(--gray); margin-top: 14px; }
+  .modal-switch a { color: var(--blue); text-decoration: none; font-weight: 600; }
+
+  /* ===== PREMIUM MODAL ===== */
+  .premium-modal-box {
+    background: white;
+    border-radius: 24px;
+    padding: 0;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .premium-modal-header {
+    background: linear-gradient(135deg, var(--navy) 0%, #3B82F6 100%);
+    padding: 28px 24px 24px;
+    text-align: center;
+    color: white;
+  }
+  .premium-modal-crown { font-size: 48px; margin-bottom: 8px; }
+  .premium-modal-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .premium-modal-tagline { font-size: 14px; opacity: .85; }
+  .premium-modal-body { padding: 22px 24px; }
+  .premium-reason-box {
+    background: #fef3c7; border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 16px;
+    font-size: 13px; color: #92400e;
+    display: none;
+  }
+  .premium-features { list-style: none; margin-bottom: 20px; }
+  .premium-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
+  .premium-features li:last-child { border-bottom: none; }
+  .premium-features .feat-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .premium-features .feat-text strong { display: block; color: var(--navy); font-weight: 700; }
+  .premium-features .feat-text span { color: var(--gray); font-size: 12px; }
+  .premium-price-box { text-align: center; margin-bottom: 16px; }
+  .premium-price-label { font-size: 12px; color: var(--gray); margin-bottom: 4px; }
+  .premium-price { font-size: 32px; font-weight: 800; color: var(--navy); }
+  .premium-price small { font-size: 14px; font-weight: 400; color: var(--gray); }
+  #stripe-checkout-btn {
+    width: 100%; padding: 16px;
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+    color: white; border: none; border-radius: 14px;
+    font-size: 17px; font-weight: 800; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(245,158,11,.4);
+    transition: opacity .2s, transform .1s;
+  }
+  #stripe-checkout-btn:hover { opacity: .92; transform: translateY(-1px); }
+  #stripe-checkout-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  .premium-modal-cancel {
+    display: block; text-align: center; margin-top: 14px;
+    font-size: 13px; color: var(--gray); cursor: pointer; text-decoration: underline;
+  }
+  .premium-modal-secure { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 10px; }
+
+  /* ===== PREMIUM SUCCESS MODAL ===== */
+  .premium-success-box {
+    background: white; border-radius: 24px;
+    padding: 40px 24px; text-align: center;
+    max-width: 360px; width: 100%;
+    animation: slideUp .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .premium-success-icon { font-size: 64px; margin-bottom: 12px; }
+  .premium-success-title { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+  .premium-success-text { font-size: 14px; color: var(--gray); margin-bottom: 24px; line-height: 1.6; }
+  .premium-success-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(90deg,var(--navy),var(--blue));
+    color: white; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+
+  /* ===== QUIZ LOCK OVERLAY ===== */
+  .quiz-lock-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(255,255,255,.92);
+    align-items: center; justify-content: center;
+    flex-direction: column; padding: 24px; text-align: center;
+  }
+  .quiz-lock-overlay.show { display: flex; }
+  .quiz-lock-icon { font-size: 56px; margin-bottom: 12px; }
+  .quiz-lock-title { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+  .quiz-lock-text { font-size: 14px; color: var(--gray); margin-bottom: 24px; line-height: 1.6; }
+  .quiz-lock-premium-btn {
+    padding: 14px 32px;
+    background: linear-gradient(90deg,#f59e0b,#d97706);
+    color: white; border: none; border-radius: 14px;
+    font-size: 16px; font-weight: 800; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(245,158,11,.4);
+    margin-bottom: 12px; width: 100%; max-width: 280px;
+  }
+  .quiz-lock-back-btn {
+    font-size: 14px; color: var(--gray); background: none;
+    border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 10px 24px; cursor: pointer;
+  }
+
 </style>
 </head>
 <body>
 <div id="app">
+
+  <!-- USER STATUS BAR (全画面共通・固定) -->
+  <div id="user-status-bar">
+    <span class="usb-guest">👤 ゲスト</span>
+    <button class="usb-btn-login"  onclick="showAuthModal('login')">ログイン</button>
+    <button class="usb-btn-signup" onclick="showAuthModal('signup')">無料登録</button>
+  </div>
 
   <!-- SPLASH -->
   <div id="screen-splash" class="screen active">
@@ -1348,10 +1564,20 @@
       </button>
     </div>
 
+    <!-- 無料版バナー -->
+    <div class="ad-area free-only">
+      <span class="ad-area-icon">💡</span>
+      <div class="ad-area-text">
+        <strong>無料版では各ジャンル5問まで</strong>
+        プレミアムで全695問を解放！
+      </div>
+      <button class="ad-upgrade-btn" onclick="showPremiumModal('全問題を解放しませんか？')">詳細 →</button>
+    </div>
+
     <div class="home-btns">
       <button class="btn-today" onclick="startTodayQuiz()">📅 今日の10問（全ジャンルランダム）</button>
       <button class="btn-primary" id="btn-start" onclick="startNormal()">⚡ 学習を始める</button>
-      <button class="btn-weak" id="btn-review-home" onclick="startReview()" style="display:none">❌ 苦手復習</button>
+      <button class="btn-weak" id="btn-review-home" onclick="startReviewWithCheck()" style="display:none">❌ 苦手復習</button>
       <button class="btn-secondary" onclick="showScreen('screen-analysis')">📊 弱点分析を見る</button>
     </div>
   </div>
@@ -1664,6 +1890,76 @@
 
 <div id="toast"></div>
 <canvas id="confetti-canvas"></canvas>
+
+<!-- ===== AUTH MODAL ===== -->
+<div id="auth-modal" class="modal-overlay" onclick="if(event.target===this)closeAuthModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAuthModal()">✕</button>
+    <div class="modal-title" id="auth-modal-title">ログイン</div>
+    <div class="modal-subtitle">TOEIC秒速文法で学習を記録しよう</div>
+    <div class="modal-field">
+      <label>メールアドレス</label>
+      <input type="email" id="auth-email" placeholder="example@mail.com" autocomplete="email" />
+    </div>
+    <div class="modal-field">
+      <label>パスワード（6文字以上）</label>
+      <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')handleAuthSubmit()" />
+    </div>
+    <div class="modal-error" id="auth-error"></div>
+    <button class="modal-submit-btn" id="auth-submit-btn" onclick="handleAuthSubmit()">ログイン</button>
+    <div class="modal-switch" id="auth-switch-link">
+      アカウントをお持ちでない方は<a href="#" onclick="showAuthModal('signup');return false;">新規登録（無料）</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PREMIUM MODAL ===== -->
+<div id="premium-modal" class="modal-overlay" onclick="if(event.target===this)closePremiumModal()">
+  <div class="premium-modal-box">
+    <div class="premium-modal-header">
+      <div class="premium-modal-crown">👑</div>
+      <div class="premium-modal-title">プレミアムプラン</div>
+      <div class="premium-modal-tagline">全695問 + すべての機能が解放されます</div>
+    </div>
+    <div class="premium-modal-body">
+      <div class="premium-reason-box" id="premium-modal-reason"></div>
+      <ul class="premium-features">
+        <li><span class="feat-icon">📚</span><div class="feat-text"><strong>全695問 解放</strong><span>無料版は各ジャンル5問まで → 全問題へアクセス</span></div></li>
+        <li><span class="feat-icon">❌</span><div class="feat-text"><strong>苦手問題の復習</strong><span>間違えた問題だけを集中的に復習できます</span></div></li>
+        <li><span class="feat-icon">🔀</span><div class="feat-text"><strong>ランダム出題</strong><span>全ジャンルからランダムに出題して実力アップ</span></div></li>
+        <li><span class="feat-icon">📊</span><div class="feat-text"><strong>詳細な学習履歴</strong><span>正答率・連続学習日数・弱点分析</span></div></li>
+        <li><span class="feat-icon">🚫</span><div class="feat-text"><strong>広告なし</strong><span>快適な学習環境</span></div></li>
+      </ul>
+      <div class="premium-price-box">
+        <div class="premium-price-label">買い切りプラン</div>
+        <div class="premium-price">¥1,500 <small>（税込・永久利用）</small></div>
+      </div>
+      <button id="stripe-checkout-btn" onclick="startCheckout()">👑 プレミアムを購入する（¥1,500）</button>
+      <span class="premium-modal-cancel" onclick="closePremiumModal()">今は購入しない</span>
+      <div class="premium-modal-secure">🔒 Stripe による安全な決済</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PREMIUM SUCCESS MODAL ===== -->
+<div id="premium-success-modal" class="modal-overlay">
+  <div class="premium-success-box">
+    <div class="premium-success-icon">🎉</div>
+    <div class="premium-success-title">プレミアム会員になりました！</div>
+    <div class="premium-success-text">全695問と全機能が解放されました。<br>引き続き学習を楽しんでください！</div>
+    <button class="premium-success-btn" onclick="closePremiumSuccessModal()">学習を始める ⚡</button>
+  </div>
+</div>
+
+<!-- ===== QUIZ LOCK OVERLAY ===== -->
+<div id="quiz-lock-overlay" class="quiz-lock-overlay">
+  <div class="quiz-lock-icon">🔒</div>
+  <div class="quiz-lock-title">無料版の上限に達しました</div>
+  <div class="quiz-lock-text">無料版では各ジャンル<strong>5問まで</strong>ご利用いただけます。<br>プレミアムプランで全問題を解放しましょう！</div>
+  <button class="quiz-lock-premium-btn" onclick="document.getElementById('quiz-lock-overlay').classList.remove('show');showPremiumModal('続きはプレミアムで解放できます');">👑 プレミアムで全問解放（¥1,500）</button>
+  <button class="quiz-lock-back-btn" onclick="document.getElementById('quiz-lock-overlay').classList.remove('show');showScreen('screen-home');">ホームに戻る</button>
+</div>
 
 <script>
 // ===== QUESTION DATA =====
@@ -6748,9 +7044,11 @@ function renderHome() {
 
 // ===== START QUIZ =====
 function startNormal() {
+  // 無料ユーザー: getAllPool() で各ジャンル5問ずつのプールを使用
+  const basePool = (typeof getAllPool === 'function') ? getAllPool() : QUESTIONS;
   const pool = state.selectedLevel === 'all'
-    ? QUESTIONS
-    : QUESTIONS.filter(q => q.level === state.selectedLevel);
+    ? basePool
+    : basePool.filter(q => q.level === state.selectedLevel);
   const shuffled = [...pool].sort(() => Math.random() - .5);
   state.mode = 'normal';
   state.questions = shuffled.slice(0, 10);
@@ -6773,7 +7071,9 @@ function retryQuiz() {
 
 // ===== TODAY'S QUIZ (10 random from all genres) =====
 function startTodayQuiz() {
-  const shuffled = [...QUESTIONS].sort(() => Math.random() - .5);
+  // 無料ユーザーは各ジャンル5問プールからランダム、プレミアムは全問
+  const pool = (typeof getAllPool === 'function') ? getAllPool() : QUESTIONS;
+  const shuffled = [...pool].sort(() => Math.random() - .5);
   state.mode = 'today';
   state.questions = shuffled.slice(0, 10);
   state.current = 0;
@@ -6783,6 +7083,14 @@ function startTodayQuiz() {
   document.getElementById('screen-quiz').classList.remove('review-mode');
   showScreen('screen-quiz');
   renderQuestion();
+}
+
+// 苦手復習（プレミアムチェック付き）
+function startReviewWithCheck() {
+  if (typeof checkPremiumAccess === 'function') {
+    if (!checkPremiumAccess('苦手復習はプレミアム機能です')) return;
+  }
+  startReview();
 }
 
 function startReview() {
@@ -8501,7 +8809,11 @@ function showGrammarDetail(categoryId) {
 // ===== START GENRE QUIZ (from card or detail) =====
 function startGenreQuiz(genre) {
   if (!genre) return;
-  const pool = QUESTIONS.filter(q => q.genre === genre);
+  // 無料ユーザー: getGenrePool() でジャンルごと5問
+  // プレミアム: 全問題
+  const pool = (typeof getGenrePool === 'function')
+    ? getGenrePool(genre)
+    : QUESTIONS.filter(q => q.genre === genre);
   if (pool.length === 0) { showToast('この文法の問題は準備中です'); return; }
   const shuffled = [...pool].sort(() => Math.random() - .5);
   state.mode = 'genre';
@@ -8621,6 +8933,47 @@ window.addEventListener('load', () => {
     }, 420);                                      // transition(.4s) 完了後
   }, 1400);
 });
+
+
+// ===== PREMIUM AUTH INIT (Firebase読み込み後に呼ぶ) =====
+function initPremiumFeatures() {
+  // Auth 初期化
+  if (typeof initAuth === 'function') initAuth();
+  // 決済結果チェック（URLパラメータ）
+  if (typeof checkPaymentResult === 'function') checkPaymentResult();
+}
 </script>
+
+<!-- ===== Firebase SDK (CDN) ===== -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- ===== Stripe.js ===== -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- ===== Firebase 設定（要変更: firebase-config.js の値を入力） ===== -->
+<script src="firebase-config.js"></script>
+
+<!-- ===== アプリ機能モジュール ===== -->
+<script src="firestore.js"></script>
+<script src="premium.js"></script>
+<script src="auth.js"></script>
+<script src="stripe.js"></script>
+
+<!-- ===== 初期化（Firebase読み込み完了後） ===== -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // firebase-config.js が正しく設定されている場合のみ初期化
+    try {
+      if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+        initPremiumFeatures();
+      }
+    } catch(e) {
+      console.warn('[Premium] Firebase未設定のためスキップ:', e.message);
+    }
+  });
+</script>
+
 </body>
 </html>
