@@ -3276,7 +3276,7 @@ function renderQuestion() {
   document.getElementById('stat-streak').textContent  = state.streak;
   document.getElementById('stat-total').textContent   = total;
 
-  document.getElementById('progress-bar').style.width = (idx / total * 100) + '%';
+  document.getElementById('progress-bar').style.width = ((idx + 1) / total * 100) + '%';
 
   document.getElementById('question-num').textContent = `問題 ${idx + 1} / ${total}`;
   document.getElementById('word').textContent         = q.word;
@@ -3356,7 +3356,9 @@ function selectAnswer(choice, q) {
     setTimeout(() => card.classList.remove('animate-shake'), 400);
   }
 
-  document.getElementById('stat-streak').textContent = state.streak;
+  // 正解数・ストリークをリアルタイムで更新
+  document.getElementById('stat-correct').textContent = state.correct;
+  document.getElementById('stat-streak').textContent  = state.streak;
 
   const fb = document.getElementById('feedback');
   document.getElementById('fb-icon').textContent = isCorrect ? '✅' : '❌';
