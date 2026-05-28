@@ -3,7 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TOEIC 英単語帳</title>
+
+  <!-- ===== SEO ===== -->
+  <title>TOEIC英単語アプリ｜Smart Labo スキマ学習</title>
+  <meta name="description" content="スキマ時間でTOEIC英単語を効率学習。初心者〜600点・800点対策まで対応。4択クイズで楽しく覚える無料学習アプリ。">
+  <meta name="keywords" content="TOEIC,英単語,英語学習,スキマ学習,Smart Labo,英単語帳">
+  <meta name="author" content="Smart Labo">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://masaosan425-alt.github.io/toeic-app/">
+
+  <!-- ===== OGP ===== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TOEIC英単語アプリ｜Smart Labo スキマ学習">
+  <meta property="og:description" content="スキマ時間でTOEIC英単語を効率学習。初心者〜600点・800点対策まで対応。">
+  <meta property="og:url" content="https://masaosan425-alt.github.io/toeic-app/">
+  <meta property="og:image" content="https://masaosan425-alt.github.io/toeic-app/og-image.png">
+  <meta property="og:site_name" content="Smart Labo">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TOEIC英単語アプリ｜Smart Labo">
+  <meta name="twitter:description" content="スキマ時間でTOEIC英単語を効率学習。">
+  <meta name="twitter:image" content="https://masaosan425-alt.github.io/toeic-app/og-image.png">
+
+  <!-- ===== PWA ===== -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TOEIC単語">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <style>
     * {
       margin: 0;
@@ -13,25 +42,31 @@
     }
 
     :root {
+      /* ===== Brand Colors (Smart Labo) ===== */
       --navy:         #1E3A8A;
       --blue:         #3B82F6;
       --blue-dark:    #2563EB;
+      --blue-light:   #EFF6FF;
+      --blue-mid:     #DBEAFE;
       --gold:         #F59E0B;
       --purple:       #8B5CF6;
-      /* Legacy aliases (referenced by JS) */
+      /* Legacy aliases */
       --primary:      #3B82F6;
       --primary-dark: #2563EB;
       --review:       #8B5CF6;
       --review-dark:  #7C3AED;
       --correct:      #10B981;
       --wrong:        #EF4444;
-      /* Surfaces */
-      --bg:      #EEF2FB;
+      /* Surfaces — aligned with grammar app */
+      --bg:      #F0F4FF;
       --card:    #FFFFFF;
-      --text:    #1E293B;
-      --subtext: #64748B;
-      --border:  #E2E8F0;
-      --shadow:  0 4px 20px rgba(30,58,138,0.10);
+      --text:    #1F2937;
+      --subtext: #6B7280;
+      --border:  #E5E7EB;
+      --shadow:  0 2px 12px rgba(0,0,0,0.10);
+      --shadow-lg: 0 4px 24px rgba(0,0,0,0.13);
+      --radius:    16px;
+      --radius-sm: 10px;
     }
 
     body.dark {
@@ -41,6 +76,254 @@
       --subtext: #94A3B8;
       --border:  #334155;
       --shadow:  0 4px 20px rgba(0,0,0,0.5);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+    }
+
+    /* ===== SMART LABO HEADER ===== */
+    .sl-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    body.dark .sl-header {
+      background: #1E293B;
+      border-bottom-color: #334155;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    .sl-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sl-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .sl-logo-text {}
+    .sl-brand-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.2;
+      letter-spacing: 0.3px;
+    }
+    body.dark .sl-brand-name { color: #93C5FD; }
+    .sl-series {
+      font-size: 10px;
+      color: var(--subtext);
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+    .sl-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    /* Premium badge in header */
+    .sl-premium-badge {
+      background: linear-gradient(135deg, #F59E0B, #EF4444);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+    .sl-free-badge {
+      background: var(--blue-mid);
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+    body.dark .sl-free-badge {
+      background: rgba(59,130,246,0.2);
+      color: #93C5FD;
+    }
+    .sl-settings-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg);
+      color: var(--subtext);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    body.dark .sl-settings-btn { background: #334155; }
+    .sl-settings-btn:active { transform: scale(0.92); }
+
+    /* ===== PREMIUM GATE (paywall) ===== */
+    .premium-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 500;
+      align-items: flex-end;
+      animation: fadeIn 0.2s ease;
+    }
+    .premium-overlay.show { display: flex; }
+    .premium-sheet {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 24px 24px 0 0;
+      padding: 28px 24px 40px;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    body.dark .premium-sheet { background: #1E293B; }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    .premium-handle {
+      width: 40px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+    .premium-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
+    .premium-title {
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .premium-sub {
+      font-size: 13px;
+      color: var(--subtext);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .premium-features {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+    body.dark .premium-features { background: #0F172A; }
+    .premium-feature-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .premium-feature-row + .premium-feature-row {
+      border-top: 1px solid var(--border);
+    }
+    .pf-check { color: var(--correct); font-size: 16px; }
+    .premium-price {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .premium-price-amount {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--text);
+    }
+    .premium-price-note {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-top: 2px;
+    }
+    .btn-premium-upgrade {
+      width: 100%;
+      padding: 17px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(30,58,138,0.35);
+      transition: transform 0.1s;
+      margin-bottom: 10px;
+    }
+    .btn-premium-upgrade:active { transform: scale(0.97); }
+    .btn-premium-close {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: none;
+      color: var(--subtext);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    /* Free lock overlay on mode cards */
+    .mode-card.locked {
+      position: relative;
+      opacity: 0.65;
+    }
+    .mode-card .lock-badge {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #F59E0B, #EF4444);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .mode-card.locked .lock-badge { display: block; }
+
+    /* Free progress bar */
+    .free-progress-bar {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin: 0 0 12px;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--blue-mid);
+    }
+    body.dark .free-progress-bar { border-color: rgba(59,130,246,0.3); }
+    .fpb-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .fpb-label { font-size: 12px; font-weight: 700; color: var(--navy); }
+    body.dark .fpb-label { color: #93C5FD; }
+    .fpb-count { font-size: 12px; color: var(--subtext); font-weight: 600; }
+    .fpb-track { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .fpb-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--navy)); border-radius: 4px; transition: width 0.5s ease; }
+    .fpb-note { font-size: 11px; color: var(--subtext); margin-top: 6px; }
+    .fpb-upgrade-link {
+      font-size: 11px;
+      color: var(--blue);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
     }
 
     body {
@@ -53,34 +336,19 @@
       align-items: center;
     }
 
-    /* ===== HEADER ===== */
-    header {
-      width: 100%;
+    /* ===== HEADER (旧スタイル無効化 → .sl-header を使用) ===== */
+    header { width: 100%; }
+    /* quiz画面内のquiz-headerは独自グラデーション維持 */
+    .quiz-header-bar {
       background: linear-gradient(135deg, var(--navy) 0%, var(--blue-dark) 100%);
       color: white;
-      padding: 16px 20px 14px;
+      padding: 14px 20px 12px;
       text-align: center;
-      box-shadow: 0 2px 12px rgba(30,58,138,0.35);
-      transition: background 0.3s;
       position: relative;
     }
-
-    header.review-mode {
+    .quiz-header-bar.review-mode {
       background: linear-gradient(135deg, #5B21B6 0%, var(--purple) 100%);
-      box-shadow: 0 2px 12px rgba(139,92,246,0.35);
     }
-
-    header h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.3px; }
-    header p  { font-size: 12px; opacity: 0.8; margin-top: 2px; }
-
-    .header-settings {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      background: rgba(255,255,255,0.18); border: none; color: white;
-      width: 34px; height: 34px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; cursor: pointer; transition: background 0.2s;
-    }
-    .header-settings:active { background: rgba(255,255,255,0.3); }
 
     /* ===== MAIN ===== */
     main {
@@ -637,11 +905,49 @@
   <div class="splash-bar-wrap"><div class="splash-bar-fill"></div></div>
 </div>
 
-<header id="app-header">
-  <h1>📘 TOEIC 英単語帳</h1>
-  <p id="header-sub">4択で力試し！</p>
-  <button class="header-settings" id="btn-header-settings" title="設定">⚙️</button>
+<!-- ===== SMART LABO HEADER ===== -->
+<header class="sl-header" id="app-header">
+  <div class="sl-logo">
+    <div class="sl-logo-icon">📘</div>
+    <div class="sl-logo-text">
+      <div class="sl-brand-name">Smart Labo</div>
+      <div class="sl-series">スキマ学習シリーズ</div>
+    </div>
+  </div>
+  <div class="sl-header-right">
+    <span class="sl-free-badge" id="sl-plan-badge">無料版</span>
+    <button class="sl-settings-btn" id="btn-header-settings" title="設定">⚙️</button>
+  </div>
 </header>
+
+<!-- ===== PREMIUM PAYWALL SHEET ===== -->
+<div class="premium-overlay" id="premium-overlay">
+  <div class="premium-sheet">
+    <div class="premium-handle"></div>
+    <div class="premium-icon">⭐</div>
+    <div class="premium-title">プレミアムにアップグレード</div>
+    <div class="premium-sub">
+      全<strong>1,690語</strong>を解放！<br>
+      苦手単語・復習モード・進捗保存も使い放題。
+    </div>
+    <div class="premium-features">
+      <div class="premium-feature-row"><span class="pf-check">✓</span> 全レベル・全単語を解放（1,690語）</div>
+      <div class="premium-feature-row"><span class="pf-check">✓</span> 苦手単語リスト＆復習モード</div>
+      <div class="premium-feature-row"><span class="pf-check">✓</span> 学習進捗・履歴を保存</div>
+      <div class="premium-feature-row"><span class="pf-check">✓</span> 広告なし・快適に学習</div>
+      <div class="premium-feature-row"><span class="pf-check">✓</span> お気に入り機能</div>
+    </div>
+    <div class="premium-price">
+      <div class="premium-price-amount">¥980</div>
+      <div class="premium-price-note">買い切り・一生涯使い放題</div>
+    </div>
+    <!-- Stripeボタンはここに入る（Phase2で実装） -->
+    <button class="btn-premium-upgrade" id="btn-premium-buy">
+      🚀 プレミアムを購入する（¥980）
+    </button>
+    <button class="btn-premium-close" id="btn-premium-close">今は無料版を使う</button>
+  </div>
+</div>
 
 <main>
 
@@ -679,6 +985,21 @@
         <div class="quick-stat">
           <div class="quick-stat-val" id="qs-rate">-%</div>
           <div class="quick-stat-label">✅ 正答率</div>
+        </div>
+      </div>
+
+      <!-- Free plan progress (hidden for premium) -->
+      <div class="free-progress-bar" id="free-progress-bar">
+        <div class="fpb-top">
+          <span class="fpb-label">🔓 無料版の学習範囲</span>
+          <span class="fpb-count" id="fpb-count">100 / 1,690語</span>
+        </div>
+        <div class="fpb-track">
+          <div class="fpb-fill" id="fpb-fill" style="width:5.9%"></div>
+        </div>
+        <div class="fpb-note">
+          無料版は各レベルの最初の100語が対象です。
+          <span class="fpb-upgrade-link" id="fpb-upgrade-link">全語解放 →</span>
         </div>
       </div>
 
@@ -1010,7 +1331,62 @@
 
 <script>
 // ===== APP CONFIG =====
-const PREMIUM_UNLOCKED = false; // set true to unlock all levels
+const FREE_LIMIT = 100; // 無料版は各レベル最初の100語のみ
+
+/**
+ * プレミアム判定
+ * localStorage の 'sl_premium' が '1' なら有料版
+ * Phase2でStripe購入後にここをtrueにする
+ */
+function isPremium() {
+  return localStorage.getItem('sl_premium') === '1';
+}
+
+/** (開発用) プレミアム解放 */
+function unlockPremium() {
+  localStorage.setItem('sl_premium', '1');
+  applyPremiumUI();
+}
+
+/** プレミアムUIの適用（バッジ等） */
+function applyPremiumUI() {
+  const badge = document.getElementById('sl-plan-badge');
+  const freeBar = document.getElementById('free-progress-bar');
+  if (isPremium()) {
+    if (badge) {
+      badge.textContent = 'プレミアム';
+      badge.className = 'sl-premium-badge';
+    }
+    if (freeBar) freeBar.style.display = 'none';
+  } else {
+    if (badge) {
+      badge.textContent = '無料版';
+      badge.className = 'sl-free-badge';
+    }
+    if (freeBar) freeBar.style.display = 'block';
+  }
+}
+
+/** ペイウォールを表示 */
+function showPaywall() {
+  document.getElementById('premium-overlay').classList.add('show');
+}
+
+/** ペイウォールを閉じる */
+function hidePaywall() {
+  document.getElementById('premium-overlay').classList.remove('show');
+}
+
+/**
+ * 単語プールを無料制限でフィルタ
+ * 無料版: 最初のFREE_LIMIT語のみ
+ */
+function filterByPlan(pool) {
+  if (isPremium()) return pool;
+  return pool.slice(0, FREE_LIMIT);
+}
+
+const PREMIUM_UNLOCKED = false; // 旧フラグ (後方互換のため残す)
 let dailyGoal = parseInt(localStorage.getItem('daily_goal') || '20'); // 10〜500, step 10
 
 // ===== VOCABULARY DATABASE (1000語) =====
@@ -2565,27 +2941,14 @@ function show(id) {
 }
 
 function setHeaderMode(mode) {
+  // Smart Labo ヘッダーは常に白/一定 → モードはバッジのみ変える
   const header = document.getElementById('app-header');
-  const sub    = document.getElementById('header-sub');
-  header.className = '';
-  if (mode === 'review') {
-    header.classList.add('review-mode');
-    sub.textContent = '苦手単語を集中復習！';
-  } else if (mode === 'vocab') {
-    header.style.background = 'linear-gradient(135deg,#065F46,#059669)';
-    header.style.boxShadow  = '0 2px 12px rgba(5,150,105,0.35)';
-    sub.textContent = 'レベル別単語一覧';
-  } else if (mode === 'stats') {
-    header.style.background = 'linear-gradient(135deg,#5B21B6,#8B5CF6)';
-    header.style.boxShadow  = '0 2px 12px rgba(139,92,246,0.4)';
-    sub.textContent = '学習記録';
-  } else if (mode === 'settings') {
-    header.style.background = 'linear-gradient(135deg,#1E293B,#334155)';
-    header.style.boxShadow  = '0 2px 12px rgba(0,0,0,0.3)';
-    sub.textContent = '設定';
-  } else {
-    sub.textContent = '4択で力試し！';
-  }
+  if (!header) return;
+  // 旧グラデーションを消す
+  header.style.background = '';
+  header.style.boxShadow  = '';
+  header.className = 'sl-header';
+  // ヘッダーのサブタイトルは sl-series で固定 (変更なし)
 }
 
 // ===== REFRESH START SCREEN =====
@@ -2632,10 +2995,12 @@ function startQuiz() {
   state.answered = false;
 
   if (state.mode === 'challenge') {
-    const pool = WORDS[state.level];
+    // 無料版はFREE_LIMIT語まで制限
+    const rawPool = WORDS[state.level];
+    const pool = filterByPlan(rawPool);
     state.questions = shuffle(pool).slice(0, 10);
   } else {
-    // review mode: use wrong words list
+    // review mode: 苦手単語は制限なし（学習済みのもの）
     const wrong = loadWrongWords();
     state.questions = shuffle(wrong);
   }
@@ -3164,7 +3529,8 @@ document.getElementById('btn-goal-plus').addEventListener('click', () => {
 
 // ===== SETTINGS ACTIONS =====
 document.getElementById('btn-upgrade').addEventListener('click', () => {
-  showToast('🚀 近日公開予定！ありがとうございます。');
+  // 設定画面のアップグレードボタンもペイウォールを表示
+  showPaywall();
 });
 
 document.getElementById('btn-reset-data').addEventListener('click', () => {
@@ -3175,8 +3541,66 @@ document.getElementById('btn-reset-data').addEventListener('click', () => {
   refreshStart();
 });
 
+// ===== PREMIUM PAYWALL EVENTS =====
+document.getElementById('btn-premium-close').addEventListener('click', hidePaywall);
+document.getElementById('premium-overlay').addEventListener('click', (e) => {
+  // シートの外側（オーバーレイ背景）をタップで閉じる
+  if (e.target === document.getElementById('premium-overlay')) hidePaywall();
+});
+
+document.getElementById('btn-premium-buy').addEventListener('click', () => {
+  // Phase2: Stripe Payment Link をここに追加
+  // 例: window.location.href = 'https://buy.stripe.com/XXXXXX';
+  showToast('🚀 購入機能は近日公開予定です！');
+});
+
+// 無料進捗バーの「全語解放→」リンク
+document.getElementById('fpb-upgrade-link')?.addEventListener('click', showPaywall);
+
+// ===== PREMIUM GATE: クイズ開始前にプール制限 =====
+// 元の startQuiz 関数をラップしてフリー制限を適用
+(function patchStartQuiz() {
+  const _originalChallenge = document.getElementById('btn-challenge').onclick;
+  // 挑戦モード・復習モードボタンで無料制限を通知
+  ['btn-challenge', 'btn-review'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      // プレミアムでない場合、プールがFREE_LIMITに制限される旨を通知
+      if (!isPremium()) {
+        // quizPool は既にfilterByPlanで制限される（startQuiz内で実施）
+        // 復習モードは全部使えるようにする（苦手単語なので制限なし）
+        if (id === 'btn-review') return; // 復習モードはフリーでも全解放
+      }
+    }, true); // capture で先に動く
+  });
+})();
+
+// ===== SMART LABO HEADER: クイズ中は非表示 =====
+// 元の show() 関数を拡張してクイズ画面ではヘッダーを隠す
+const _origShow = window.show;
+if (typeof show === 'function') {
+  window.show = function(id) {
+    _origShow(id);
+    const header = document.getElementById('app-header');
+    if (header) {
+      header.style.display = (id === 'screen-quiz') ? 'none' : '';
+    }
+  };
+}
+
 // ===== INIT =====
+applyPremiumUI();
 refreshStart();
+
+// ===== PWA SERVICE WORKER =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.log('SW error:', err));
+  });
+}
 </script>
 
 </body>
