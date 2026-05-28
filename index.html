@@ -3922,7 +3922,7 @@ async function doSync() {
 async function loadFromFirestore(uid) {
   try {
     setSyncStatus('syncing');
-    const snap = await getDoc(doc(db, 'users', uid));
+    const snap = await getDoc(doc(db, 'toeic_users', uid));
     if (!snap.exists()) {
       // 初回ログイン: 現在のローカルデータをアップロード
       await doSync();
