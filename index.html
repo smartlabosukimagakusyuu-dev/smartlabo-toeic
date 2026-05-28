@@ -3809,7 +3809,7 @@ async function doSync() {
     // プレミアム状態
     const isPrem = localStorage.getItem('sl_premium') === '1';
 
-    await setDoc(doc(db, 'users', user.uid), {
+    await setDoc(doc(db, 'toeic_users', user.uid), {
       profile: {
         displayName: user.displayName,
         email:       user.email,
