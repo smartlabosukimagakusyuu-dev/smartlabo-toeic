@@ -3342,9 +3342,10 @@ function syncVocabTabs() {
 function renderVocabList() {
   const pool     = WORDS[vocabLevel];
   const wrongIds = new Set(loadWrongWords().map(w => w._id));
-  const filtered = vocabFilter === 'wrong'
+  const filtered = (vocabFilter === 'wrong'
     ? pool.filter(w => wrongIds.has(vocabLevel + ':' + w.word))
-    : pool;
+    : pool
+  ).slice().sort((a, b) => a.word.localeCompare(b.word));
 
   const wrongCount = pool.filter(w => wrongIds.has(vocabLevel + ':' + w.word)).length;
   document.getElementById('vocab-stats').textContent =
