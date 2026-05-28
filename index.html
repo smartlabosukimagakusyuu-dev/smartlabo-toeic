@@ -3549,10 +3549,16 @@ document.getElementById('premium-overlay').addEventListener('click', (e) => {
   if (e.target === document.getElementById('premium-overlay')) hidePaywall();
 });
 
+// ===== STRIPE PAYMENT LINK =====
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/8x25kx5Evgvs7VJ2JA2Ry01';
+
+// 購入成功後の戻り先URL（Stripeダッシュボードの Payment Link 設定で
+// 「確認ページ」→「カスタムURL」にこのURLを設定してください）
+const PAYMENT_SUCCESS_URL = location.origin + location.pathname + '?payment=success';
+
 document.getElementById('btn-premium-buy').addEventListener('click', () => {
-  // Phase2: Stripe Payment Link をここに追加
-  // 例: window.location.href = 'https://buy.stripe.com/XXXXXX';
-  showToast('🚀 購入機能は近日公開予定です！');
+  // Stripe Payment Link に遷移（成功後は ?payment=success で戻ってくる）
+  window.location.href = STRIPE_PAYMENT_LINK + '?success_url=' + encodeURIComponent(PAYMENT_SUCCESS_URL);
 });
 
 // 無料進捗バーの「全語解放→」リンク
@@ -3588,6 +3594,47 @@ if (typeof show === 'function') {
       header.style.display = (id === 'screen-quiz') ? 'none' : '';
     }
   };
+}
+
+// ===== STRIPE 購入成功処理 =====
+(function handleStripeReturn() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('payment') === 'success') {
+    // プレミアム解放
+    localStorage.setItem('sl_premium', '1');
+    // URLパラメータをクリア（履歴を汚さない）
+    history.replaceState(null, '', location.pathname);
+    // 成功モーダルを表示
+    showPurchaseSuccess();
+  }
+})();
+
+/** 購入完了モーダルを表示 */
+function showPurchaseSuccess() {
+  // 既存のペイウォールが開いていれば閉じる
+  hidePaywall();
+  // 成功トーストを表示
+  showToast('🎉 プレミアム解放完了！全1,690語が使えます！');
+  // 紙吹雪演出
+  setTimeout(launchConfetti, 300);
+  // 成功バナーをホーム画面に挿入
+  const startCard = document.querySelector('.start-card');
+  if (startCard) {
+    const banner = document.createElement('div');
+    banner.style.cssText = `
+      background: linear-gradient(135deg,#10B981,#059669);
+      color: white; border-radius: 14px; padding: 16px 18px;
+      margin-bottom: 14px; text-align: center; animation: fadeSlideUp 0.5s ease;
+    `;
+    banner.innerHTML = `
+      <div style="font-size:28px;margin-bottom:6px;">🎉</div>
+      <div style="font-size:16px;font-weight:800;margin-bottom:4px;">プレミアム会員になりました！</div>
+      <div style="font-size:12px;opacity:0.9;">全1,690語・全機能が使い放題です</div>
+    `;
+    startCard.insertBefore(banner, startCard.firstChild);
+    // 5秒後にバナーをフェードアウト
+    setTimeout(() => { banner.style.opacity = '0'; banner.style.transition = 'opacity 0.5s'; setTimeout(() => banner.remove(), 500); }, 5000);
+  }
 }
 
 // ===== INIT =====
