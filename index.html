@@ -893,6 +893,81 @@
     .streak-days { font-size: 64px; font-weight: 900; color: var(--gold); line-height: 1.1; margin-top: 4px; }
     .stats-grid-val { font-size: 26px; font-weight: 800; color: var(--navy); }
     .level-row-rate { font-size: 14px; font-weight: 800; color: var(--navy); min-width: 38px; text-align: right; }
+
+    /* ===== FIREBASE / ACCOUNT UI ===== */
+    .fb-user-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    body.dark .fb-user-card { background: #0F172A; }
+    .fb-user-photo {
+      width: 42px; height: 42px; border-radius: 50%;
+      object-fit: cover; flex-shrink: 0;
+      border: 2px solid var(--blue-mid);
+    }
+    .fb-user-info { flex: 1; min-width: 0; }
+    .fb-user-name {
+      font-size: 14px; font-weight: 700; color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .fb-user-email {
+      font-size: 11px; color: var(--subtext); margin-top: 1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .fb-sync-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .fb-sync-badge.synced  { background: #D1FAE5; color: #065F46; }
+    .fb-sync-badge.syncing { background: #DBEAFE; color: #1D4ED8; }
+    .fb-sync-badge.error   { background: #FEE2E2; color: #991B1B; }
+    body.dark .fb-sync-badge.synced  { background: rgba(16,185,129,0.2); color: #6EE7B7; }
+    body.dark .fb-sync-badge.syncing { background: rgba(59,130,246,0.2); color: #93C5FD; }
+    body.dark .fb-sync-badge.error   { background: rgba(239,68,68,0.2);  color: #FCA5A5; }
+
+    .btn-google-signin {
+      width: 100%; padding: 13px 16px;
+      background: #fff; color: #3C4043;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; gap: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      transition: box-shadow 0.2s, transform 0.1s;
+    }
+    body.dark .btn-google-signin { background: #1E293B; color: var(--text); border-color: #334155; }
+    .btn-google-signin:active { transform: scale(0.97); }
+    .btn-google-signin-note {
+      font-size: 11px; color: var(--subtext);
+      text-align: center; margin-top: 8px; line-height: 1.5;
+    }
+    .btn-signout {
+      font-size: 12px; color: var(--subtext);
+      background: none; border: none; cursor: pointer;
+      text-decoration: underline; padding: 4px 0;
+    }
+    /* ヘッダーにユーザーアバターを表示 */
+    .sl-user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--blue-mid);
+      display: none; /* ログイン後に表示 */
+    }
+    /* クラウド同期インジケーター（ヘッダー） */
+    .sl-sync-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--correct); display: none;
+      animation: syncPulse 2s infinite;
+    }
+    @keyframes syncPulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
   </style>
 </head>
 <body>
@@ -915,7 +990,9 @@
     </div>
   </div>
   <div class="sl-header-right">
+    <span class="sl-sync-dot" id="sl-sync-dot" title="クラウド同期中"></span>
     <span class="sl-free-badge" id="sl-plan-badge">無料版</span>
+    <img class="sl-user-avatar" id="sl-user-avatar" alt="アカウント">
     <button class="sl-settings-btn" id="btn-header-settings" title="設定">⚙️</button>
   </div>
 </header>
@@ -1279,6 +1356,31 @@
           <div class="settings-label-desc">画面を暗くして目を保護</div>
         </div>
         <button class="toggle-switch" id="toggle-dark"></button>
+      </div>
+
+      <!-- ===== アカウント・クラウド同期 ===== -->
+      <div class="settings-section-title">アカウント・クラウド同期</div>
+
+      <!-- ログイン前 -->
+      <div id="fb-signed-out-area">
+        <button class="btn-google-signin" id="btn-google-signin">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
+          Googleでログイン
+        </button>
+        <p class="btn-google-signin-note">ログインすると学習記録が自動でクラウドに保存され、<br>複数デバイスで引き継げます。</p>
+      </div>
+
+      <!-- ログイン後 -->
+      <div id="fb-signed-in-area" style="display:none">
+        <div class="fb-user-card">
+          <img class="fb-user-photo" id="fb-user-photo" src="" alt="">
+          <div class="fb-user-info">
+            <div class="fb-user-name" id="fb-user-name">-</div>
+            <div class="fb-user-email" id="fb-user-email">-</div>
+          </div>
+          <span class="fb-sync-badge synced" id="fb-sync-badge">同期済み</span>
+        </div>
+        <button class="btn-signout" id="btn-google-signout">ログアウト</button>
       </div>
 
       <div class="settings-section-title">データ</div>
@@ -3649,6 +3751,224 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('SW error:', err));
   });
 }
+</script>
+
+<!-- ===== FIREBASE (モジュール形式) ===== -->
+<script type="module">
+import { initializeApp }        from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ===== Firebase 設定 =====
+const firebaseConfig = {
+  apiKey:            'AIzaSyC5f_F2bzGlnWk_SZU1-I7E4VOt_R_VFKg',
+  authDomain:        'smart-labo-aef08.firebaseapp.com',
+  projectId:         'smart-labo-aef08',
+  storageBucket:     'smart-labo-aef08.firebasestorage.app',
+  messagingSenderId: '330429128321',
+  appId:             '1:330429128321:web:472095c673d22f57a37780',
+  measurementId:     'G-FPF61740LM'
+};
+
+const app      = initializeApp(firebaseConfig);
+const auth     = getAuth(app);
+const db       = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+// ===== 同期ステータス表示 =====
+function setSyncStatus(status) {
+  // status: 'syncing' | 'synced' | 'error' | 'offline'
+  const badge  = document.getElementById('fb-sync-badge');
+  const dot    = document.getElementById('sl-sync-dot');
+  if (badge) {
+    badge.className = 'fb-sync-badge ' + (status === 'synced' ? 'synced' : status === 'syncing' ? 'syncing' : 'error');
+    badge.textContent = status === 'synced' ? '同期済み' : status === 'syncing' ? '同期中…' : 'エラー';
+  }
+  if (dot) dot.style.display = (status === 'syncing') ? 'block' : 'none';
+}
+
+// ===== Firestore へ書き込み (デバウンス付き) =====
+let _syncTimer = null;
+function scheduleSync() {
+  if (!auth.currentUser) return;
+  clearTimeout(_syncTimer);
+  setSyncStatus('syncing');
+  _syncTimer = setTimeout(() => doSync(), 1500);
+}
+
+async function doSync() {
+  const user = auth.currentUser;
+  if (!user) return;
+  try {
+    // 苦手単語
+    const wrongWords = JSON.parse(localStorage.getItem('toeic_wrong') || '[]');
+    // 統計
+    const stats = JSON.parse(localStorage.getItem('toeic_stats') || 'null');
+    // プレミアム状態
+    const isPrem = localStorage.getItem('sl_premium') === '1';
+
+    await setDoc(doc(db, 'users', user.uid), {
+      profile: {
+        displayName: user.displayName,
+        email:       user.email,
+        photoURL:    user.photoURL,
+        isPremium:   isPrem,
+        updatedAt:   serverTimestamp()
+      },
+      stats:      stats     || {},
+      wrongWords: wrongWords || [],
+      updatedAt:  serverTimestamp()
+    }, { merge: true });
+
+    setSyncStatus('synced');
+  } catch (err) {
+    console.error('[Firebase] Sync error:', err);
+    setSyncStatus('error');
+  }
+}
+
+// ===== Firestoreからデータを読み込んでlocalStorageへ反映 =====
+async function loadFromFirestore(uid) {
+  try {
+    setSyncStatus('syncing');
+    const snap = await getDoc(doc(db, 'users', uid));
+    if (!snap.exists()) {
+      // 初回ログイン: 現在のローカルデータをアップロード
+      await doSync();
+      return;
+    }
+    const data = snap.data();
+
+    // ---- 苦手単語: Firestoreとローカルをマージ ----
+    const localWrong  = JSON.parse(localStorage.getItem('toeic_wrong') || '[]');
+    const cloudWrong  = data.wrongWords || [];
+    // IDで重複排除してマージ
+    const mergedMap = new Map();
+    [...localWrong, ...cloudWrong].forEach(w => mergedMap.set(w._id, w));
+    const merged = Array.from(mergedMap.values());
+    localStorage.setItem('toeic_wrong', JSON.stringify(merged));
+
+    // ---- 統計: より大きい値を採用 ----
+    const localStats = JSON.parse(localStorage.getItem('toeic_stats') || 'null');
+    const cloudStats = data.stats || null;
+    if (cloudStats && localStats) {
+      const betterStats = {
+        ...cloudStats,
+        streak:    Math.max(localStats.streak    || 0, cloudStats.streak    || 0),
+        maxStreak: Math.max(localStats.maxStreak || 0, cloudStats.maxStreak || 0),
+        sessions:  Math.max(localStats.sessions  || 0, cloudStats.sessions  || 0),
+        questions: Math.max(localStats.questions || 0, cloudStats.questions || 0),
+        correct:   Math.max(localStats.correct   || 0, cloudStats.correct   || 0),
+      };
+      localStorage.setItem('toeic_stats', JSON.stringify(betterStats));
+    } else if (cloudStats) {
+      localStorage.setItem('toeic_stats', JSON.stringify(cloudStats));
+    }
+
+    // ---- プレミアム状態 ----
+    if (data.profile?.isPremium) {
+      localStorage.setItem('sl_premium', '1');
+      if (typeof applyPremiumUI === 'function') applyPremiumUI();
+    }
+
+    setSyncStatus('synced');
+
+    // UI更新
+    if (typeof refreshStart === 'function') refreshStart();
+    if (typeof renderStatsScreen === 'function' &&
+        document.getElementById('screen-stats')?.classList.contains('active')) {
+      renderStatsScreen();
+    }
+  } catch (err) {
+    console.error('[Firebase] Load error:', err);
+    setSyncStatus('error');
+  }
+}
+
+// ===== 認証状態の変化を監視 =====
+onAuthStateChanged(auth, (user) => {
+  const outArea = document.getElementById('fb-signed-out-area');
+  const inArea  = document.getElementById('fb-signed-in-area');
+  const avatar  = document.getElementById('sl-user-avatar');
+
+  if (user) {
+    // ログイン済み
+    if (outArea) outArea.style.display = 'none';
+    if (inArea)  inArea.style.display  = 'block';
+
+    // プロフィール表示
+    const photo = document.getElementById('fb-user-photo');
+    const name  = document.getElementById('fb-user-name');
+    const email = document.getElementById('fb-user-email');
+    if (photo) photo.src         = user.photoURL  || '';
+    if (name)  name.textContent  = user.displayName || 'ユーザー';
+    if (email) email.textContent = user.email     || '';
+
+    // ヘッダーアバター
+    if (avatar) {
+      avatar.src   = user.photoURL || '';
+      avatar.style.display = user.photoURL ? 'block' : 'none';
+    }
+
+    // Firestoreからデータ読み込み
+    loadFromFirestore(user.uid);
+
+  } else {
+    // 未ログイン
+    if (outArea) outArea.style.display = 'block';
+    if (inArea)  inArea.style.display  = 'none';
+    if (avatar)  avatar.style.display  = 'none';
+    setSyncStatus('offline');
+  }
+});
+
+// ===== Googleサインイン =====
+document.getElementById('btn-google-signin')?.addEventListener('click', async () => {
+  try {
+    await signInWithPopup(auth, provider);
+    // onAuthStateChanged が呼ばれてUIを更新
+  } catch (err) {
+    if (err.code !== 'auth/popup-closed-by-user') {
+      console.error('[Firebase] SignIn error:', err);
+      if (typeof showToast === 'function') showToast('⚠️ ログインに失敗しました');
+    }
+  }
+});
+
+// ===== サインアウト =====
+document.getElementById('btn-google-signout')?.addEventListener('click', async () => {
+  try {
+    await signOut(auth);
+    if (typeof showToast === 'function') showToast('👋 ログアウトしました');
+  } catch (err) {
+    console.error('[Firebase] SignOut error:', err);
+  }
+});
+
+// ===== saveWrongWords / saveStats をパッチして自動同期 =====
+// (window に生えている既存関数をラップ)
+const _origSaveWrongWords = window.saveWrongWords;
+window.saveWrongWords = function(list) {
+  _origSaveWrongWords?.(list);
+  scheduleSync();
+};
+
+const _origSaveStats = window.saveStats;
+window.saveStats = function(s) {
+  _origSaveStats?.(s);
+  scheduleSync();
+};
+
+// プレミアム購入後にも同期
+const _origUnlockPremium = window.unlockPremium;
+window.unlockPremium = function() {
+  _origUnlockPremium?.();
+  scheduleSync();
+};
+
+console.log('[Smart Labo] Firebase initialized ✅');
 </script>
 
 </body>
