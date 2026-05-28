@@ -1021,6 +1021,20 @@
       object-fit: cover; border: 2px solid var(--blue-mid);
       display: none; /* ログイン後に表示 */
     }
+    .sl-login-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      display: none; /* 未ログイン時のみJSで表示 */
+    }
+    .sl-login-btn:active { background: rgba(255,255,255,0.25); }
     /* クラウド同期インジケーター（ヘッダー） */
     .sl-sync-dot {
       width: 8px; height: 8px; border-radius: 50%;
@@ -1054,7 +1068,8 @@
   <div class="sl-header-right">
     <span class="sl-sync-dot" id="sl-sync-dot" title="クラウド同期中"></span>
     <span class="sl-free-badge" id="sl-plan-badge">無料版</span>
-    <img class="sl-user-avatar" id="sl-user-avatar" alt="アカウント">
+    <button class="sl-login-btn" id="btn-header-login" title="ログイン">👤 ログイン</button>
+    <img class="sl-user-avatar" id="sl-user-avatar" alt="アカウント" style="cursor:pointer" title="アカウント">
     <button class="sl-settings-btn" id="btn-header-settings" title="設定">⚙️</button>
   </div>
 </header>
@@ -3623,6 +3638,24 @@ document.getElementById('btn-header-settings').addEventListener('click', () => {
   show('screen-settings');
 });
 
+// ヘッダーのログインボタン → 設定画面を開いてログインエリアへスクロール
+document.getElementById('btn-header-login')?.addEventListener('click', () => {
+  setActiveNav('settings');
+  setHeaderMode('settings');
+  show('screen-settings');
+  setTimeout(() => {
+    const loginArea = document.getElementById('fb-signed-out-area');
+    if (loginArea) loginArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+});
+
+// ヘッダーアバタークリック → 設定画面を開く
+document.getElementById('sl-user-avatar')?.addEventListener('click', () => {
+  setActiveNav('settings');
+  setHeaderMode('settings');
+  show('screen-settings');
+});
+
 document.getElementById('settings-back').addEventListener('click', () => {
   setActiveNav('home');
   setHeaderMode('challenge');
@@ -3982,10 +4015,13 @@ onAuthStateChanged(auth, (user) => {
   const inArea  = document.getElementById('fb-signed-in-area');
   const avatar  = document.getElementById('sl-user-avatar');
 
+  const loginBtn = document.getElementById('btn-header-login');
+
   if (user) {
     // ログイン済み
-    if (outArea) outArea.style.display = 'none';
-    if (inArea)  inArea.style.display  = 'block';
+    if (outArea)   outArea.style.display   = 'none';
+    if (inArea)    inArea.style.display    = 'block';
+    if (loginBtn)  loginBtn.style.display  = 'none';
 
     // プロフィール表示
     const photo = document.getElementById('fb-user-photo');
@@ -3995,7 +4031,7 @@ onAuthStateChanged(auth, (user) => {
     if (name)  name.textContent  = user.displayName || 'ユーザー';
     if (email) email.textContent = user.email     || '';
 
-    // ヘッダーアバター
+    // ヘッダーアバター（写真あり→アイコン表示、なし→非表示）
     if (avatar) {
       avatar.src   = user.photoURL || '';
       avatar.style.display = user.photoURL ? 'block' : 'none';
@@ -4006,9 +4042,10 @@ onAuthStateChanged(auth, (user) => {
 
   } else {
     // 未ログイン
-    if (outArea) outArea.style.display = 'block';
-    if (inArea)  inArea.style.display  = 'none';
-    if (avatar)  avatar.style.display  = 'none';
+    if (outArea)   outArea.style.display   = 'block';
+    if (inArea)    inArea.style.display    = 'none';
+    if (avatar)    avatar.style.display    = 'none';
+    if (loginBtn)  loginBtn.style.display  = 'flex';
     setSyncStatus('offline');
   }
 });
