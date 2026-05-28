@@ -10,20 +10,24 @@
   <meta name="keywords" content="TOEIC,英単語,英語学習,スキマ学習,Smart Labo,英単語帳">
   <meta name="author" content="Smart Labo">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://masaosan425-alt.github.io/toeic-app/">
+  <link rel="canonical" href="https://smartlabosukimagakusyuu-dev.github.io/smartlabo-toeic/">
 
   <!-- ===== OGP ===== -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="TOEIC英単語アプリ｜Smart Labo スキマ学習">
   <meta property="og:description" content="スキマ時間でTOEIC英単語を効率学習。初心者〜600点・800点対策まで対応。">
-  <meta property="og:url" content="https://masaosan425-alt.github.io/toeic-app/">
-  <meta property="og:image" content="https://masaosan425-alt.github.io/toeic-app/og-image.png">
+  <meta property="og:url" content="https://smartlabosukimagakusyuu-dev.github.io/smartlabo-toeic/">
+  <meta property="og:image" content="https://smartlabosukimagakusyuu-dev.github.io/smartlabo-toeic/og-image.png">
   <meta property="og:site_name" content="Smart Labo">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TOEIC英単語アプリ｜Smart Labo">
   <meta name="twitter:description" content="スキマ時間でTOEIC英単語を効率学習。">
-  <meta name="twitter:image" content="https://masaosan425-alt.github.io/toeic-app/og-image.png">
+  <meta name="twitter:image" content="https://smartlabosukimagakusyuu-dev.github.io/smartlabo-toeic/og-image.png">
+
+  <!-- ===== Google AdSense (無料プラン向け広告) ===== -->
+  <!-- AdSense審査通過後、YOUR_PUBLISHER_IDを実際のIDに置き換えてください -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script> -->
 
   <!-- ===== PWA ===== -->
   <link rel="manifest" href="manifest.json">
@@ -637,6 +641,64 @@
     }
     .cleared-info.show { display: block; }
 
+    /* ===== 広告バナー ===== */
+    .ad-banner {
+      margin: 12px 0 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: none; /* JS で free ユーザーのみ表示 */
+    }
+    .ad-banner.free-visible { display: block; }
+    .ad-banner-bottom { margin-top: 16px; }
+    .ad-placeholder {
+      background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+      border: 1px dashed #93C5FD;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .ad-label {
+      font-size: 10px;
+      color: #94A3B8;
+      background: white;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      padding: 2px 6px;
+      flex-shrink: 0;
+    }
+    .ad-upgrade-prompt {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--navy);
+      font-weight: 600;
+    }
+    .ad-upgrade-btn {
+      background: linear-gradient(135deg, #F59E0B, #EF4444);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: filter 0.2s;
+    }
+    .ad-upgrade-btn:active { filter: brightness(0.9); }
+    body.dark .ad-placeholder {
+      background: linear-gradient(135deg, #1E3A5F, #1E3A8A30);
+      border-color: #3B82F6;
+    }
+    body.dark .ad-upgrade-prompt { color: #93C5FD; }
+
     .btn-primary {
       width: 100%; padding: 16px; background: linear-gradient(135deg, var(--navy), var(--blue-dark)); color: white;
       border: none; border-radius: 16px; font-size: 16px; font-weight: 700;
@@ -1234,6 +1296,18 @@
         📝 苦手単語を復習する（<span id="go-review-count">0</span>語）
       </button>
 
+      <!-- 無料版: 広告バナー -->
+      <div class="ad-banner" id="result-ad-banner">
+        <!-- AdSense審査通過後: <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-YOUR_ID" data-ad-slot="YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+        <div class="ad-placeholder">
+          <span class="ad-label">広告</span>
+          <div class="ad-upgrade-prompt">
+            <span>✨ プレミアム版で広告なし・全単語解放</span>
+            <button class="ad-upgrade-btn" onclick="showPaywall()">今すぐアップグレード</button>
+          </div>
+        </div>
+      </div>
+
       <button class="btn-primary" id="btn-retry">もう一度チャレンジ</button>
       <button class="btn-outline" id="btn-back">← モード選択に戻る</button>
     </div>
@@ -1258,6 +1332,16 @@
       </div>
     </div>
     <div id="vocab-list"></div>
+    <!-- 無料版: 単語帳下部広告 -->
+    <div class="ad-banner ad-banner-bottom" id="vocab-ad-banner">
+      <div class="ad-placeholder">
+        <span class="ad-label">広告</span>
+        <div class="ad-upgrade-prompt">
+          <span>✨ プレミアム版で全1,690語＋広告なし</span>
+          <button class="ad-upgrade-btn" onclick="showPaywall()">アップグレード</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ===== STATS SCREEN ===== -->
@@ -1454,18 +1538,23 @@ function unlockPremium() {
 function applyPremiumUI() {
   const badge = document.getElementById('sl-plan-badge');
   const freeBar = document.getElementById('free-progress-bar');
+  const adBanners = document.querySelectorAll('.ad-banner');
   if (isPremium()) {
     if (badge) {
       badge.textContent = 'プレミアム';
       badge.className = 'sl-premium-badge';
     }
     if (freeBar) freeBar.style.display = 'none';
+    // プレミアムは広告非表示
+    adBanners.forEach(el => el.classList.remove('free-visible'));
   } else {
     if (badge) {
       badge.textContent = '無料版';
       badge.className = 'sl-free-badge';
     }
     if (freeBar) freeBar.style.display = 'block';
+    // 無料版は広告表示
+    adBanners.forEach(el => el.classList.add('free-visible'));
   }
 }
 

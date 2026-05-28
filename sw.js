@@ -7,9 +7,9 @@ const CACHE_NAME = 'smartlabo-toeic-v1';
 
 // キャッシュ対象ファイル
 const CACHE_FILES = [
-  '/toeic-app/',
-  '/toeic-app/index.html',
-  '/toeic-app/manifest.json',
+  '/smartlabo-toeic/',
+  '/smartlabo-toeic/index.html',
+  '/smartlabo-toeic/manifest.json',
 ];
 
 // ===== インストール: リソースをキャッシュ =====
@@ -74,7 +74,7 @@ self.addEventListener('fetch', (event) => {
         return response;
       }).catch(() => {
         // オフライン時: index.htmlをフォールバック
-        return caches.match('/toeic-app/index.html');
+        return caches.match('/smartlabo-toeic/index.html');
       });
     })
   );
