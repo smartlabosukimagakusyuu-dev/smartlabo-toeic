@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TOEIC熟語 - Smart Labo</title>
+<meta name="description" content="TOEICに頻出の英熟語を効率よく学習できるスマートフォンアプリ">
+<style>
+:root{
+  --navy:#1E3A8A;--blue:#3B82F6;--blue-mid:#DBEAFE;
+  --bg:#F0F4FF;--card:#FFFFFF;--border:#E2E8F0;
+  --text:#1E293B;--subtext:#64748B;
+  --green:#10B981;--red:#EF4444;--orange:#F59E0B;
+  --radius:20px;--radius-sm:14px;
+  --shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+body.dark{
+  --bg:#0F172A;--card:#1E293B;--border:#334155;
+  --text:#F1F5F9;--subtext:#94A3B8;
+  --blue-mid:#1E3A5F;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;padding-bottom:80px;}
+.screen.active{display:block;}
+
+/* ===== SPLASH ===== */
+#screen-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(160deg,#1E3A8A 0%,#3B82F6 60%,#60A5FA 100%);padding-bottom:0;}
+.splash-icon{width:90px;height:90px;background:rgba(255,255,255,0.2);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:20px;animation:splashPop 0.6s cubic-bezier(0.34,1.56,0.64,1);}
+.splash-title{font-size:28px;font-weight:900;color:#fff;letter-spacing:-0.5px;}
+.splash-sub{font-size:13px;color:rgba(255,255,255,0.75);margin-top:6px;font-weight:600;letter-spacing:1px;}
+.splash-series{margin-top:14px;font-size:11px;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.15);padding:4px 14px;border-radius:20px;font-weight:700;}
+.splash-loading{margin-top:48px;display:flex;gap:8px;}
+.splash-dot{width:8px;height:8px;background:rgba(255,255,255,0.5);border-radius:50%;animation:dotPulse 1.2s ease-in-out infinite;}
+.splash-dot:nth-child(2){animation-delay:0.2s;}
+.splash-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes splashPop{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+@keyframes dotPulse{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
+
+/* ===== HEADER ===== */
+.sl-header{position:sticky;top:0;z-index:200;background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.07);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+.sl-header-left{display:flex;align-items:center;gap:10px;}
+.sl-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.sl-brand-name{font-size:15px;font-weight:800;color:var(--navy);}
+.sl-series{font-size:10px;color:var(--subtext);font-weight:600;}
+.sl-header-right{display:flex;align-items:center;gap:8px;}
+.sl-premium-badge{background:linear-gradient(135deg,#F59E0B,#EF4444);color:white;font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;}
+.sl-free-badge{background:var(--blue-mid);color:var(--navy);font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.sl-settings-btn{background:none;border:none;font-size:20px;cursor:pointer;padding:4px;border-radius:8px;}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 max(10px,env(safe-area-inset-bottom));z-index:100;}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:6px 14px;border-radius:14px;min-width:60px;}
+.nav-icon{font-size:22px;line-height:1;}
+.nav-label{font-size:10px;font-weight:600;color:var(--subtext);}
+.nav-item.active .nav-label{color:var(--navy);}
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 4px var(--blue));}
+
+/* ===== HOME SCREEN ===== */
+.home-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);padding:24px 20px 28px;color:white;position:relative;overflow:hidden;}
+.home-hero::after{content:'💬';position:absolute;right:-10px;bottom:-20px;font-size:100px;opacity:0.08;}
+.home-greeting{font-size:13px;opacity:0.8;margin-bottom:4px;}
+.home-title{font-size:22px;font-weight:900;line-height:1.3;}
+.home-streak{display:flex;align-items:center;gap:6px;margin-top:14px;background:rgba(255,255,255,0.15);padding:8px 14px;border-radius:12px;width:fit-content;}
+.home-streak-fire{font-size:18px;}
+.home-streak-text{font-size:13px;font-weight:700;}
+.home-stats-row{display:flex;gap:10px;padding:16px;margin-top:-1px;}
+.home-stat-card{flex:1;background:var(--card);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border);}
+.home-stat-num{font-size:22px;font-weight:900;color:var(--navy);}
+.home-stat-label{font-size:11px;color:var(--subtext);margin-top:3px;font-weight:600;}
+.section-title{font-size:14px;font-weight:800;color:var(--text);padding:0 16px;margin-bottom:10px;}
+.section-block{padding:0 16px;margin-bottom:20px;}
+.free-progress-bar{background:var(--card);border-radius:var(--radius-sm);padding:14px 16px;border:1px solid var(--border);margin-bottom:10px;}
+.fp-label{font-size:12px;color:var(--subtext);font-weight:600;margin-bottom:8px;}
+.fp-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.fp-fill{height:100%;background:linear-gradient(90deg,var(--blue),#60A5FA);border-radius:4px;transition:width 0.5s;}
+.fp-count{font-size:11px;color:var(--subtext);margin-top:6px;}
+.ad-banner{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;text-align:center;color:var(--subtext);font-size:12px;margin:0 16px 16px;}
+
+/* ===== MODE CARDS ===== */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:20px;}
+.mode-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:16px 14px;cursor:pointer;position:relative;transition:transform 0.15s,box-shadow 0.15s;text-align:left;}
+.mode-card:active{transform:scale(0.97);}
+.mode-card.challenge{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-color:#BFDBFE;}
+.mode-card.challenge .mode-title{color:#1D4ED8;}
+.mode-card.review{background:linear-gradient(135deg,#F5F3FF,#EDE9FE);border-color:#DDD6FE;}
+.mode-card.review .mode-title{color:#6D28D9;}
+.mode-card.vocab{background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-color:#BBF7D0;}
+.mode-card.vocab .mode-title{color:#15803D;}
+.mode-card.stats{background:linear-gradient(135deg,#FFF7ED,#FED7AA);border-color:#FDBA74;}
+.mode-card.stats .mode-title{color:#C2410C;}
+body.dark .mode-card.challenge{background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.3);}
+body.dark .mode-card.review{background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.3);}
+body.dark .mode-card.vocab{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);}
+body.dark .mode-card.stats{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);}
+.mode-icon{font-size:26px;margin-bottom:8px;}
+.mode-title{font-size:13px;font-weight:800;margin-bottom:3px;}
+.mode-desc{font-size:11px;color:var(--subtext);font-weight:500;}
+.lock-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.15);border-radius:8px;padding:2px 6px;font-size:11px;color:rgba(0,0,0,0.5);}
+
+/* ===== LEVEL SELECT ===== */
+.level-header{padding:20px 16px 10px;}
+.level-title{font-size:20px;font-weight:900;color:var(--text);}
+.level-sub{font-size:13px;color:var(--subtext);margin-top:4px;}
+.level-cards{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+.level-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform 0.15s,box-shadow 0.15s;position:relative;}
+.level-card:active{transform:scale(0.98);}
+.level-card-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.level-card.beginner .level-card-icon{background:#DCFCE7;}
+.level-card.intermediate .level-card-icon{background:#FEF3C7;}
+.level-card.advanced .level-card-icon{background:#FCE7F3;}
+.level-card-info{flex:1;}
+.level-card-name{font-size:16px;font-weight:800;color:var(--text);}
+.level-card-detail{font-size:12px;color:var(--subtext);margin-top:3px;}
+.level-card-progress{margin-top:8px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.level-card-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),#60A5FA);}
+.level-lock{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--subtext);}
+
+/* ===== QUIZ SCREEN ===== */
+.quiz-header-bar{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border);}
+.quiz-back-btn{background:none;border:none;font-size:20px;cursor:pointer;padding:4px;}
+.quiz-progress-text{font-size:13px;font-weight:700;color:var(--subtext);flex:1;}
+.quiz-score-badge{background:var(--blue-mid);color:var(--navy);font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;}
+.quiz-progress-track{height:5px;background:var(--border);width:100%;}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#60A5FA);transition:width 0.4s;}
+.quiz-card{margin:16px;background:var(--card);border-radius:var(--radius);padding:28px 24px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.quiz-type-badge{display:inline-block;font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-mid);padding:4px 12px;border-radius:20px;margin-bottom:14px;}
+.quiz-phrase{font-size:28px;font-weight:900;color:var(--navy);line-height:1.3;margin-bottom:8px;letter-spacing:-0.5px;}
+.quiz-hint{font-size:13px;color:var(--subtext);}
+.quiz-choices{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.choice-btn{background:var(--card);border:2px solid var(--border);border-radius:var(--radius-sm);padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.15s;text-align:left;}
+.choice-btn:active{transform:scale(0.98);}
+.choice-letter{width:32px;height:32px;border-radius:50%;background:var(--blue-mid);color:var(--navy);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.choice-text{font-size:15px;font-weight:600;color:var(--text);flex:1;}
+.choice-btn.correct{background:#F0FDF4;border-color:var(--green);}
+.choice-btn.correct .choice-letter{background:var(--green);color:white;}
+.choice-btn.wrong{background:#FEF2F2;border-color:var(--red);}
+.choice-btn.wrong .choice-letter{background:var(--red);color:white;}
+.choice-btn.disabled{pointer-events:none;opacity:0.6;}
+.choice-btn.correct.disabled{opacity:1;}
+body.dark .choice-btn.correct{background:rgba(16,185,129,0.15);border-color:var(--green);}
+body.dark .choice-btn.wrong{background:rgba(239,68,68,0.15);border-color:var(--red);}
+.quiz-feedback{margin:0 16px 16px;background:var(--card);border-radius:var(--radius-sm);padding:16px;border:1px solid var(--border);display:none;}
+.quiz-feedback.show{display:block;}
+.feedback-result{font-size:16px;font-weight:800;margin-bottom:6px;}
+.feedback-result.correct{color:var(--green);}
+.feedback-result.wrong{color:var(--red);}
+.feedback-ex{font-size:13px;color:var(--subtext);line-height:1.6;}
+.quiz-next-btn{margin:0 16px 16px;width:calc(100% - 32px);padding:16px;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:800;cursor:pointer;display:none;}
+.quiz-next-btn.show{display:block;}
+
+/* ===== RESULT SCREEN ===== */
+.result-content{padding:30px 20px;text-align:center;}
+.result-emoji{font-size:64px;margin-bottom:16px;animation:splashPop 0.5s cubic-bezier(0.34,1.56,0.64,1);}
+.result-score{font-size:52px;font-weight:900;color:var(--navy);line-height:1;}
+.result-total{font-size:18px;color:var(--subtext);font-weight:600;margin-bottom:20px;}
+.result-grade{display:inline-block;padding:6px 20px;border-radius:20px;font-size:14px;font-weight:800;margin-bottom:24px;}
+.result-grade.s{background:#FEF3C7;color:#D97706;}
+.result-grade.a{background:#F0FDF4;color:#15803D;}
+.result-grade.b{background:#EFF6FF;color:#1D4ED8;}
+.result-grade.c{background:#FEF2F2;color:#B91C1C;}
+.result-actions{display:flex;flex-direction:column;gap:12px;margin-top:16px;}
+.btn-primary{padding:16px;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:800;cursor:pointer;width:100%;}
+.btn-secondary{padding:14px;background:var(--card);color:var(--navy);border:2px solid var(--navy);border-radius:var(--radius-sm);font-size:15px;font-weight:700;cursor:pointer;width:100%;}
+
+/* ===== VOCAB BOOK ===== */
+.vocab-filter-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;}
+.vocab-filter-row::-webkit-scrollbar{display:none;}
+.vocab-filter{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--subtext);cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.vocab-filter.selected{background:var(--navy);border-color:var(--navy);color:white;}
+.vocab-search{margin:0 16px 12px;position:relative;}
+.vocab-search input{width:100%;padding:12px 16px 12px 40px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--text);outline:none;}
+.vocab-search input:focus{border-color:var(--blue);}
+.vocab-search::before{content:'🔍';position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;}
+.vocab-list{padding:0 16px;display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.vocab-item{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;}
+.vocab-item.is-wrong{background:#FFF5F5;border-color:#FECACA;}
+body.dark .vocab-item.is-wrong{background:#3D1212;border-color:#7F1D1D;}
+.vocab-item.is-fav{border-color:#FDE68A;}
+.vocab-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.vocab-info{flex:1;}
+.vocab-phrase{font-size:16px;font-weight:800;color:var(--text);}
+.vocab-answer{font-size:13px;color:var(--subtext);margin-top:3px;}
+.vocab-ex{font-size:12px;color:var(--subtext);margin-top:6px;line-height:1.5;display:none;}
+.vocab-item.expanded .vocab-ex{display:block;}
+.vocab-badges{display:flex;gap:6px;margin-top:6px;}
+.vocab-wrong-badge{background:#FEE2E2;color:#B91C1C;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+body.dark .vocab-wrong-badge{background:#7F1D1D;border:1px solid #991B1B;color:#FCA5A5;}
+.vocab-fav-btn{font-size:20px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:2px;}
+.vocab-empty{text-align:center;padding:48px 20px;color:var(--subtext);}
+.vocab-empty-icon{font-size:40px;margin-bottom:12px;}
+
+/* ===== STATS SCREEN ===== */
+.stats-content{padding:16px;}
+.stats-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;}
+.stats-card-title{font-size:13px;font-weight:700;color:var(--subtext);margin-bottom:14px;}
+.stats-big{text-align:center;margin-bottom:10px;}
+.stats-big-num{font-size:48px;font-weight:900;color:var(--navy);}
+.stats-big-label{font-size:13px;color:var(--subtext);font-weight:600;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stats-cell{text-align:center;background:var(--bg);border-radius:var(--radius-sm);padding:14px;}
+.stats-cell-num{font-size:24px;font-weight:900;color:var(--navy);}
+.stats-cell-label{font-size:11px;color:var(--subtext);font-weight:600;margin-top:4px;}
+.level-progress-row{margin-bottom:12px;}
+.lp-top{display:flex;justify-content:space-between;margin-bottom:5px;}
+.lp-name{font-size:13px;font-weight:700;color:var(--text);}
+.lp-pct{font-size:12px;font-weight:700;color:var(--subtext);}
+.lp-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.lp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),#60A5FA);}
+
+/* ===== SETTINGS ===== */
+.settings-content{padding:16px;}
+.settings-section{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;border:1px solid var(--border);}
+.settings-row{display:flex;align-items:center;padding:16px 18px;border-bottom:1px solid var(--border);cursor:pointer;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row-icon{font-size:20px;margin-right:14px;flex-shrink:0;}
+.settings-row-info{flex:1;}
+.settings-row-label{font-size:14px;font-weight:700;color:var(--text);}
+.settings-row-sub{font-size:12px;color:var(--subtext);margin-top:2px;}
+.settings-row-right{color:var(--subtext);font-size:18px;}
+.toggle-switch{width:48px;height:26px;background:var(--border);border-radius:13px;position:relative;cursor:pointer;transition:background 0.3s;flex-shrink:0;}
+.toggle-switch.on{background:var(--blue);}
+.toggle-knob{position:absolute;width:22px;height:22px;background:white;border-radius:50%;top:2px;left:2px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+.toggle-switch.on .toggle-knob{left:24px;}
+
+/* ===== PREMIUM OVERLAY ===== */
+.premium-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;align-items:flex-end;justify-content:center;}
+.premium-overlay.show{display:flex;}
+.premium-sheet{width:100%;max-width:480px;background:var(--card);border-radius:24px 24px 0 0;padding:28px 24px 40px;animation:slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+.premium-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
+.premium-icon{font-size:40px;text-align:center;margin-bottom:12px;}
+.premium-title{font-size:22px;font-weight:900;color:var(--text);text-align:center;margin-bottom:6px;}
+.premium-sub{font-size:14px;color:var(--subtext);text-align:center;margin-bottom:20px;line-height:1.5;}
+.premium-features{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.premium-feature{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:var(--text);}
+.premium-check{width:24px;height:24px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;flex-shrink:0;}
+.premium-price{text-align:center;margin-bottom:20px;}
+.premium-price-main{font-size:32px;font-weight:900;color:var(--navy);}
+.premium-price-sub{font-size:12px;color:var(--subtext);margin-top:4px;}
+.btn-premium-upgrade{width:100%;padding:17px;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;border:none;border-radius:var(--radius-sm);font-size:17px;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-premium-close{width:100%;padding:12px;background:none;border:none;color:var(--subtext);font-size:14px;cursor:pointer;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,58,138,0.95);color:white;padding:12px 24px;border-radius:20px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;z-index:600;transition:all 0.3s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.screen.active>*{animation:fadeIn 0.3s ease;}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="screen-splash" class="screen active">
+  <div class="splash-icon">💬</div>
+  <div class="splash-title">TOEIC熟語</div>
+  <div class="splash-sub">SMART LABO</div>
+  <div class="splash-series">スキマ学習シリーズ</div>
+  <div class="splash-loading">
+    <div class="splash-dot"></div>
+    <div class="splash-dot"></div>
+    <div class="splash-dot"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="screen-home" class="screen">
+  <div class="sl-header">
+    <div class="sl-header-left">
+      <div class="sl-logo-icon">💬</div>
+      <div>
+        <div class="sl-brand-name">Smart Labo</div>
+        <div class="sl-series">スキマ学習シリーズ</div>
+      </div>
+    </div>
+    <div class="sl-header-right">
+      <span id="plan-badge" class="sl-free-badge">FREE</span>
+      <button class="sl-settings-btn" onclick="showScreen('settings')">⚙️</button>
+    </div>
+  </div>
+
+  <div class="home-hero">
+    <div class="home-greeting" id="home-greeting">おはようございます！</div>
+    <div class="home-title">今日も熟語を<br>マスターしよう 🎯</div>
+    <div class="home-streak">
+      <span class="home-streak-fire">🔥</span>
+      <span class="home-streak-text" id="streak-text">0日連続学習中</span>
+    </div>
+  </div>
+
+  <div class="home-stats-row">
+    <div class="home-stat-card">
+      <div class="home-stat-num" id="stat-today">0</div>
+      <div class="home-stat-label">今日の学習</div>
+    </div>
+    <div class="home-stat-card">
+      <div class="home-stat-num" id="stat-total">0</div>
+      <div class="home-stat-label">総学習数</div>
+    </div>
+    <div class="home-stat-card">
+      <div class="home-stat-num" id="stat-accuracy">-</div>
+      <div class="home-stat-label">正答率</div>
+    </div>
+  </div>
+
+  <div id="free-bar-section" class="section-block">
+    <div class="free-progress-bar">
+      <div class="fp-label">無料で学習できる熟語</div>
+      <div class="fp-track"><div class="fp-fill" style="width:40%"></div></div>
+      <div class="fp-count">各レベル20問 / 50問（残り30問はプレミアム）</div>
+    </div>
+  </div>
+
+  <div class="section-title">学習モードを選ぶ</div>
+  <div class="mode-grid">
+    <div class="mode-card challenge" onclick="showLevelSelect('quiz')">
+      <div class="mode-icon">📝</div>
+      <div class="mode-title">クイズ</div>
+      <div class="mode-desc">4択で理解度を確認</div>
+    </div>
+    <div class="mode-card review" onclick="showLevelSelect('review')">
+      <div class="mode-icon">🔁</div>
+      <div class="mode-title">復習</div>
+      <div class="mode-desc">苦手を集中学習</div>
+    </div>
+    <div class="mode-card vocab" onclick="showScreen('vocab')">
+      <div class="mode-icon">📚</div>
+      <div class="mode-title">熟語帳</div>
+      <div class="mode-desc">一覧で確認</div>
+    </div>
+    <div class="mode-card stats" onclick="showScreen('stats')">
+      <div class="mode-icon">📊</div>
+      <div class="mode-title">記録</div>
+      <div class="mode-desc">学習の進捗</div>
+    </div>
+  </div>
+
+  <div id="ad-banner" class="ad-banner">広告エリア（無料プランのみ表示）</div>
+</div>
+
+<!-- LEVEL SELECT -->
+<div id="screen-level" class="screen">
+  <div class="sl-header">
+    <div class="sl-header-left">
+      <button class="sl-settings-btn" onclick="showScreen('home')" style="font-size:22px">←</button>
+      <div>
+        <div class="sl-brand-name" id="level-mode-label">レベル選択</div>
+        <div class="sl-series">TOEIC熟語</div>
+      </div>
+    </div>
+  </div>
+  <div class="level-header">
+    <div class="level-title">レベルを選んでください</div>
+    <div class="level-sub">各レベル最大50問（無料は20問）</div>
+  </div>
+  <div class="level-cards">
+    <div class="level-card beginner" onclick="startMode('beginner')">
+      <div class="level-card-icon">🌱</div>
+      <div class="level-card-info">
+        <div class="level-card-name">初級</div>
+        <div class="level-card-detail">基本的な熟語 · 50問</div>
+        <div class="level-card-progress"><div class="level-card-fill" id="prog-beginner" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="level-card intermediate" onclick="startMode('intermediate')">
+      <div class="level-card-icon">🔥</div>
+      <div class="level-card-info">
+        <div class="level-card-name">中級</div>
+        <div class="level-card-detail">ビジネス熟語 · 50問</div>
+        <div class="level-card-progress"><div class="level-card-fill" id="prog-intermediate" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="level-card advanced" onclick="startMode('advanced')">
+      <div class="level-card-icon">👑</div>
+      <div class="level-card-info">
+        <div class="level-card-name">上級</div>
+        <div class="level-card-detail">高難度イディオム · 50問</div>
+        <div class="level-card-progress"><div class="level-card-fill" id="prog-advanced" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header-bar">
+    <button class="quiz-back-btn" onclick="confirmQuit()">✕</button>
+    <span class="quiz-progress-text" id="quiz-progress-text">1 / 20</span>
+    <span class="quiz-score-badge" id="quiz-score-badge">正解 0</span>
+  </div>
+  <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div></div>
+
+  <div class="quiz-card">
+    <div class="quiz-type-badge" id="quiz-type-badge">熟語</div>
+    <div class="quiz-phrase" id="quiz-phrase">take a break</div>
+    <div class="quiz-hint">日本語の意味を選んでください</div>
+  </div>
+
+  <div class="quiz-choices" id="quiz-choices"></div>
+
+  <div class="quiz-feedback" id="quiz-feedback">
+    <div class="feedback-result" id="feedback-result">✅ 正解！</div>
+    <div class="feedback-ex" id="feedback-ex"></div>
+  </div>
+  <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuestion()">次の問題 →</button>
+</div>
+
+<!-- RESULT -->
+<div id="screen-result" class="screen">
+  <div class="sl-header">
+    <div class="sl-header-left">
+      <div class="sl-logo-icon">💬</div>
+      <div>
+        <div class="sl-brand-name">クイズ結果</div>
+        <div class="sl-series">Smart Labo</div>
+      </div>
+    </div>
+  </div>
+  <div class="result-content">
+    <div class="result-emoji" id="result-emoji">🎉</div>
+    <div class="result-score" id="result-score">18</div>
+    <div class="result-total" id="result-total">/ 20問</div>
+    <div class="result-grade" id="result-grade">Grade A</div>
+    <div class="result-actions">
+      <button class="btn-primary" onclick="showLevelSelect(currentMode)">もう一度挑戦</button>
+      <button class="btn-secondary" onclick="showScreen('home')">ホームへ戻る</button>
+    </div>
+  </div>
+</div>
+
+<!-- VOCAB -->
+<div id="screen-vocab" class="screen">
+  <div class="sl-header">
+    <div class="sl-header-left">
+      <div class="sl-logo-icon">💬</div>
+      <div>
+        <div class="sl-brand-name">熟語帳</div>
+        <div class="sl-series">スキマ学習シリーズ</div>
+      </div>
+    </div>
+    <div class="sl-header-right">
+      <span id="vocab-plan-badge" class="sl-free-badge">FREE</span>
+    </div>
+  </div>
+  <div class="vocab-filter-row">
+    <button class="vocab-filter selected" data-filter="all" onclick="setVocabFilter('all',this)">すべて</button>
+    <button class="vocab-filter" data-filter="beginner" onclick="setVocabFilter('beginner',this)">初級</button>
+    <button class="vocab-filter" data-filter="intermediate" onclick="setVocabFilter('intermediate',this)">中級</button>
+    <button class="vocab-filter" data-filter="advanced" onclick="setVocabFilter('advanced',this)">上級</button>
+    <button class="vocab-filter" data-filter="wrong" onclick="setVocabFilter('wrong',this)">苦手</button>
+    <button class="vocab-filter" data-filter="fav" onclick="setVocabFilter('fav',this)">お気に入り</button>
+  </div>
+  <div class="vocab-search"><input type="text" id="vocab-search-input" placeholder="熟語を検索..." oninput="renderVocab()"></div>
+  <div class="vocab-list" id="vocab-list"></div>
+</div>
+
+<!-- STATS -->
+<div id="screen-stats" class="screen">
+  <div class="sl-header">
+    <div class="sl-header-left">
+      <div class="sl-logo-icon">💬</div>
+      <div>
+        <div class="sl-brand-name">学習記録</div>
+        <div class="sl-series">スキマ学習シリーズ</div>
+      </div>
+    </div>
+  </div>
+  <div class="stats-content">
+    <div class="stats-card">
+      <div class="stats-card-title">総学習回数</div>
+      <div class="stats-big">
+        <div class="stats-big-num" id="stats-total-q">0</div>
+        <div class="stats-big-label">問解答済み</div>
+      </div>
+    </div>
+    <div class="stats-card">
+      <div class="stats-card-title">詳細</div>
+      <div class="stats-grid">
+        <div class="stats-cell"><div class="stats-cell-num" id="stats-correct">0</div><div class="stats-cell-label">正解数</div></div>
+        <div class="stats-cell"><div class="stats-cell-num" id="stats-acc">-</div><div class="stats-cell-label">正答率</div></div>
+        <div class="stats-cell"><div class="stats-cell-num" id="stats-streak">0</div><div class="stats-cell-label">連続日数🔥</div></div>
+        <div class="stats-cell"><div class="stats-cell-num" id="stats-wrong-count">0</div><div class="stats-cell-label">苦手単語</div></div>
+      </div>
+    </div>
+    <div class="stats-card">
+      <div class="stats-card-title">レベル別 学習進捗</div>
+      <div class="level-progress-row">
+        <div class="lp-top"><span class="lp-name">🌱 初級</span><span class="lp-pct" id="lp-b">0%</span></div>
+        <div class="lp-track"><div class="lp-fill" id="lp-fill-b" style="width:0%"></div></div>
+      </div>
+      <div class="level-progress-row">
+        <div class="lp-top"><span class="lp-name">🔥 中級</span><span class="lp-pct" id="lp-i">0%</span></div>
+        <div class="lp-track"><div class="lp-fill" id="lp-fill-i" style="width:0%"></div></div>
+      </div>
+      <div class="level-progress-row">
+        <div class="lp-top"><span class="lp-name">👑 上級</span><span class="lp-pct" id="lp-a">0%</span></div>
+        <div class="lp-track"><div class="lp-fill" id="lp-fill-a" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="screen-settings" class="screen">
+  <div class="sl-header">
+    <div class="sl-header-left">
+      <div class="sl-logo-icon">💬</div>
+      <div>
+        <div class="sl-brand-name">設定</div>
+        <div class="sl-series">Smart Labo</div>
+      </div>
+    </div>
+  </div>
+  <div class="settings-content">
+    <div class="settings-section">
+      <div class="settings-row" onclick="showPaywall()">
+        <span class="settings-row-icon">⭐</span>
+        <div class="settings-row-info">
+          <div class="settings-row-label">プレミアムにアップグレード</div>
+          <div class="settings-row-sub">全熟語150問が解放されます</div>
+        </div>
+        <span class="settings-row-right">›</span>
+      </div>
+      <div class="settings-row" onclick="restorePurchase()">
+        <span class="settings-row-icon">🔄</span>
+        <div class="settings-row-info">
+          <div class="settings-row-label">購入を復元</div>
+          <div class="settings-row-sub">以前の購入を復元します</div>
+        </div>
+        <span class="settings-row-right">›</span>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <span class="settings-row-icon">🌙</span>
+        <div class="settings-row-info">
+          <div class="settings-row-label">ダークモード</div>
+          <div class="settings-row-sub">画面を暗くします</div>
+        </div>
+        <div class="toggle-switch" id="dark-toggle" onclick="toggleDark()"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-row" onclick="resetStats()">
+        <span class="settings-row-icon">🗑️</span>
+        <div class="settings-row-info">
+          <div class="settings-row-label">学習記録をリセット</div>
+          <div class="settings-row-sub">すべての進捗が削除されます</div>
+        </div>
+        <span class="settings-row-right">›</span>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px;color:var(--subtext);font-size:12px;">
+      Smart Labo TOEIC熟語 v1.0<br>スキマ学習シリーズ
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-item active" data-nav="home" onclick="showScreen('home')">
+    <span class="nav-icon">🏠</span><span class="nav-label">ホーム</span>
+  </button>
+  <button class="nav-item" data-nav="level" onclick="showLevelSelect('quiz')">
+    <span class="nav-icon">📝</span><span class="nav-label">学習</span>
+  </button>
+  <button class="nav-item" data-nav="vocab" onclick="showScreen('vocab')">
+    <span class="nav-icon">📚</span><span class="nav-label">熟語帳</span>
+  </button>
+  <button class="nav-item" data-nav="stats" onclick="showScreen('stats')">
+    <span class="nav-icon">📊</span><span class="nav-label">記録</span>
+  </button>
+  <button class="nav-item" data-nav="settings" onclick="showScreen('settings')">
+    <span class="nav-icon">⚙️</span><span class="nav-label">設定</span>
+  </button>
+</nav>
+
+<!-- PREMIUM OVERLAY -->
+<div class="premium-overlay" id="premium-overlay" onclick="handleOverlayClick(event)">
+  <div class="premium-sheet">
+    <div class="premium-handle"></div>
+    <div class="premium-icon">⭐</div>
+    <div class="premium-title">プレミアムにアップグレード</div>
+    <div class="premium-sub">一度の購入で全機能が永久に使えます</div>
+    <div class="premium-features">
+      <div class="premium-feature"><div class="premium-check">✓</div>全150熟語が解放（各レベル50問）</div>
+      <div class="premium-feature"><div class="premium-check">✓</div>苦手熟語の集中学習モード</div>
+      <div class="premium-feature"><div class="premium-check">✓</div>詳細な学習統計・グラフ</div>
+      <div class="premium-feature"><div class="premium-check">✓</div>広告なし</div>
+    </div>
+    <div class="premium-price">
+      <div class="premium-price-main">¥980</div>
+      <div class="premium-price-sub">買い切り・永久利用・アップデート無料</div>
+    </div>
+    <button class="btn-premium-upgrade" onclick="processPurchase()">¥980で購入する</button>
+    <button class="btn-premium-close" onclick="hidePaywall()">後で</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const IDIOMS = {
+  beginner: [
+    {phrase:"take a break",type:"句動詞",answer:"休憩する",ex:"Let's take a break after the meeting."},
+    {phrase:"make a decision",type:"句動詞",answer:"決断する",ex:"We need to make a decision by Friday."},
+    {phrase:"keep in mind",type:"句動詞",answer:"心に留める",ex:"Keep in mind that the deadline is next week."},
+    {phrase:"look forward to",type:"句動詞",answer:"楽しみにする",ex:"I look forward to hearing from you."},
+    {phrase:"as soon as possible",type:"表現",answer:"できるだけ早く",ex:"Please send the report as soon as possible."},
+    {phrase:"on behalf of",type:"前置詞句",answer:"～を代表して",ex:"I'm speaking on behalf of our team."},
+    {phrase:"in advance",type:"前置詞句",answer:"前もって",ex:"Please let us know in advance."},
+    {phrase:"at least",type:"副詞句",answer:"少なくとも",ex:"We need at least three days to complete this."},
+    {phrase:"carry out",type:"句動詞",answer:"実行する",ex:"We plan to carry out the new strategy next month."},
+    {phrase:"deal with",type:"句動詞",answer:"～に対処する",ex:"We need to deal with this issue immediately."},
+    {phrase:"find out",type:"句動詞",answer:"見つける・調べる",ex:"I'll find out more details about the project."},
+    {phrase:"give up",type:"句動詞",answer:"諦める",ex:"Don't give up on your goals."},
+    {phrase:"put off",type:"句動詞",answer:"延期する",ex:"We had to put off the meeting until next week."},
+    {phrase:"set up",type:"句動詞",answer:"設定する・設立する",ex:"Can you set up a meeting for tomorrow?"},
+    {phrase:"come up with",type:"句動詞",answer:"思いつく",ex:"We need to come up with a better solution."},
+    {phrase:"go over",type:"句動詞",answer:"見直す・検討する",ex:"Let's go over the budget one more time."},
+    {phrase:"right away",type:"副詞句",answer:"すぐに",ex:"I'll take care of it right away."},
+    {phrase:"take part in",type:"句動詞",answer:"参加する",ex:"All employees should take part in the training."},
+    {phrase:"make sure",type:"句動詞",answer:"確認する",ex:"Make sure you submit the form before noon."},
+    {phrase:"call off",type:"句動詞",answer:"中止する",ex:"The outdoor event was called off due to rain."},
+    {phrase:"fill in",type:"句動詞",answer:"記入する",ex:"Please fill in the form completely."},
+    {phrase:"in charge of",type:"前置詞句",answer:"～を担当して",ex:"Who is in charge of the marketing campaign?"},
+    {phrase:"look into",type:"句動詞",answer:"調査する",ex:"We'll look into the matter and report back."},
+    {phrase:"take over",type:"句動詞",answer:"引き継ぐ",ex:"She will take over the project next month."},
+    {phrase:"point out",type:"句動詞",answer:"指摘する",ex:"He pointed out several errors in the report."},
+    {phrase:"run out of",type:"句動詞",answer:"～を使い果たす",ex:"We're running out of office supplies."},
+    {phrase:"show up",type:"句動詞",answer:"現れる",ex:"He didn't show up for the meeting."},
+    {phrase:"bring up",type:"句動詞",answer:"提起する",ex:"She brought up an important issue at the meeting."},
+    {phrase:"work out",type:"句動詞",answer:"うまくいく",ex:"I hope everything works out for you."},
+    {phrase:"check in",type:"句動詞",answer:"チェックインする",ex:"Guests can check in after 3 PM."},
+    {phrase:"get back to",type:"句動詞",answer:"～に折り返す",ex:"I'll get back to you as soon as possible."},
+    {phrase:"figure out",type:"句動詞",answer:"理解する・解決する",ex:"We need to figure out a new approach."},
+    {phrase:"hand in",type:"句動詞",answer:"提出する",ex:"Please hand in your reports by Friday."},
+    {phrase:"look up",type:"句動詞",answer:"調べる",ex:"Look up the information on the company website."},
+    {phrase:"come across",type:"句動詞",answer:"偶然見つける",ex:"I came across an interesting article."},
+    {phrase:"sort out",type:"句動詞",answer:"解決する",ex:"Can you sort out this billing issue?"},
+    {phrase:"turn down",type:"句動詞",answer:"断る",ex:"He turned down the job offer."},
+    {phrase:"go ahead",type:"句動詞",answer:"進める",ex:"Go ahead and start the presentation."},
+    {phrase:"pick up",type:"句動詞",answer:"拾う・迎えに行く",ex:"I'll pick up the supplies on my way in."},
+    {phrase:"stand for",type:"句動詞",answer:"意味する・代表する",ex:"CEO stands for Chief Executive Officer."},
+    {phrase:"make up",type:"句動詞",answer:"作る・補う",ex:"She made up an excuse for being late."},
+    {phrase:"write down",type:"句動詞",answer:"書き留める",ex:"Write down the key points during the meeting."},
+    {phrase:"account for",type:"句動詞",answer:"説明する・占める",ex:"Please account for the budget differences."},
+    {phrase:"follow up",type:"句動詞",answer:"フォローアップする",ex:"I'll follow up on that email tomorrow."},
+    {phrase:"hold on",type:"句動詞",answer:"待つ",ex:"Please hold on while I check the schedule."},
+    {phrase:"reach out",type:"句動詞",answer:"連絡する",ex:"Feel free to reach out if you need help."},
+    {phrase:"rule out",type:"句動詞",answer:"除外する",ex:"We can't rule out the possibility of delays."},
+    {phrase:"sum up",type:"句動詞",answer:"まとめる",ex:"Let me sum up the main points."},
+    {phrase:"wrap up",type:"句動詞",answer:"終わらせる",ex:"Let's wrap up the meeting now."},
+    {phrase:"back up",type:"句動詞",answer:"バックアップする",ex:"Make sure you back up all your files."}
+  ],
+  intermediate: [
+    {phrase:"on the same page",type:"イディオム",answer:"同じ認識を持つ",ex:"Let's make sure we're all on the same page."},
+    {phrase:"break even",type:"イディオム",answer:"収支トントンになる",ex:"The company hopes to break even by Q3."},
+    {phrase:"hit the ground running",type:"イディオム",answer:"即戦力で動く",ex:"The new hire really hit the ground running."},
+    {phrase:"cut corners",type:"イディオム",answer:"手を抜く",ex:"We cannot afford to cut corners on safety."},
+    {phrase:"get the ball rolling",type:"イディオム",answer:"物事を始める",ex:"Let's get the ball rolling on this project."},
+    {phrase:"ahead of schedule",type:"前置詞句",answer:"予定より早く",ex:"The project is three days ahead of schedule."},
+    {phrase:"behind schedule",type:"前置詞句",answer:"予定より遅れて",ex:"Construction is behind schedule due to weather."},
+    {phrase:"from scratch",type:"前置詞句",answer:"ゼロから",ex:"We had to rebuild the database from scratch."},
+    {phrase:"at a loss",type:"前置詞句",answer:"困って・損をして",ex:"We were at a loss for what to do."},
+    {phrase:"in the long run",type:"前置詞句",answer:"長期的に見て",ex:"In the long run, this investment will pay off."},
+    {phrase:"bottom line",type:"ビジネス語",answer:"最終結論・利益",ex:"The bottom line is we need to reduce costs."},
+    {phrase:"cash flow",type:"ビジネス語",answer:"資金の流れ",ex:"Poor cash flow caused the company to fail."},
+    {phrase:"on the go",type:"イディオム",answer:"忙しく動き回って",ex:"She's always on the go."},
+    {phrase:"across the board",type:"イディオム",answer:"全体的に",ex:"Salaries were cut across the board."},
+    {phrase:"in the red",type:"イディオム",answer:"赤字で",ex:"The company has been in the red for two years."},
+    {phrase:"in the black",type:"イディオム",answer:"黒字で",ex:"We finally moved into the black this quarter."},
+    {phrase:"go through the roof",type:"イディオム",answer:"急騰する",ex:"Sales went through the roof after the ad."},
+    {phrase:"take the lead",type:"句動詞",answer:"主導権を取る",ex:"She took the lead on the negotiations."},
+    {phrase:"pull strings",type:"イディオム",answer:"コネを使う",ex:"He pulled some strings to get the contract."},
+    {phrase:"red tape",type:"イディオム",answer:"官僚的手続き",ex:"There's too much red tape in this process."},
+    {phrase:"touch base",type:"イディオム",answer:"連絡を取る",ex:"Let's touch base after the conference."},
+    {phrase:"under the weather",type:"イディオム",answer:"体調が悪い",ex:"She said she was under the weather and called in."},
+    {phrase:"burn bridges",type:"イディオム",answer:"関係を断ち切る",ex:"Don't burn bridges when you quit a job."},
+    {phrase:"think outside the box",type:"イディオム",answer:"既成概念を超えて考える",ex:"We need to think outside the box."},
+    {phrase:"throw in the towel",type:"イディオム",answer:"諦める",ex:"After years of trying, he threw in the towel."},
+    {phrase:"bite the bullet",type:"イディオム",answer:"我慢してやり遂げる",ex:"We had to bite the bullet and cut the budget."},
+    {phrase:"on the fence",type:"イディオム",answer:"態度を決めかねている",ex:"He's still on the fence about the merger."},
+    {phrase:"up to date",type:"形容詞句",answer:"最新の",ex:"Make sure the software is up to date."},
+    {phrase:"call it a day",type:"イディオム",answer:"今日はここまでにする",ex:"Let's call it a day and resume tomorrow."},
+    {phrase:"close the deal",type:"句動詞",answer:"取引を成立させる",ex:"She closed the deal with a major client."},
+    {phrase:"run the show",type:"イディオム",answer:"仕切る",ex:"Who's running the show while the boss is away?"},
+    {phrase:"gain ground",type:"句動詞",answer:"進展する",ex:"The new product is gaining ground in the market."},
+    {phrase:"lose ground",type:"句動詞",answer:"遅れをとる",ex:"Our company is losing ground to competitors."},
+    {phrase:"leverage",type:"動詞",answer:"活用する",ex:"Let's leverage our existing customer base."},
+    {phrase:"benchmark",type:"動詞",answer:"基準にする",ex:"We benchmark our performance against industry leaders."},
+    {phrase:"scale up",type:"句動詞",answer:"規模を拡大する",ex:"The company plans to scale up operations."},
+    {phrase:"streamline",type:"動詞",answer:"合理化する",ex:"We need to streamline our processes."},
+    {phrase:"drive results",type:"句動詞",answer:"成果を出す",ex:"The campaign helped drive impressive results."},
+    {phrase:"moving forward",type:"副詞句",answer:"今後は",ex:"Moving forward, we'll meet weekly."},
+    {phrase:"going forward",type:"副詞句",answer:"今後は",ex:"Going forward, all reports are due on Monday."},
+    {phrase:"value-added",type:"形容詞",answer:"付加価値のある",ex:"We offer value-added services to our clients."},
+    {phrase:"proactive",type:"形容詞",answer:"積極的な",ex:"We need a more proactive approach to sales."},
+    {phrase:"synergy",type:"名詞",answer:"相乗効果",ex:"The merger created synergy between the two teams."},
+    {phrase:"stakeholder",type:"名詞",answer:"利害関係者",ex:"All stakeholders were invited to the meeting."},
+    {phrase:"best practice",type:"名詞",answer:"最善策",ex:"Following best practices ensures quality output."},
+    {phrase:"on track",type:"形容詞句",answer:"順調に進んでいる",ex:"The project is on track to meet the deadline."},
+    {phrase:"off track",type:"形容詞句",answer:"脱線して",ex:"Our schedule went off track last month."},
+    {phrase:"take stock",type:"句動詞",answer:"評価する",ex:"Let's take stock of what we've accomplished."},
+    {phrase:"make headway",type:"句動詞",answer:"進歩する",ex:"We're finally making headway on the project."},
+    {phrase:"bring to the table",type:"イディオム",answer:"貢献する",ex:"What does she bring to the table as a manager?"}
+  ],
+  advanced: [
+    {phrase:"at the helm",type:"イディオム",answer:"指揮を取って",ex:"With a new CEO at the helm, the company changed direction."},
+    {phrase:"paradigm shift",type:"名詞",answer:"パラダイムシフト",ex:"Digital technology caused a paradigm shift in business."},
+    {phrase:"core competency",type:"名詞",answer:"中核能力",ex:"Innovation is a core competency of the organization."},
+    {phrase:"due diligence",type:"名詞",answer:"適切な調査",ex:"We conducted due diligence before the acquisition."},
+    {phrase:"economy of scale",type:"名詞",answer:"規模の経済",ex:"Larger factories benefit from economy of scale."},
+    {phrase:"fiscal year",type:"名詞",answer:"会計年度",ex:"Our fiscal year ends in March."},
+    {phrase:"put all eggs in one basket",type:"イディオム",answer:"一か所に集中しすぎる",ex:"Don't put all your eggs in one basket."},
+    {phrase:"devil is in the details",type:"イディオム",answer:"細部に神は宿る",ex:"The devil is in the details with this contract."},
+    {phrase:"hit the nail on the head",type:"イディオム",answer:"核心をつく",ex:"You hit the nail on the head with that analysis."},
+    {phrase:"burn the midnight oil",type:"イディオム",answer:"夜遅くまで働く",ex:"We burned the midnight oil to finish the proposal."},
+    {phrase:"above board",type:"イディオム",answer:"公明正大な",ex:"All our dealings are completely above board."},
+    {phrase:"play hardball",type:"イディオム",answer:"強硬な手段をとる",ex:"They started playing hardball in negotiations."},
+    {phrase:"a level playing field",type:"イディオム",answer:"公平な競争環境",ex:"We want a level playing field for all suppliers."},
+    {phrase:"go the extra mile",type:"イディオム",answer:"一歩踏み込んで努力する",ex:"She always goes the extra mile for customers."},
+    {phrase:"throw caution to the wind",type:"イディオム",answer:"大胆に行動する",ex:"They threw caution to the wind and launched early."},
+    {phrase:"the tip of the iceberg",type:"イディオム",answer:"氷山の一角",ex:"This problem is just the tip of the iceberg."},
+    {phrase:"a win-win situation",type:"イディオム",answer:"双方に利益のある状況",ex:"This deal is a win-win situation for both sides."},
+    {phrase:"take with a grain of salt",type:"イディオム",answer:"割り引いて聞く",ex:"Take his estimates with a grain of salt."},
+    {phrase:"under one's belt",type:"イディオム",answer:"経験として身につけて",ex:"With three years under her belt, she's ready."},
+    {phrase:"against the clock",type:"イディオム",answer:"時間と競う",ex:"The team is working against the clock to finish."},
+    {phrase:"drop the ball",type:"イディオム",answer:"しくじる",ex:"He dropped the ball on the client presentation."},
+    {phrase:"raise the bar",type:"イディオム",answer:"基準を上げる",ex:"This product launch has raised the bar for quality."},
+    {phrase:"move the goalposts",type:"イディオム",answer:"条件を変える",ex:"They kept moving the goalposts in negotiations."},
+    {phrase:"cut to the chase",type:"イディオム",answer:"要点を話す",ex:"Let's cut to the chase — what are your terms?"},
+    {phrase:"get down to business",type:"イディオム",answer:"本題に入る",ex:"Now that introductions are done, let's get down to business."},
+    {phrase:"take the bull by the horns",type:"イディオム",answer:"難題に積極的に取り組む",ex:"She took the bull by the horns and fixed the issue."},
+    {phrase:"change of tack",type:"名詞句",answer:"方針転換",ex:"The company made a change of tack after poor results."},
+    {phrase:"put one's foot down",type:"イディオム",answer:"断固とした態度をとる",ex:"Management finally put their foot down on overtime."},
+    {phrase:"on thin ice",type:"イディオム",answer:"危うい立場で",ex:"With those numbers, the CEO is on thin ice."},
+    {phrase:"dead in the water",type:"イディオム",answer:"行き詰まっている",ex:"Without funding, the project is dead in the water."},
+    {phrase:"back to the drawing board",type:"イディオム",answer:"振り出しに戻る",ex:"After the failed launch, it was back to the drawing board."},
+    {phrase:"dot the i's and cross the t's",type:"イディオム",answer:"細部まで注意する",ex:"Make sure to dot the i's and cross the t's."},
+    {phrase:"beat around the bush",type:"イディオム",answer:"遠回しに言う",ex:"Stop beating around the bush and tell me the issue."},
+    {phrase:"in the same boat",type:"イディオム",answer:"同じ立場で",ex:"We're all in the same boat this quarter."},
+    {phrase:"seal the deal",type:"句動詞",answer:"取引を確定させる",ex:"A product demo helped seal the deal."},
+    {phrase:"face the music",type:"イディオム",answer:"結果を受け入れる",ex:"The time has come to face the music."},
+    {phrase:"read between the lines",type:"イディオム",answer:"行間を読む",ex:"If you read between the lines, he's not happy."},
+    {phrase:"leave no stone unturned",type:"イディオム",answer:"あらゆる手を尽くす",ex:"We left no stone unturned to find the cause."},
+    {phrase:"put on the back burner",type:"イディオム",answer:"後回しにする",ex:"That feature is on the back burner for now."},
+    {phrase:"back to basics",type:"イディオム",answer:"基本に立ち返る",ex:"It's time to go back to basics with our strategy."},
+    {phrase:"break new ground",type:"句動詞",answer:"新しい分野を切り開く",ex:"The research is breaking new ground in AI."},
+    {phrase:"paint the full picture",type:"イディオム",answer:"全体像を示す",ex:"Let me paint the full picture for stakeholders."},
+    {phrase:"a double-edged sword",type:"イディオム",answer:"両刃の剣",ex:"Remote work is a double-edged sword."},
+    {phrase:"ring a bell",type:"イディオム",answer:"聞き覚えがある",ex:"Does the name Smith ring a bell?"},
+    {phrase:"under wraps",type:"イディオム",answer:"秘密にして",ex:"The new product is still under wraps."},
+    {phrase:"bite off more than one can chew",type:"イディオム",answer:"身の丈に合わないことをする",ex:"Don't bite off more than you can chew."},
+    {phrase:"up in the air",type:"イディオム",answer:"未定で",ex:"The launch date is still up in the air."},
+    {phrase:"get the hang of",type:"イディオム",answer:"コツをつかむ",ex:"It takes time to get the hang of new software."},
+    {phrase:"on the same wavelength",type:"イディオム",answer:"波長が合う",ex:"The two managers are on the same wavelength."},
+    {phrase:"ahead of the curve",type:"イディオム",answer:"時代を先取りして",ex:"Our company is ahead of the curve in AI adoption."},
+    {phrase:"through the grapevine",type:"イディオム",answer:"うわさで",ex:"I heard through the grapevine about the merger."}
+  ]
+};
+
+// ===== CONSTANTS =====
+const FREE_LIMIT = 20;
+const LS_PREMIUM = 'sl_idiom_premium';
+const LS_WRONG   = 'sl_idiom_wrong';
+const LS_STATS   = 'sl_idiom_stats';
+const LS_FAV     = 'sl_idiom_fav';
+const LS_TODAY   = 'sl_idiom_today';
+const LS_TODAY_D = 'sl_idiom_today_date';
+const LS_DARK    = 'sl_idiom_dark';
+
+// ===== STATE =====
+let currentMode = 'quiz';
+let currentLevel = 'beginner';
+let quizPool = [];
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizAnswered = false;
+let vocabFilter = 'all';
+
+// ===== STORAGE HELPERS =====
+function isPremium(){ return localStorage.getItem(LS_PREMIUM) === '1'; }
+function getWrong(){ try{ return JSON.parse(localStorage.getItem(LS_WRONG)||'[]'); }catch{ return []; } }
+function saveWrong(a){ localStorage.setItem(LS_WRONG, JSON.stringify(a)); }
+function getFav(){ try{ return JSON.parse(localStorage.getItem(LS_FAV)||'[]'); }catch{ return []; } }
+function saveFav(a){ localStorage.setItem(LS_FAV, JSON.stringify(a)); }
+function getStats(){ try{ return JSON.parse(localStorage.getItem(LS_STATS)||'{"total":0,"correct":0,"streak":0,"lastDate":"","levelDone":{"beginner":0,"intermediate":0,"advanced":0}}'); }catch{ return {total:0,correct:0,streak:0,lastDate:'',levelDone:{beginner:0,intermediate:0,advanced:0}}; } }
+function saveStats(s){ localStorage.setItem(LS_STATS, JSON.stringify(s)); }
+
+function getTodayStr(){ return new Date().toISOString().slice(0,10); }
+function getTodayCount(){
+  if(localStorage.getItem(LS_TODAY_D) !== getTodayStr()) return 0;
+  return parseInt(localStorage.getItem(LS_TODAY)||'0',10);
+}
+function addTodayCount(n){
+  if(localStorage.getItem(LS_TODAY_D) !== getTodayStr()){
+    localStorage.setItem(LS_TODAY_D, getTodayStr());
+    localStorage.setItem(LS_TODAY, '0');
+  }
+  localStorage.setItem(LS_TODAY, String(getTodayCount()+n));
+}
+
+function filterByPlan(pool){ if(isPremium()) return pool; return pool.slice(0, FREE_LIMIT); }
+
+// ===== PURCHASE (isolated for Stripe/Apple Pay replacement) =====
+function processPurchase(){
+  // TODO: Replace with real payment provider (Stripe, Apple Pay, etc.)
+  localStorage.setItem(LS_PREMIUM, '1');
+  hidePaywall();
+  updatePlanBadges();
+  showToast('🎉 プレミアムになりました！全熟語が解放されました');
+}
+
+function restorePurchase(){
+  if(isPremium()){
+    showToast('✅ プレミアムは有効です');
+  } else {
+    showToast('購入履歴が見つかりませんでした');
+  }
+}
+
+// ===== PAYWALL =====
+function showPaywall(){ document.getElementById('premium-overlay').classList.add('show'); }
+function hidePaywall(){ document.getElementById('premium-overlay').classList.remove('show'); }
+function handleOverlayClick(e){ if(e.target.id==='premium-overlay') hidePaywall(); }
+
+// ===== DARK MODE =====
+function toggleDark(){
+  const on = document.body.classList.toggle('dark');
+  localStorage.setItem(LS_DARK, on?'1':'0');
+  document.getElementById('dark-toggle').classList.toggle('on', on);
+}
+function initDark(){
+  const on = localStorage.getItem(LS_DARK)==='1';
+  document.body.classList.toggle('dark', on);
+  document.getElementById('dark-toggle').classList.toggle('on', on);
+}
+
+// ===== TOAST =====
+function showToast(msg, dur=2500){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+// ===== SCREEN NAVIGATION =====
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const noNav = ['splash','quiz'];
+  document.getElementById('bottom-nav').style.display = noNav.includes(id) ? 'none' : '';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.nav===id));
+  if(id==='home') updateHome();
+  if(id==='vocab') renderVocab();
+  if(id==='stats') updateStats();
+  if(id==='settings') updatePlanBadges();
+}
+
+function showLevelSelect(mode){
+  currentMode = mode;
+  document.getElementById('level-mode-label').textContent = mode==='quiz'?'クイズ モード':'復習 モード';
+  updateLevelProgress();
+  showScreen('level');
+}
+
+// ===== HOME =====
+function updateHome(){
+  const h = new Date().getHours();
+  const greet = h<12?'おはようございます！':h<17?'こんにちは！':'こんばんは！';
+  document.getElementById('home-greeting').textContent = greet;
+  const st = getStats();
+  document.getElementById('stat-today').textContent = getTodayCount();
+  document.getElementById('stat-total').textContent = st.total;
+  document.getElementById('stat-accuracy').textContent = st.total>0 ? Math.round(st.correct/st.total*100)+'%' : '-';
+  document.getElementById('streak-text').textContent = st.streak + '日連続学習中';
+  document.getElementById('free-bar-section').style.display = isPremium() ? 'none' : '';
+  document.getElementById('ad-banner').style.display = isPremium() ? 'none' : '';
+  updatePlanBadges();
+}
+
+function updatePlanBadges(){
+  const badges = document.querySelectorAll('#plan-badge, #vocab-plan-badge');
+  badges.forEach(b=>{
+    b.textContent = isPremium() ? 'PRO' : 'FREE';
+    b.className = isPremium() ? 'sl-premium-badge' : 'sl-free-badge';
+  });
+}
+
+function updateLevelProgress(){
+  const st = getStats();
+  ['beginner','intermediate','advanced'].forEach(lv=>{
+    const done = st.levelDone[lv]||0;
+    const total = filterByPlan(IDIOMS[lv]).length;
+    const pct = total>0 ? Math.min(100,Math.round(done/total*100)) : 0;
+    document.getElementById('prog-'+lv).style.width = pct+'%';
+  });
+}
+
+// ===== QUIZ =====
+function startMode(level){
+  currentLevel = level;
+  const pool = filterByPlan(IDIOMS[level]);
+  if(currentMode === 'review'){
+    const wrong = getWrong();
+    const wrongPool = pool.filter(w => wrong.includes(w.phrase));
+    if(wrongPool.length === 0){
+      showToast('苦手熟語がありません。まずクイズを解いてください。');
+      return;
+    }
+    quizPool = shuffle(wrongPool);
+  } else {
+    quizPool = shuffle([...pool]);
+  }
+  quizIndex = 0;
+  quizCorrect = 0;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  if(quizIndex >= quizPool.length){ showResult(); return; }
+  quizAnswered = false;
+  const q = quizPool[quizIndex];
+  const total = quizPool.length;
+  document.getElementById('quiz-progress-text').textContent = (quizIndex+1)+' / '+total;
+  document.getElementById('quiz-score-badge').textContent = '正解 '+quizCorrect;
+  document.getElementById('quiz-progress-fill').style.width = (quizIndex/total*100)+'%';
+  document.getElementById('quiz-type-badge').textContent = q.type;
+  document.getElementById('quiz-phrase').textContent = q.phrase;
+  document.getElementById('quiz-feedback').classList.remove('show');
+  document.getElementById('quiz-next-btn').classList.remove('show');
+
+  const choices = buildChoices(q, currentLevel);
+  const choicesEl = document.getElementById('quiz-choices');
+  choicesEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  choices.forEach((c,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<div class="choice-letter">${letters[i]}</div><div class="choice-text">${c}</div>`;
+    btn.onclick = ()=> answerQuestion(c, q);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function buildChoices(q, level){
+  const correct = q.answer;
+  const pool = IDIOMS[level].filter(x=>x.phrase!==q.phrase);
+  const distractors = shuffle(pool).slice(0,3).map(x=>x.answer);
+  return shuffle([correct, ...distractors]);
+}
+
+function answerQuestion(chosen, q){
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const correct = q.answer;
+  const isCorrect = chosen === correct;
+  if(isCorrect) quizCorrect++;
+
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach(btn=>{
+    const text = btn.querySelector('.choice-text').textContent;
+    btn.classList.add('disabled');
+    if(text === correct) btn.classList.add('correct');
+    else if(text === chosen && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  const fr = document.getElementById('feedback-result');
+  const fe = document.getElementById('feedback-ex');
+  fb.classList.add('show');
+  if(isCorrect){
+    fr.textContent = '✅ 正解！';
+    fr.className = 'feedback-result correct';
+  } else {
+    fr.textContent = '❌ 不正解　正解：' + correct;
+    fr.className = 'feedback-result wrong';
+    addWrong(q.phrase);
+  }
+  fe.textContent = '例文: ' + q.ex;
+  document.getElementById('quiz-next-btn').classList.add('show');
+
+  const st = getStats();
+  st.total++;
+  if(isCorrect) st.correct++;
+  updateStreak(st);
+  saveStats(st);
+  addTodayCount(1);
+}
+
+function addWrong(phrase){
+  const wrong = getWrong();
+  if(!wrong.includes(phrase)){ wrong.push(phrase); saveWrong(wrong); }
+}
+function removeWrong(phrase){
+  saveWrong(getWrong().filter(p=>p!==phrase));
+}
+
+function updateStreak(st){
+  const today = getTodayStr();
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yStr = yesterday.toISOString().slice(0,10);
+  if(st.lastDate === today) return;
+  if(st.lastDate === yStr) st.streak++;
+  else st.streak = 1;
+  st.lastDate = today;
+}
+
+function nextQuestion(){
+  quizIndex++;
+  renderQuestion();
+}
+
+function confirmQuit(){
+  if(confirm('クイズを中断しますか？')) showScreen('home');
+}
+
+function showResult(){
+  const total = quizPool.length;
+  const pct = Math.round(quizCorrect/total*100);
+  document.getElementById('result-score').textContent = quizCorrect;
+  document.getElementById('result-total').textContent = '/ '+total+'問';
+  let emoji = '😢', grade = 'Grade D', cls = 'c';
+  if(pct>=90){emoji='🏆';grade='Grade S';cls='s';}
+  else if(pct>=70){emoji='🎉';grade='Grade A';cls='a';}
+  else if(pct>=50){emoji='👍';grade='Grade B';cls='b';}
+  document.getElementById('result-emoji').textContent = emoji;
+  const grEl = document.getElementById('result-grade');
+  grEl.textContent = grade;
+  grEl.className = 'result-grade '+cls;
+
+  const st = getStats();
+  st.levelDone[currentLevel] = Math.max(st.levelDone[currentLevel]||0, quizCorrect);
+  saveStats(st);
+  showScreen('result');
+}
+
+// ===== VOCAB BOOK =====
+function setVocabFilter(f, el){
+  vocabFilter = f;
+  document.querySelectorAll('.vocab-filter').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  renderVocab();
+}
+
+function renderVocab(){
+  const wrong = getWrong();
+  const fav = getFav();
+  const q = (document.getElementById('vocab-search-input')||{}).value||'';
+  let items = [];
+  const levels = ['beginner','intermediate','advanced'];
+  levels.forEach(lv=>{
+    filterByPlan(IDIOMS[lv]).forEach(w=>items.push({...w, level:lv}));
+  });
+  if(vocabFilter==='wrong') items = items.filter(w=>wrong.includes(w.phrase));
+  else if(vocabFilter==='fav') items = items.filter(w=>fav.includes(w.phrase));
+  else if(vocabFilter!=='all') items = items.filter(w=>w.level===vocabFilter);
+  if(q) items = items.filter(w=>w.phrase.toLowerCase().includes(q.toLowerCase())||w.answer.includes(q));
+
+  const list = document.getElementById('vocab-list');
+  if(items.length===0){
+    list.innerHTML = `<div class="vocab-empty"><div class="vocab-empty-icon">📭</div><div>熟語が見つかりません</div></div>`;
+    return;
+  }
+  list.innerHTML = items.map(w=>{
+    const isWrong = wrong.includes(w.phrase);
+    const isFav = fav.includes(w.phrase);
+    const lvIcon = w.level==='beginner'?'🌱':w.level==='intermediate'?'🔥':'👑';
+    return `<div class="vocab-item${isWrong?' is-wrong':''}${isFav?' is-fav':''}" onclick="toggleVocabExpand(this)">
+      <div class="vocab-icon">${lvIcon}</div>
+      <div class="vocab-info">
+        <div class="vocab-phrase">${w.phrase}</div>
+        <div class="vocab-answer">${w.answer}</div>
+        <div class="vocab-ex">${w.ex}</div>
+        <div class="vocab-badges">
+          ${isWrong?'<span class="vocab-wrong-badge">苦手</span>':''}
+        </div>
+      </div>
+      <button class="vocab-fav-btn" onclick="toggleFav(event,'${w.phrase}')">${isFav?'⭐':'☆'}</button>
+    </div>`;
+  }).join('');
+}
+
+function toggleVocabExpand(el){ el.classList.toggle('expanded'); }
+
+function toggleFav(e, phrase){
+  e.stopPropagation();
+  const fav = getFav();
+  const idx = fav.indexOf(phrase);
+  if(idx>=0) fav.splice(idx,1); else fav.push(phrase);
+  saveFav(fav);
+  renderVocab();
+}
+
+// ===== STATS =====
+function updateStats(){
+  const st = getStats();
+  const wrong = getWrong();
+  document.getElementById('stats-total-q').textContent = st.total;
+  document.getElementById('stats-correct').textContent = st.correct;
+  document.getElementById('stats-acc').textContent = st.total>0 ? Math.round(st.correct/st.total*100)+'%' : '-';
+  document.getElementById('stats-streak').textContent = st.streak;
+  document.getElementById('stats-wrong-count').textContent = wrong.length;
+
+  ['beginner','intermediate','advanced'].forEach((lv,i)=>{
+    const total = filterByPlan(IDIOMS[lv]).length;
+    const done = st.levelDone[lv]||0;
+    const pct = total>0 ? Math.min(100, Math.round(done/total*100)) : 0;
+    const sfx = ['b','i','a'][i];
+    document.getElementById('lp-'+sfx).textContent = pct+'%';
+    document.getElementById('lp-fill-'+sfx).style.width = pct+'%';
+  });
+}
+
+// ===== SETTINGS =====
+function resetStats(){
+  if(!confirm('学習記録をすべてリセットしますか？')) return;
+  [LS_STATS, LS_WRONG, LS_FAV, LS_TODAY, LS_TODAY_D].forEach(k=>localStorage.removeItem(k));
+  showToast('記録をリセットしました');
+}
+
+// ===== UTILS =====
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a; }
+
+// ===== INIT =====
+window.addEventListener('DOMContentLoaded', ()=>{
+  initDark();
+  setTimeout(()=>{ showScreen('home'); }, 1500);
+});
+</script>
+</body>
+</html>
