@@ -1306,13 +1306,25 @@ function addTodayCount(n){
 function filterByPlan(pool){ if(isPremium()) return pool; return pool.slice(0, FREE_LIMIT); }
 
 // ===== PURCHASE (isolated for Stripe/Apple Pay replacement) =====
+// ===== STRIPE PAYMENT LINK =====
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/8x25kx5Evgvs7VJ2JA2Ry01';
+const PAYMENT_SUCCESS_URL = location.origin + location.pathname + '?payment=success';
+
 function processPurchase(){
-  // TODO: Replace with real payment provider (Stripe, Apple Pay, etc.)
-  localStorage.setItem(LS_PREMIUM, '1');
-  hidePaywall();
-  updatePlanBadges();
-  showToast('🎉 プレミアムになりました！全熟語が解放されました');
+  window.location.href = STRIPE_PAYMENT_LINK + '?success_url=' + encodeURIComponent(PAYMENT_SUCCESS_URL);
 }
+
+// Stripe決済完了後の戻り処理
+(function handleStripeReturn(){
+  const params = new URLSearchParams(location.search);
+  if(params.get('payment') === 'success'){
+    localStorage.setItem(LS_PREMIUM, '1');
+    history.replaceState(null, '', location.pathname);
+    updatePlanBadges();
+    updateHome();
+    showToast('🎉 プレミアム解放完了！全647語が使えます！', 4000);
+  }
+})();
 
 function restorePurchase(){
   if(isPremium()){
