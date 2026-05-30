@@ -8,7 +8,7 @@ const CACHE_NAME = 'smartlabo-toeic-v1';
 // キャッシュ対象ファイル
 const CACHE_FILES = [
   '/smartlabo-toeic/',
-  '/smartlabo-toeic/index.html',
+  '/smartlabo-toeic/vocabulary.html',
   '/smartlabo-toeic/manifest.json',
 ];
 
@@ -74,7 +74,7 @@ self.addEventListener('fetch', (event) => {
         return response;
       }).catch(() => {
         // オフライン時: index.htmlをフォールバック
-        return caches.match('/smartlabo-toeic/index.html');
+        return caches.match('/smartlabo-toeic/vocabulary.html');
       });
     })
   );
