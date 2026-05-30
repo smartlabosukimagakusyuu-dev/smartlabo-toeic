@@ -2,7 +2,7 @@
   "name": "TOEIC英単語帳 | Smart Labo",
   "short_name": "TOEIC単語",
   "description": "スキマ時間でTOEIC英単語を効率学習。初心者〜600点・800点対策まで対応。",
-  "start_url": "/smartlabo-toeic/vocabulary.html",
+  "start_url": "/smartlabo-toeic/",
   "scope": "/smartlabo-toeic/",
   "display": "standalone",
   "orientation": "portrait-primary",
