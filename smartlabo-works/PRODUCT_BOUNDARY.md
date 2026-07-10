@@ -37,6 +37,22 @@
 
 この決定により、第5章で提起していた「Company OSという用語がPROJECT_BIBLE内で２通りの意味に混在している」という未決定事項は**解消**した。PROJECT_BIBLE側（`11_Development_Principles.md` v1.2、`00_Foundation/08_SmartLaboWorks_Concept.md` v3.1）も、Company OSをSmart Labo Works自体の形容として使っていた箇所を修正し、本書の分類と整合させた。
 
+## 0.2 唯一の正式コードベースの確定(2026-07-10 追加決定)
+
+上記のpush作業中、別リポジトリ`SmartLabo`（PROJECT_BIBLE）側に、2026-07-07付で`WEBSITE/app.html`を「Smart Labo Works v1.0 — Company OS完成」とする未マージのコミットが存在することが判明した。マージの結果、**本書が調査対象とした`smartlabo-works`（Node.js版・実際のAI Provider連携あり）と、`WEBSITE/app.html`（GitHub Pages公開・静的デモ）という2つの異なるコードベースが同時に「Smart Labo Works v1.0」を名乗る状態**になっていたため、CEOへ確認した。
+
+CEOの決定は以下のとおり。
+
+| 項目 | 決定内容 |
+|---|---|
+| Smart Labo Worksの正式コードベース | **`smartlabo-works`（Node.js版）のみ。唯一の正式コードベース** |
+| `WEBSITE/app.html`（GitHub Pages版） | **正式製品ではない。今後はデモサイト／マーケティング用プレビューとして扱う** |
+| 今後の機能追加 | Smart Labo Worksの機能追加は`smartlabo-works`のみで行う |
+| ドキュメント管理 | PROJECT_BIBLE・CURRENT_STATUS・PRODUCT_REQUIREMENTS・PRODUCT_BOUNDARY・BUSINESS_STRATEGYは、いずれも`smartlabo-works`のみを正式版として管理する |
+| `WEBSITE`側の古い表記 | Company OS等の古い表記はデモサイトとして整理する（`WEBSITE/app.html`のコード自体には元々「Company OS」という文字列は存在しなかったため、`<title>`・バージョン表示の「Smart Labo Works v1.0」表記をデモである旨に修正した） |
+
+この決定により、本書が第0章〜第6章で行った調査・分類・v1.0機能一覧は**すべてそのまま有効**である（`smartlabo-works`を対象に調査していたため）。PROJECT_BIBLE側は`11_Development_Principles.md`（v1.2→v1.3）・`00_Foundation/08_SmartLaboWorks_Concept.md`（v3.1→v3.2）・`CURRENT_STATUS.md`（v3.1）・`WEBSITE/README.md`（v1.1→v1.2）を更新済み。
+
 ---
 
 ## 1. 現在存在する全機能の棚卸し
@@ -280,3 +296,4 @@ flowchart TD
 |---|---|---|---|
 | v1.0 | 2026-07-10 | Claude Code | 初版作成。現行コード・PROJECT_BIBLE・PRODUCT_REQUIREMENTS.mdを調査し、全47機能を①社内専用／②顧客向け共通／③不動産専用／④将来追加へ分類。「Smart Labo Group」プロダクトファミリー構成案（Mermaid図）と札幌向けv1.0機能一覧を新規提案した |
 | **v1.1** | 2026-07-10 | Claude Code（CEO指示による） | **CEO確認事項への回答を反映。** 0.1節を新設し、会社名／販売する製品(Smart Labo Works)／社内専用システム(Company OS・非売品)を正式決定として記載。第4章を「非公式・将来のブランド構想」と明記し、「Smart Labo Group」は正式名称ではないこと、「Smart Labo AI」「Smart Labo CRM」は将来の商品候補であり正式製品ではないことを4.1節の表・Mermaid図に反映。第5章の「Company OS用語の重複」「Smart Labo Group等の非公式性」の2件を解消済みへ移動。PROJECT_BIBLE側（`11_Development_Principles.md` v1.2、`08_SmartLaboWorks_Concept.md` v3.1）との整合を確認した |
+| **v1.2** | 2026-07-10 | Claude Code（CEO指示による） | **0.2節を新設し、Smart Labo Worksの唯一の正式コードベースを`smartlabo-works`に確定。** `WEBSITE/app.html`（別リポジトリ、GitHub Pages公開版）はSmart Labo Works正式製品ではなく、デモサイト／マーケティング用プレビューへ位置づけ変更されたことを記録。背景として、マージ作業中に`WEBSITE/app.html`側で並行して「Smart Labo Works v1.0」を名乗るコミットが発覚した経緯を記載。本書の調査・分類・v1.0機能一覧（第0〜6章）は`smartlabo-works`を対象としていたため変更なしで有効であることを明記した |

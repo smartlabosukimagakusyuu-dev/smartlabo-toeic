@@ -42,6 +42,12 @@
 
 **本書v1.0時点での重要な影響**：第0章で確認したとおり、現行`app.html`のログイン画面には「Company OS — 社内業務管理システム」という文言がハードコードされている【事実】。この文言は社内専用システムであるCompany OSを指す表現であり、**顧客向けSmart Labo Worksの外部提供画面では使用してはならない**（第9章F-001・第13章の再設計時に、ログイン画面・全体の呼称からCompany OSという語を除去することを追加の完了条件とする）。第7章・第8章で「Won't（v1.0）」と分類したSmart Growth・人材育成・Innovation Hub・Builder等の機能群は、今回の決定によりすべて**Company OS（社内専用システム）側の機能**として正式に位置づけられる。
 
+### 0.1.1 唯一の正式コードベースの確定(2026-07-10 追加決定)
+
+上記のpush作業中、別リポジトリ`SmartLabo`（PROJECT_BIBLE）側の`WEBSITE/app.html`（GitHub Pages公開・静的デモ）が、本書の調査対象である`smartlabo-works`（Node.js版・実際のAI Provider連携あり）とは別に、並行して「Smart Labo Works v1.0」を名乗っていたことが判明した。CEOはこれを受け、**`smartlabo-works`をSmart Labo Worksの唯一の正式コードベースとし、`WEBSITE/app.html`はデモサイト／マーケティング用プレビューとして扱う**ことを正式決定した。
+
+これにより、**本書が調査・記載した内容（第0〜25章）はすべてそのまま有効**である（本書は元々`smartlabo-works`のみを調査対象としていたため）。今後のSmart Labo Works機能追加は`smartlabo-works`でのみ行われ、`WEBSITE/app.html`は対象外となる。詳細は`PRODUCT_BOUNDARY.md`第0.2章を参照。
+
 ---
 
 ## 1. ドキュメント情報
@@ -853,3 +859,4 @@ v1.0導入後に測定する候補（現状KPI計測機構は未実装のため�
 |---|---|---|---|
 | v1.0 | 2026-07-10 | Claude Code | 初版作成。CLAUDE.md・現行`app.html`／`server.js`／AI Router実装を調査した上で、不動産会社向け外部提供SaaSとしてのv1.0スコープを定義。現状の社内Company OS実装（Smart Growth・研修・Innovation Hub等）とのギャップを明記し、v1.0では非表示・社内限定とする方針を提案した |
 | **v1.1** | 2026-07-10 | Claude Code（CEO指示による） | **0.1節を新設し、CEO決定事項を反映。** 会社名／販売する製品(Smart Labo Works)／社内専用システム(Company OS・非売品)を正式決定として明記。「Smart Labo Group」「Smart Labo AI」「Smart Labo CRM」は正式名称・正式製品ではなく将来のブランド構想／商品候補であることを明記。ログイン画面の「Company OS」表記を顧客向け画面から除去する必要がある旨をF-001・第13章の追加完了条件として記載した |
+| **v1.2** | 2026-07-10 | Claude Code（CEO指示による） | **0.1.1節を新設し、Smart Labo Worksの唯一の正式コードベースを`smartlabo-works`に確定。** `WEBSITE/app.html`（別リポジトリ）はSmart Labo Works正式製品ではなく、デモサイト／マーケティング用プレビューへ位置づけ変更されたことを記録。本書の調査・記載内容（第0〜25章）は`smartlabo-works`のみを対象としていたため、変更なくそのまま有効であることを明記した |
