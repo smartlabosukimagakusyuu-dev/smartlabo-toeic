@@ -38,11 +38,28 @@
  */
 
 /**
+ * @typedef {Object} ModelInfo
+ * @property {string} id    - モデルID
+ * @property {string} name  - 表示名
+ * @property {string} desc  - 簡単な説明
+ */
+
+/**
  * @typedef {Object} IProvider
- * 全Providerが実装すべきインターフェース。
- * 新Provider追加時はこの形に合わせること。
+ * 全Providerが実装すべきインターフェース（Task4で正式化）。
+ * 新Provider追加時はこの4関数をこの形に合わせて実装すること。
+ * Routerはこのインターフェースのみを介してProviderを呼び出し、
+ * Provider固有の設定・APIキー名などを一切知らない（Router→Provider→AIの一方向）。
  * @property {function(string, string, AIRequestOptions): Promise<ProviderResult>} chat
+ *   - システムプロンプト・ユーザーメッセージ・オプションを受け取り、AI応答を返す。
+ *     利用不可（APIキー未設定・未実装等）の場合はthrowする
  * @property {function(): Promise<{ok: boolean, model: string, message: string}>} testConnection
+ *   - 疎通確認。例外を投げず、必ず{ok, model, message}を返すこと
+ * @property {function(): ModelInfo[]} getAvailableModels
+ *   - 選択可能なモデル一覧（未実装Providerは空配列を返す）
+ * @property {function(): boolean} isAvailable
+ *   - このProviderが現在呼び出し可能か（APIキー設定済み・実装済み等）。
+ *     Router側は個別のconfig項目を直接参照せず、必ずこの関数経由で判定する
  */
 
 module.exports = {}; // 型定義のみ。実行時コードなし。

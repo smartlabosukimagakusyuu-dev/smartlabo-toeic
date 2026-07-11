@@ -12,11 +12,13 @@
  *       ↓  https request
  *   外部AI API（OpenAI / Anthropic / Gemini / ...）
  *
- * 新しいProviderを追加する方法:
- *   1. providers/ に xxxProvider.js を作成（chat / testConnection を実装）
+ * 新しいProviderを追加する方法（このRouter本体を書き換える必要はない）:
+ *   1. providers/ に xxxProvider.js を作成し、IProvider（../types/aiTypes.js）の
+ *      4関数 chat / testConnection / getAvailableModels / isAvailable を実装
  *   2. PROVIDERS に登録
  *   3. ROUTE_TABLE の対象featureに割り当て
- *   4. isProviderAvailable に enabled チェックを追加
+ *   以上。可用性判定（isProviderAvailable）はProvider自身のisAvailable()を呼ぶだけなので、
+ *   Provider固有のconfig項目をRouterが知る必要はない。
  */
 
 const config  = require('../../../config/env');
@@ -141,18 +143,15 @@ function getRouterStatus() {
 }
 
 /**
- * 指定Providerが利用可能かチェック（APIキー確認）
+ * 指定Providerが利用可能かチェックする。
+ * Provider固有の判定（APIキー有無・実装状況など）はProvider自身のisAvailable()に委譲し、
+ * Router側は個別のconfig項目を一切参照しない（新Provider追加時にこの関数を変更しなくてよい）。
  * @param {string} providerName
  * @returns {boolean}
  */
 function isProviderAvailable(providerName) {
-  switch (providerName) {
-    case 'openai':  return config.openai.enabled;
-    case 'claude':  return config.claude.enabled;
-    case 'gemini':  return config.gemini.enabled;
-    case 'whisper': return config.openai.enabled; // Whisper は OpenAI キーを使用
-    default:        return false;
-  }
+  const provider = PROVIDERS[providerName];
+  return provider ? provider.isAvailable() : false;
 }
 
 /**

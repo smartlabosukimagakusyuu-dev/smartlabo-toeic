@@ -110,4 +110,12 @@ function getAvailableModels() {
   ];
 }
 
-module.exports = { chat, testConnection, getAvailableModels };
+/**
+ * このProviderが現在呼び出し可能か（APIキー設定済みか）
+ * @returns {boolean}
+ */
+function isAvailable() {
+  return config.claude.enabled;
+}
+
+module.exports = { chat, testConnection, getAvailableModels, isAvailable };
