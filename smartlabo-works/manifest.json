@@ -1,0 +1,21 @@
+{
+  "name": "Smart Labo Works",
+  "short_name": "SLW",
+  "description": "株式会社スマートラボ — Company OS 自社運用版",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#0A1B3D",
+  "theme_color": "#0A1B3D",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "ja",
+  "dir": "ltr"
+}
