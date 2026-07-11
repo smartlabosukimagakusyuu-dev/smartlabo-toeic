@@ -3,11 +3,12 @@
  * 静的ファイル配信 + AI APIルーティング
  */
 
-const http        = require('http');
-const fs          = require('fs');
-const path        = require('path');
-const config      = require('./src/config/env');
-const authService = require('./src/services/auth/authService');
+const http          = require('http');
+const fs            = require('fs');
+const path          = require('path');
+const config        = require('./src/config/env');
+const authService   = require('./src/services/auth/authService');
+const { createStore } = require('./src/services/storage/recordStore');
 
 const PORT = config.app.port || 3006;
 const ROOT = __dirname;
@@ -52,6 +53,47 @@ function addLog(companyId, entry) {
 }
 function getLogs(companyId) {
   return aiLogsByCompany.get(companyId) || [];
+}
+
+// ==========================================
+// 企業データストア（Task7：CRM・案件・契約のサーバー永続化）
+// ==========================================
+const crmStore       = createStore('crm');
+const dealsStore      = createStore('deals');
+const contractsStore  = createStore('contracts');
+
+/**
+ * CRM・案件・契約に共通のREST CRUDハンドラー。
+ * GET(一覧) / POST(作成) / PUT(更新) / DELETE(削除) を1関数にまとめ、
+ * server.js側の呼び出し元（3箇所）は「どのstoreを使うか」だけを渡す。
+ * @param {ReturnType<typeof createStore>} store
+ * @param {string|undefined} id - パス末尾のID（一覧・作成時はundefined）
+ */
+async function handleResourceRequest(store, id, req, res, session) {
+  if (req.method === 'GET' && !id) {
+    sendJSON(res, 200, { items: store.list(session.companyId) });
+    return;
+  }
+  if (req.method === 'POST' && !id) {
+    const body = await readBody(req);
+    const created = store.create(session.companyId, body);
+    sendJSON(res, 201, created);
+    return;
+  }
+  if (req.method === 'PUT' && id) {
+    const body = await readBody(req);
+    const updated = store.replace(session.companyId, id, body);
+    if (!updated) { sendJSON(res, 404, { error: 'レコードが見つかりません' }); return; }
+    sendJSON(res, 200, updated);
+    return;
+  }
+  if (req.method === 'DELETE' && id) {
+    const ok = store.remove(session.companyId, id);
+    if (!ok) { sendJSON(res, 404, { error: 'レコードが見つかりません' }); return; }
+    sendJSON(res, 200, { success: true });
+    return;
+  }
+  sendJSON(res, 404, { error: `API not found: ${req.method} ${req.url}` });
 }
 
 // ==========================================
@@ -163,15 +205,23 @@ async function handleAPI(req, res, pathname) {
     return;
   }
 
-  // ---- 認証ガード（/api/ai/* はすべてログイン必須。以降のハンドラーで session.companyId を使う） ----
+  // ---- 認証ガード（/api/auth/* 以外の /api/* はすべてログイン必須。以降のハンドラーで session.companyId を使う） ----
   let session = null;
-  if (pathname.startsWith('/api/ai/')) {
+  if (pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) {
     session = getSessionFromRequest(req);
     if (!session) {
       sendJSON(res, 401, { error: '認証が必要です。ログインしてください。' });
       return;
     }
   }
+
+  // ---- /api/crm, /api/deals, /api/contracts（Task7：REST CRUD） ----
+  const crmMatch       = pathname.match(/^\/api\/crm(?:\/([^/]+))?$/);
+  const dealsMatch      = pathname.match(/^\/api\/deals(?:\/([^/]+))?$/);
+  const contractsMatch  = pathname.match(/^\/api\/contracts(?:\/([^/]+))?$/);
+  if (crmMatch)      { await handleResourceRequest(crmStore, crmMatch[1], req, res, session); return; }
+  if (dealsMatch)     { await handleResourceRequest(dealsStore, dealsMatch[1], req, res, session); return; }
+  if (contractsMatch) { await handleResourceRequest(contractsStore, contractsMatch[1], req, res, session); return; }
 
   // ---- GET /api/ai/status ----
   if (pathname === '/api/ai/status' && req.method === 'GET') {
