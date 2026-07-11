@@ -3,13 +3,15 @@
  * 静的ファイル配信 + AI APIルーティング
  */
 
-const http    = require('http');
-const fs      = require('fs');
-const path    = require('path');
-const config  = require('./src/config/env');
+const http        = require('http');
+const fs          = require('fs');
+const path        = require('path');
+const config      = require('./src/config/env');
+const authService = require('./src/services/auth/authService');
 
 const PORT = config.app.port || 3006;
 const ROOT = __dirname;
+const SESSION_COOKIE = 'slw_session';
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -76,6 +78,36 @@ function readBody(req) {
 }
 
 // ==========================================
+// Cookie / セッションヘルパー
+// ==========================================
+function parseCookies(req) {
+  const header = req.headers.cookie || '';
+  const cookies = {};
+  header.split(';').forEach(pair => {
+    const idx = pair.indexOf('=');
+    if (idx === -1) return;
+    const key = pair.slice(0, idx).trim();
+    const val = pair.slice(idx + 1).trim();
+    if (key) cookies[key] = decodeURIComponent(val);
+  });
+  return cookies;
+}
+
+function getSessionFromRequest(req) {
+  const token = parseCookies(req)[SESSION_COOKIE];
+  return token ? authService.getSession(token) : null;
+}
+
+function setSessionCookie(res, token) {
+  const maxAgeSec = 8 * 60 * 60; // authService.SESSION_TTL_MSと合わせて8時間
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${maxAgeSec}`);
+}
+
+function clearSessionCookie(res) {
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0`);
+}
+
+// ==========================================
 // APIハンドラー
 // ==========================================
 async function handleAPI(req, res, pathname) {
@@ -89,6 +121,40 @@ async function handleAPI(req, res, pathname) {
       'Access-Control-Allow-Headers': 'Content-Type',
     });
     res.end();
+    return;
+  }
+
+  // ---- POST /api/auth/login ----
+  if (pathname === '/api/auth/login' && req.method === 'POST') {
+    const { companyId, email, password } = await readBody(req);
+    if (!companyId || !email || !password) {
+      sendJSON(res, 400, { error: 'companyId、email、password は必須です' });
+      return;
+    }
+    if (!authService.verifyCredentials(companyId, email, password)) {
+      sendJSON(res, 401, { error: 'CompanyID、メールアドレス、またはパスワードが正しくありません' });
+      return;
+    }
+    const token = authService.createSession(companyId, email);
+    setSessionCookie(res, token);
+    sendJSON(res, 200, { success: true, companyId, email });
+    return;
+  }
+
+  // ---- POST /api/auth/logout ----
+  if (pathname === '/api/auth/logout' && req.method === 'POST') {
+    const token = parseCookies(req)[SESSION_COOKIE];
+    authService.destroySession(token);
+    clearSessionCookie(res);
+    sendJSON(res, 200, { success: true });
+    return;
+  }
+
+  // ---- GET /api/auth/me ----
+  if (pathname === '/api/auth/me' && req.method === 'GET') {
+    const session = getSessionFromRequest(req);
+    if (!session) { sendJSON(res, 401, { error: '未ログインです' }); return; }
+    sendJSON(res, 200, { companyId: session.companyId, email: session.email });
     return;
   }
 
