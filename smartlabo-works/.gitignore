@@ -12,3 +12,8 @@ Thumbs.db
 # ログ
 logs/
 *.log
+
+# データベース（Task7: SQLite、企業データを含むため絶対にコミットしないこと）
+data/
+*.db
+*.db-journal
