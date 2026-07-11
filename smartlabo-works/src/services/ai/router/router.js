@@ -29,11 +29,11 @@ const prompts = require('../promptManager');
 // 追加: ここに新しいProviderをimportして登録する
 // ==========================================
 const PROVIDERS = {
-  openai: require('../providers/openaiProvider'),
-  claude: require('../providers/claudeProvider'),
-  // gemini:  require('../providers/geminiProvider'),   // 将来: Gemini Vision
-  // whisper: require('../providers/whisperProvider'),  // 将来: 音声→テキスト
-  // ocr:     require('../providers/ocrProvider'),      // 将来: 画像OCR
+  openai:  require('../providers/openaiProvider'),
+  claude:  require('../providers/claudeProvider'),
+  gemini:  require('../providers/geminiProvider'),   // Phase3で実装予定（現状は構造スタブ、isAvailable()は常にfalse）
+  whisper: require('../providers/whisperProvider'),  // Phase3で実装予定（同上）
+  ocr:     require('../providers/ocrProvider'),      // Phase3で実装予定（同上）
 };
 
 // ==========================================
