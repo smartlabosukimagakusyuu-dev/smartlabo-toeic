@@ -61,6 +61,7 @@ function getLogs(companyId) {
 const crmStore       = createStore('crm');
 const dealsStore      = createStore('deals');
 const contractsStore  = createStore('contracts');
+const brainStore      = createStore('brain'); // Task8: Company Brain
 
 /**
  * CRM・案件・契約に共通のREST CRUDハンドラー。
@@ -219,9 +220,11 @@ async function handleAPI(req, res, pathname) {
   const crmMatch       = pathname.match(/^\/api\/crm(?:\/([^/]+))?$/);
   const dealsMatch      = pathname.match(/^\/api\/deals(?:\/([^/]+))?$/);
   const contractsMatch  = pathname.match(/^\/api\/contracts(?:\/([^/]+))?$/);
+  const brainMatch      = pathname.match(/^\/api\/brain(?:\/([^/]+))?$/); // Task8（AI問い合わせの /api/ai/brain とは別物）
   if (crmMatch)      { await handleResourceRequest(crmStore, crmMatch[1], req, res, session); return; }
   if (dealsMatch)     { await handleResourceRequest(dealsStore, dealsMatch[1], req, res, session); return; }
   if (contractsMatch) { await handleResourceRequest(contractsStore, contractsMatch[1], req, res, session); return; }
+  if (brainMatch)     { await handleResourceRequest(brainStore, brainMatch[1], req, res, session); return; }
 
   // ---- GET /api/ai/status ----
   if (pathname === '/api/ai/status' && req.method === 'GET') {
