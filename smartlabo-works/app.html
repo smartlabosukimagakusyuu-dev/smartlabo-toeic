@@ -1404,17 +1404,12 @@ function companyScopedKey(baseKey) {
   return `${baseKey}__${getCurrentCompanyId()}`;
 }
 
-const BRAIN_KEY = 'slw_brain_v1';
 const INNOVATION_KEY = 'slw_innovation_v1'; // Company OS側（社内専用）のためCompany分離の対象外
 
-function loadBrain() {
-  try { return JSON.parse(localStorage.getItem(companyScopedKey(BRAIN_KEY))) || null; } catch(e){ return null; }
-}
-function saveBrain(data) { localStorage.setItem(companyScopedKey(BRAIN_KEY), JSON.stringify(data)); }
 function loadInnovation() { try { return JSON.parse(localStorage.getItem(INNOVATION_KEY)) || null; } catch(e){ return null; } }
 function saveInnovation(data) { localStorage.setItem(INNOVATION_KEY, JSON.stringify(data)); }
 
-let BRAIN = loadBrain() || JSON.parse(JSON.stringify(BRAIN_SEED));
+let BRAIN = [];      // Task8: サーバー永続化。loadCompanyData()でログイン後に取得する
 let CRM = [];       // Task7: サーバー永続化。loadCompanyData()でログイン後に取得する
 let DEALS = [];      // 同上
 let CONTRACTS = [];  // 同上
@@ -1455,7 +1450,7 @@ async function migrateLocalCompanyDataIfNeeded() {
   // 移行に失敗した場合は元データもフラグもそのままにし、次回ログイン時に再試行できるようにする
   // （フラグを先に立ててしまうと、失敗時にデータが永久に見えなくなるため）
   try {
-    const legacyKeys = { crm: companyScopedKey('slw_crm_v1'), deals: companyScopedKey('slw_deals_v1'), contracts: companyScopedKey('slw_contracts_v1') };
+    const legacyKeys = { crm: companyScopedKey('slw_crm_v1'), deals: companyScopedKey('slw_deals_v1'), contracts: companyScopedKey('slw_contracts_v1'), brain: companyScopedKey('slw_brain_v1') };
     for (const [resource, key] of Object.entries(legacyKeys)) {
       let records = null;
       try { records = JSON.parse(localStorage.getItem(key)); } catch(e) { records = null; }
@@ -1475,8 +1470,8 @@ async function migrateLocalCompanyDataIfNeeded() {
  */
 async function loadCompanyData() {
   await migrateLocalCompanyDataIfNeeded();
-  const [crm, deals, contracts] = await Promise.all([apiList('crm'), apiList('deals'), apiList('contracts')]);
-  CRM = crm; DEALS = deals; CONTRACTS = contracts;
+  const [crm, deals, contracts, brain] = await Promise.all([apiList('crm'), apiList('deals'), apiList('contracts'), apiList('brain')]);
+  CRM = crm; DEALS = deals; CONTRACTS = contracts; BRAIN = brain;
 }
 
 // ============================
@@ -3765,12 +3760,13 @@ function openBrainModal(id) {
 }
 function closeBrainModal() { document.getElementById('brain-modal').classList.remove('open'); }
 function editBrain(id) { openBrainModal(id); }
-function deleteBrain(id) {
+async function deleteBrain(id) {
   if(!confirm('このエントリーを削除しますか？')) return;
-  BRAIN = BRAIN.filter(b=>b.id!==id); saveBrain(BRAIN);
+  await apiDelete('brain', id);
+  BRAIN = BRAIN.filter(b=>b.id!==id);
   renderBrainCats(); renderBrainEntries();
 }
-function saveBrainEntry() {
+async function saveBrainEntry() {
   const title = document.getElementById('bm-title').value.trim();
   const cat = document.getElementById('bm-cat').value;
   const importance = document.getElementById('bm-importance').value || '普通';
@@ -3779,11 +3775,15 @@ function saveBrainEntry() {
   if(!title || !body) { alert('タイトルと内容は必須です'); return; }
   if(brainEditId) {
     const i = BRAIN.findIndex(b=>b.id===brainEditId);
-    BRAIN[i] = { ...BRAIN[i], title, cat, importance, tags, body };
+    const entry = { ...BRAIN[i], title, cat, importance, tags, body };
+    const updated = await apiUpdate('brain', brainEditId, entry);
+    BRAIN[i] = updated;
   } else {
-    BRAIN.push({ id:'b'+Date.now(), cat, importance, title, tags, body });
+    const entry = { id:'b'+Date.now(), cat, importance, title, tags, body };
+    const created = await apiCreate('brain', entry);
+    BRAIN.push(created);
   }
-  saveBrain(BRAIN); closeBrainModal(); renderBrainCats(); renderBrainEntries();
+  closeBrainModal(); renderBrainCats(); renderBrainEntries();
 }
 
 // ============================
@@ -4791,20 +4791,21 @@ async function autoGenerateWorkOrder(id) {
   }
 }
 
-function registerToBrain(id) {
+async function registerToBrain(id) {
   const idea = INNOVATION.find(i=>i.id===id);
   if(!idea) return;
   const exists = BRAIN.some(b=>b.title===idea.title);
   if(exists) { alert('すでにCompany Brainに登録済みです'); return; }
-  BRAIN.push({
+  const entry = {
     id: 'b'+Date.now(),
     cat: idea.cat,
     importance: idea.priority==='高'?'重要':'普通',
     title: idea.title,
     tags: [idea.cat, 'Innovation Hub'],
     body: `${idea.body}\n\n【期待効果】${idea.effect}`,
-  });
-  saveBrain(BRAIN);
+  };
+  const created = await apiCreate('brain', entry);
+  BRAIN.push(created);
   alert(`「${idea.title}」をCompany Brainに登録しました`);
 }
 
@@ -6026,9 +6027,12 @@ function exportData() {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = `slw-export-${new Date().toISOString().split('T')[0]}.json`; a.click();
 }
-function resetBrain() {
+async function resetBrain() {
   if(!confirm('Company Brainを初期データにリセットしますか？\nこの操作は取り消せません。')) return;
-  BRAIN = JSON.parse(JSON.stringify(BRAIN_SEED)); saveBrain(BRAIN);
+  for (const entry of BRAIN) { await apiDelete('brain', entry.id); }
+  const seeded = [];
+  for (const entry of JSON.parse(JSON.stringify(BRAIN_SEED))) { seeded.push(await apiCreate('brain', entry)); }
+  BRAIN = seeded;
   alert('リセット完了しました'); navTo('brain', document.querySelectorAll('.nav-item')[1]);
 }
 
