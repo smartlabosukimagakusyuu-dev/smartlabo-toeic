@@ -1405,27 +1405,79 @@ function companyScopedKey(baseKey) {
 }
 
 const BRAIN_KEY = 'slw_brain_v1';
-const CRM_KEY = 'slw_crm_v1';
-const DEALS_KEY = 'slw_deals_v1';
-const CONTRACT_KEY = 'slw_contracts_v1';
 const INNOVATION_KEY = 'slw_innovation_v1'; // Company OS側（社内専用）のためCompany分離の対象外
 
 function loadBrain() {
   try { return JSON.parse(localStorage.getItem(companyScopedKey(BRAIN_KEY))) || null; } catch(e){ return null; }
 }
 function saveBrain(data) { localStorage.setItem(companyScopedKey(BRAIN_KEY), JSON.stringify(data)); }
-function loadCrm() { try { return JSON.parse(localStorage.getItem(companyScopedKey(CRM_KEY))) || null; } catch(e){ return null; } }
-function saveCrmData(data) { localStorage.setItem(companyScopedKey(CRM_KEY), JSON.stringify(data)); }
-function loadDeals() { try { return JSON.parse(localStorage.getItem(companyScopedKey(DEALS_KEY))) || null; } catch(e){ return null; } }
-function saveDealsData(data) { localStorage.setItem(companyScopedKey(DEALS_KEY), JSON.stringify(data)); }
 function loadInnovation() { try { return JSON.parse(localStorage.getItem(INNOVATION_KEY)) || null; } catch(e){ return null; } }
 function saveInnovation(data) { localStorage.setItem(INNOVATION_KEY, JSON.stringify(data)); }
 
 let BRAIN = loadBrain() || JSON.parse(JSON.stringify(BRAIN_SEED));
-let CRM = loadCrm() || JSON.parse(JSON.stringify(CRM_SEED));
-let DEALS = loadDeals() || JSON.parse(JSON.stringify(DEALS_SEED));
-let CONTRACTS = JSON.parse(localStorage.getItem(companyScopedKey(CONTRACT_KEY))) || JSON.parse(JSON.stringify(CONTRACT_SEED));
+let CRM = [];       // Task7: サーバー永続化。loadCompanyData()でログイン後に取得する
+let DEALS = [];      // 同上
+let CONTRACTS = [];  // 同上
 let INNOVATION = loadInnovation() || JSON.parse(JSON.stringify(INNOVATION_SEED));
+
+// ============================
+//  CRM / 案件 / 契約 — REST API（Task7）
+// ============================
+async function apiList(resource) {
+  const res = await fetch(`/api/${resource}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.items || [];
+}
+async function apiCreate(resource, record) {
+  const res = await fetch(`/api/${resource}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) });
+  if (!res.ok) throw new Error(`POST /api/${resource} failed: ${res.status}`);
+  return res.json();
+}
+async function apiUpdate(resource, id, record) {
+  const res = await fetch(`/api/${resource}/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) });
+  return res.json();
+}
+async function apiDelete(resource, id) {
+  const res = await fetch(`/api/${resource}/${id}`, { method: 'DELETE' });
+  return res.ok;
+}
+
+/**
+ * 旧バージョン（Task6まで）のlocalStorageに残っているCRM/案件/契約データを、
+ * 初回ログイン時にサーバーへ一度だけ移行する。移行後は元のキーを削除し、
+ * 移行済みフラグを立てて二重移行を防ぐ。新規企業（データなし）は何もしない。
+ */
+async function migrateLocalCompanyDataIfNeeded() {
+  const migratedFlagKey = companyScopedKey('slw_migrated_to_server_v1');
+  if (localStorage.getItem(migratedFlagKey)) return;
+
+  // 移行に失敗した場合は元データもフラグもそのままにし、次回ログイン時に再試行できるようにする
+  // （フラグを先に立ててしまうと、失敗時にデータが永久に見えなくなるため）
+  try {
+    const legacyKeys = { crm: companyScopedKey('slw_crm_v1'), deals: companyScopedKey('slw_deals_v1'), contracts: companyScopedKey('slw_contracts_v1') };
+    for (const [resource, key] of Object.entries(legacyKeys)) {
+      let records = null;
+      try { records = JSON.parse(localStorage.getItem(key)); } catch(e) { records = null; }
+      if (Array.isArray(records) && records.length > 0) {
+        for (const record of records) { await apiCreate(resource, record); }
+      }
+      if (records !== null) localStorage.removeItem(key);
+    }
+    localStorage.setItem(migratedFlagKey, '1');
+  } catch (e) {
+    console.error('企業データの移行に失敗しました。次回ログイン時に再試行します。', e);
+  }
+}
+
+/**
+ * ログイン成功後に呼ぶ。旧データの移行→サーバーからの読み込みの順で行う
+ */
+async function loadCompanyData() {
+  await migrateLocalCompanyDataIfNeeded();
+  const [crm, deals, contracts] = await Promise.all([apiList('crm'), apiList('deals'), apiList('contracts')]);
+  CRM = crm; DEALS = deals; CONTRACTS = contracts;
+}
 
 // ============================
 //  SMART BUILDER — WORKSPACE DATA
@@ -1789,6 +1841,7 @@ async function doLogin() {
       location.reload();
       return;
     }
+    await loadCompanyData();
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     navTo('dashboard', document.querySelector('.nav-item'));
@@ -1815,6 +1868,7 @@ async function checkSession() {
       location.reload();
       return;
     }
+    await loadCompanyData();
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     navTo('dashboard', document.querySelector('.nav-item'));
@@ -3956,13 +4010,14 @@ function openCrmModal(id) {
 }
 function closeCrmModal() { document.getElementById('crm-modal').classList.remove('open'); }
 function editCrm(id) { openCrmModal(id); }
-function deleteCrm(id) {
+async function deleteCrm(id) {
   if(!confirm('この顧客を削除しますか？')) return;
-  CRM = CRM.filter(c=>c.id!==id); saveCrmData(CRM); selectedCrm=null;
+  await apiDelete('crm', id);
+  CRM = CRM.filter(c=>c.id!==id); selectedCrm=null;
   document.getElementById('crm-detail').innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text2)">顧客を選択してください</div>';
   renderCrmList(CRM);
 }
-function saveCrm() {
+async function saveCrm() {
   const company = document.getElementById('cm-company').value.trim();
   const name = document.getElementById('cm-name').value.trim();
   if(!company||!name){alert('会社名と担当者名は必須です');return;}
@@ -3980,9 +4035,14 @@ function saveCrm() {
   if(m._editId) {
     const i = CRM.findIndex(c=>c.id===m._editId);
     entry.id = m._editId; entry.history = CRM[i].history;
-    CRM[i] = entry;
-  } else { entry.id='c'+Date.now(); CRM.push(entry); }
-  saveCrmData(CRM); closeCrmModal(); renderCrmList(CRM);
+    const updated = await apiUpdate('crm', entry.id, entry);
+    CRM[i] = updated;
+  } else {
+    entry.id = 'c'+Date.now();
+    const created = await apiCreate('crm', entry);
+    CRM.push(created);
+  }
+  closeCrmModal(); renderCrmList(CRM);
 }
 
 // ============================
@@ -4045,7 +4105,7 @@ function openDealModal(id) {
 }
 function closeDealModal() { document.getElementById('deal-modal').classList.remove('open'); }
 function editDealCard(id) { openDealModal(id); }
-function saveDeal() {
+async function saveDeal() {
   const name = document.getElementById('dm-name').value.trim();
   const client = document.getElementById('dm-client').value.trim();
   if(!name||!client){alert('案件名と顧客名は必須です');return;}
@@ -4060,9 +4120,15 @@ function saveDeal() {
   };
   if(m._editId) {
     const i = DEALS.findIndex(d=>d.id===m._editId);
-    entry.id = m._editId; DEALS[i] = entry;
-  } else { entry.id='d'+Date.now(); DEALS.push(entry); }
-  saveDealsData(DEALS); closeDealModal(); navTo('deals', document.querySelectorAll('.nav-item')[4]);
+    entry.id = m._editId;
+    const updated = await apiUpdate('deals', entry.id, entry);
+    DEALS[i] = updated;
+  } else {
+    entry.id = 'd'+Date.now();
+    const created = await apiCreate('deals', entry);
+    DEALS.push(created);
+  }
+  closeDealModal(); navTo('deals', document.querySelectorAll('.nav-item')[4]);
 }
 
 // ============================

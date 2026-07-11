@@ -1,7 +1,7 @@
 // Smart Labo Works — Service Worker
 // オフライン対応 & PWAインストール対応
 
-const CACHE_NAME = 'slw-v1';
+const CACHE_NAME = 'slw-v2'; // Task7: CRM/案件/契約のサーバー永続化に伴いキャッシュを更新
 const ASSETS = [
   '/app.html',
   '/manifest.json',
