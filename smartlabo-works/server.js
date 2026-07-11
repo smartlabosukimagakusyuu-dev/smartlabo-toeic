@@ -158,6 +158,15 @@ async function handleAPI(req, res, pathname) {
     return;
   }
 
+  // ---- 認証ガード（/api/ai/* はすべてログイン必須） ----
+  if (pathname.startsWith('/api/ai/')) {
+    const session = getSessionFromRequest(req);
+    if (!session) {
+      sendJSON(res, 401, { error: '認証が必要です。ログインしてください。' });
+      return;
+    }
+  }
+
   // ---- GET /api/ai/status ----
   if (pathname === '/api/ai/status' && req.method === 'GET') {
     const routerStatus = router.getRouterStatus();
