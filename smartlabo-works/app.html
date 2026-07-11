@@ -852,10 +852,9 @@ textarea.form-input { resize: vertical; min-height: 80px; }
     <div class="login-logo">SMART LABO WORKS</div>
     <div class="login-brand">株式会社スマートラボ</div>
     <div class="login-sub">Company OS — 社内業務管理システム</div>
-    <input type="text" id="login-user" placeholder="ユーザーID" value="ogawa">
-    <input type="password" id="login-pass" placeholder="パスワード" value="smartlabo2024">
-    <button class="btn-login" onclick="doLogin()">ログイン</button>
-    <div class="login-hint">ID: ogawa / PW: smartlabo2024</div>
+    <input type="email" id="login-user" placeholder="メールアドレス" autocomplete="username">
+    <input type="password" id="login-pass" placeholder="パスワード" autocomplete="current-password">
+    <button class="btn-login" id="login-btn" onclick="doLogin()">ログイン</button>
   </div>
 </div>
 
@@ -1750,20 +1749,50 @@ const CURRENT_EMPLOYEE = EG_EMPLOYEES[0];
 // ============================
 //  AUTH
 // ============================
-function doLogin() {
-  const u = document.getElementById('login-user').value;
-  const p = document.getElementById('login-pass').value;
-  if (u === 'ogawa' && p === 'smartlabo2024') {
+async function doLogin() {
+  const email = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value;
+  if (!email || !password) { alert('メールアドレスとパスワードを入力してください'); return; }
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ companyId: 'default', email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      alert(data.error || 'ログインに失敗しました');
+      return;
+    }
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     navTo('dashboard', document.querySelector('.nav-item'));
-  } else { alert('IDまたはパスワードが違います'); }
+  } catch (e) {
+    alert('サーバーに接続できませんでした');
+  } finally {
+    btn.disabled = false;
+  }
 }
-function doLogout() {
+async function doLogout() {
+  try { await fetch('/api/auth/logout', { method: 'POST' }); } catch (e) {}
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-pass').value = '';
+}
+async function checkSession() {
+  try {
+    const res = await fetch('/api/auth/me');
+    if (!res.ok) return;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    navTo('dashboard', document.querySelector('.nav-item'));
+  } catch (e) { /* 未ログインのままログイン画面を表示 */ }
 }
 document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+checkSession();
 
 // ============================
 //  NAVIGATION
