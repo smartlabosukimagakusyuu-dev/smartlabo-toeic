@@ -58,6 +58,16 @@ db.exec(`
     updated_at TEXT NOT NULL
   );
   CREATE INDEX IF NOT EXISTS idx_contracts_company_id ON contracts(company_id);
+
+  -- Task8: Company Brain（社内ナレッジ）のサーバー永続化
+  CREATE TABLE IF NOT EXISTS brain (
+    id         TEXT PRIMARY KEY,
+    company_id TEXT NOT NULL,
+    data       TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_brain_company_id ON brain(company_id);
 `);
 
 module.exports = db;
