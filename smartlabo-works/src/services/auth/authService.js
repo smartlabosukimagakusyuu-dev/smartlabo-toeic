@@ -1,9 +1,10 @@
 /**
  * Smart Labo Works — Auth Service
- * 最小構成のサーバーサイド認証（Task3）。
+ * 最小構成のサーバーサイド認証（Task3）。CompanyID→Userのデータ構造はTask6で導入。
  *
  * 将来 Workspace → Company → User → Role 構造へ拡張する前提のため、
- * セッションには companyId を必ず保持する（現時点は config.auth.companyId 固定の単一アカウントのみ）。
+ * セッションには companyId を必ず保持する（現時点は config.companies に登録された
+ * 単一企業・単一ユーザーのみ対応。企業を増やす場合は config.companies にエントリーを追加する）。
  */
 
 const crypto = require('crypto');
@@ -74,17 +75,21 @@ function verifyPassword(password, storedHash) {
 
 /**
  * CompanyID・Email・Passwordを検証する。
- * 現時点は config.auth の単一アカウントのみ対応
- * （将来: Company/Userテーブルを引いての検証に差し替える。呼び出し側のインターフェースは変えない想定）
+ * config.companies[companyId].users からCompanyID→Userの構造で検索する
+ * （将来: DB参照に差し替える想定。呼び出し側のインターフェースは変えない）
  * @param {string} companyId
  * @param {string} email
  * @param {string} password
  * @returns {boolean}
  */
 function verifyCredentials(companyId, email, password) {
-  if (companyId !== config.auth.companyId) return false;
-  if ((email || '').toLowerCase() !== config.auth.email.toLowerCase()) return false;
-  return verifyPassword(password, config.auth.passwordHash);
+  const company = config.companies[companyId];
+  if (!company) return false;
+
+  const user = company.users.find(u => u.email.toLowerCase() === (email || '').toLowerCase());
+  if (!user) return false;
+
+  return verifyPassword(password, user.passwordHash);
 }
 
 module.exports = { createSession, getSession, destroySession, verifyCredentials };

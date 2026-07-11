@@ -51,15 +51,23 @@ const config = {
     model: process.env.WHISPER_MODEL || 'whisper-1',
   },
 
-  // 認証（最小構成。将来 Workspace → Company → User → Role 構造へ拡張予定。
-  // 現時点は単一企業・単一ユーザーのみサポートし、companyIdは固定値で運用する）
-  auth: {
-    companyId: process.env.AUTH_COMPANY_ID || 'default',
-    email:     process.env.AUTH_EMAIL || 'ogawa@smartlabo-works.local',
-    // "salt:hash" 形式（node crypto.scryptSync）。開発用デフォルトは既存パスワード「smartlabo2024」と同一のハッシュ。
-    // 本番運用前に必ず .env の AUTH_EMAIL / AUTH_PASSWORD_HASH を差し替えること（生成方法は .env.example 参照）。
-    passwordHash: process.env.AUTH_PASSWORD_HASH ||
-      '4bb7826c9c2633274a82b0795ce9f42e:fb011508f4c55c342e3fed9bda34c22afa1a07969f227169a854516886a467da9c6bbeecc03ccb9ec007a3208971f16bfb35e0dbd54bd5589729d7b61af0cf1c',
+  // 認証・企業データ（Task6: CompanyID → User のデータ構造を導入。
+  // 将来 Workspace → Company → User → Role 構造へ拡張する前提で、
+  // 「1つの企業(companyId)が複数ユーザーを持つ」形にしておく。
+  // 現時点は単一企業・単一ユーザーのみ（.envのAUTH_COMPANY_IDで企業を1件だけ定義）。
+  // 企業を増やす場合は、このオブジェクトにエントリーを追加する（将来はDB化）。
+  companies: {
+    [process.env.AUTH_COMPANY_ID || 'default']: {
+      users: [
+        {
+          email: process.env.AUTH_EMAIL || 'ogawa@smartlabo-works.local',
+          // "salt:hash" 形式（node crypto.scryptSync）。開発用デフォルトは既存パスワード「smartlabo2024」と同一のハッシュ。
+          // 本番運用前に必ず .env の AUTH_EMAIL / AUTH_PASSWORD_HASH を差し替えること（生成方法は .env.example 参照）。
+          passwordHash: process.env.AUTH_PASSWORD_HASH ||
+            '4bb7826c9c2633274a82b0795ce9f42e:fb011508f4c55c342e3fed9bda34c22afa1a07969f227169a854516886a467da9c6bbeecc03ccb9ec007a3208971f16bfb35e0dbd54bd5589729d7b61af0cf1c',
+        },
+      ],
+    },
   },
 
   // アプリ設定
