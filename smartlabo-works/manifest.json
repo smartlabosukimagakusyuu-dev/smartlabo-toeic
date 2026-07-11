@@ -1,7 +1,7 @@
 {
   "name": "Smart Labo Works",
   "short_name": "SLW",
-  "description": "株式会社スマートラボ — Company OS 自社運用版",
+  "description": "株式会社スマートラボ — 中小企業向けAI業務支援プラットフォーム",
   "start_url": "/app.html",
   "display": "standalone",
   "background_color": "#0A1B3D",

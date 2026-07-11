@@ -851,7 +851,7 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   <div class="login-box">
     <div class="login-logo">SMART LABO WORKS</div>
     <div class="login-brand">株式会社スマートラボ</div>
-    <div class="login-sub">Company OS — 社内業務管理システム</div>
+    <div class="login-sub">Smart Labo Works — AI業務支援プラットフォーム</div>
     <input type="email" id="login-user" placeholder="メールアドレス" autocomplete="username">
     <input type="password" id="login-pass" placeholder="パスワード" autocomplete="current-password">
     <button class="btn-login" id="login-btn" onclick="doLogin()">ログイン</button>
@@ -1807,7 +1807,7 @@ const PAGE_TITLES = {
   'sg-dashboard':'🌟 Smart Growth Dashboard', 'sg-my-growth':'👤 My Growth',
   'sg-points':'⭐ Smart Point', 'sg-badges':'🏅 バッジ', 'sg-ranking':'📈 ランキング',
   'sg-awards':'🏆 今月の表彰', 'sg-history':'📋 成長履歴', 'sg-ceo':'🏢 社長画面 — Company Growth',
-  builder:'🏗️ Smart Builder — Company OS Generator', 'builder-dashboard':'🏢 Company 一覧', 'workspace-detail':'Company Workspace',
+  builder:'🏗️ Smart Builder — Smart Labo Works Generator', 'builder-dashboard':'🏢 Company 一覧', 'workspace-detail':'Company Workspace',
   'employee-dashboard':'👤 社員ダッシュボード', onboarding:'👋 新入社員オンボーディング',
   training:'📅 研修管理', learning:'📚 学習', manuals:'📖 業務マニュアル',
   'ai-teacher':'🤖 AI先生 — Company Brain連携', skills:'⚡ スキル管理',
@@ -3044,10 +3044,10 @@ function renderBuilder() {
 <div class="builder-hero">
   <div class="builder-hero-title">🏗️ Smart Builder</div>
   <div class="builder-hero-sub">
-    お客様専用のCompany OSを数分で生成します。<br>
+    お客様専用のSmart Labo Worksを数分で生成します。<br>
     会社情報・業種テンプレートを入力するだけで、Dashboard・Company Brain・AI Assistant・Innovation Hubなど全モジュールを自動構築します。
   </div>
-  <span class="builder-hero-badge">Company OS Generator v2.0</span>
+  <span class="builder-hero-badge">Smart Labo Works Generator v2.0</span>
 </div>
 
 <div class="builder-section">
@@ -3090,14 +3090,14 @@ function renderBuilder() {
   </div>
 </div>
 
-<button class="builder-generate-btn" onclick="generateCompanyOS()">
-  🚀 Company OS を生成する
+<button class="builder-generate-btn" onclick="generateWorkspace()">
+  🚀 Smart Labo Works を生成する
 </button>
 
 <div id="builder-result" style="margin-top:20px"></div>`;
 }
 
-async function generateCompanyOS() {
+async function generateWorkspace() {
   const name    = document.getElementById('b-name').value.trim();
   const logo    = document.getElementById('b-logo').value.trim() || INDUSTRY_TEMPLATES[_builderTemplate].icon;
   const color   = document.getElementById('b-color').value;
@@ -3124,12 +3124,12 @@ async function generateCompanyOS() {
     { text: 'CRM・案件管理を初期化しています...', icon: '👥' },
     { text: 'Innovation Hub を有効化しています...', icon: '🚀' },
     { text: '営業フロー・業務フローを生成しています...', icon: '🔄' },
-    { text: 'Company OS の生成が完了しました！', icon: '✅' },
+    { text: 'Smart Labo Works の生成が完了しました！', icon: '✅' },
   ];
 
   resultEl.innerHTML = `
   <div class="generate-progress">
-    <div style="font-size:16px;font-weight:700;margin-bottom:20px">⏳ Company OS を生成しています...</div>
+    <div style="font-size:16px;font-weight:700;margin-bottom:20px">⏳ Smart Labo Works を生成しています...</div>
     ${steps.map((s,i)=>`
     <div class="generate-step pending" id="gs-${i}">
       <div class="generate-step-icon">${s.icon}</div>
@@ -3169,8 +3169,8 @@ async function generateCompanyOS() {
 
   resultEl.innerHTML = `
   <div class="card" style="padding:28px;border:2px solid #10B981;background:rgba(16,185,129,.05)">
-    <div style="font-size:20px;font-weight:800;color:#10B981;margin-bottom:8px">✅ Company OS の生成が完了しました！</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:20px">${name} のCompany OSが作成されました。</div>
+    <div style="font-size:20px;font-weight:800;color:#10B981;margin-bottom:8px">✅ Smart Labo Works の生成が完了しました！</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:20px">${name} のSmart Labo Worksが作成されました。</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
       <div class="card" style="padding:14px;text-align:center">
         <div style="font-size:22px;font-weight:700;color:var(--accent)">${tmpl.categories.length}</div>
@@ -3192,7 +3192,7 @@ async function generateCompanyOS() {
   </div>`;
 
   btn.disabled = false;
-  btn.textContent = '🚀 Company OS を生成する';
+  btn.textContent = '🚀 Smart Labo Works を生成する';
 }
 
 function renderBuilderDashboard() {
@@ -3202,7 +3202,7 @@ function renderBuilderDashboard() {
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
   <div>
     <div style="font-size:16px;font-weight:700">🏢 Company 一覧</div>
-    <div style="font-size:12px;color:var(--text2);margin-top:2px">Smart Builderで生成したCompany OSの管理画面</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:2px">Smart Builderで生成したSmart Labo Worksの管理画面</div>
   </div>
   <button class="btn btn-primary" onclick="navTo('builder')">＋ 新規Company生成</button>
 </div>
@@ -3331,7 +3331,7 @@ function renderWorkspaceDetail(wsId) {
 }
 
 function deleteWorkspace(id) {
-  if(!confirm('このCompany OSを削除しますか？この操作は元に戻せません。')) return;
+  if(!confirm('このSmart Labo Worksを削除しますか？この操作は元に戻せません。')) return;
   WORKSPACES = WORKSPACES.filter(w=>w.id!==id);
   saveWorkspaces(WORKSPACES);
   navTo('builder-dashboard');
@@ -3389,7 +3389,7 @@ function renderDashboard() {
 
 <!-- Workflow バー -->
 <div class="card" style="margin-bottom:16px;padding:14px 18px">
-  <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">📌 Company OS — Work Flow</div>
+  <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">📌 Work Flow</div>
   <div style="display:flex;align-items:center;gap:0;overflow-x:auto">
     ${WF_STEPS.map((s,i)=>`
       <div style="display:flex;flex-direction:column;align-items:center;min-width:80px;padding:6px 10px;border-radius:8px;cursor:${s.page?'pointer':'default'};transition:background .15s"
