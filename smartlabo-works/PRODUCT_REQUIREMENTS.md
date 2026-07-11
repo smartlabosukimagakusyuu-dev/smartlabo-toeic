@@ -55,10 +55,10 @@
 | 項目 | 内容 |
 |---|---|
 | 文書名 | Smart Labo Works Product Requirements |
-| バージョン | v1.0 |
+| バージョン | v1.2 |
 | 作成日 | 2026-07-10 |
 | 最終更新日 | 2026-07-10 |
-| ステータス | ドラフト（CEOレビュー待ち） |
+| ステータス | CEO承認済み（正式版として採用、2026-07-10） |
 | 対象リリース | v1.0（札幌向けβ提供） |
 | 管理責任 | Claude Code（Project Bible編集長 / Lead Software Engineer 兼 Knowledge Manager） |
 | 関連ドキュメント | `CLAUDE.md`（技術・設計基準）／ `CURRENT_STATUS.md`（未整備・本書0章参照）／ `REFACTOR_PLAN.md`（未整備）／ `PROJECT_BIBLE/`（別リポジトリ、会社全体のSSOT） |
