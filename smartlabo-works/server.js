@@ -37,16 +37,21 @@ function loadAIServices() {
 }
 
 // ==========================================
-// AIログ（インメモリ、将来DB化）
+// AIログ（インメモリ、将来DB化。companyIdで分離）
 // ==========================================
-const aiLogs = [];
-function addLog(entry) {
-  aiLogs.unshift({
+const aiLogsByCompany = new Map();
+function addLog(companyId, entry) {
+  if (!aiLogsByCompany.has(companyId)) aiLogsByCompany.set(companyId, []);
+  const logs = aiLogsByCompany.get(companyId);
+  logs.unshift({
     id:          Date.now(),
     datetime:    new Date().toLocaleString('ja-JP'),
     ...entry,
   });
-  if (aiLogs.length > 200) aiLogs.pop();
+  if (logs.length > 200) logs.pop();
+}
+function getLogs(companyId) {
+  return aiLogsByCompany.get(companyId) || [];
 }
 
 // ==========================================
@@ -158,9 +163,10 @@ async function handleAPI(req, res, pathname) {
     return;
   }
 
-  // ---- 認証ガード（/api/ai/* はすべてログイン必須） ----
+  // ---- 認証ガード（/api/ai/* はすべてログイン必須。以降のハンドラーで session.companyId を使う） ----
+  let session = null;
   if (pathname.startsWith('/api/ai/')) {
-    const session = getSessionFromRequest(req);
+    session = getSessionFromRequest(req);
     if (!session) {
       sendJSON(res, 401, { error: '認証が必要です。ログインしてください。' });
       return;
@@ -192,7 +198,7 @@ async function handleAPI(req, res, pathname) {
     const start  = Date.now();
     const result = await openaiService.testConnection();
     const ms     = Date.now() - start;
-    addLog({ feature: '接続テスト', provider: 'openai', processingMs: ms, success: result.ok, error: result.ok ? null : result.message });
+    addLog(session.companyId, { feature: '接続テスト', provider: 'openai', processingMs: ms, success: result.ok, error: result.ok ? null : result.message });
     sendJSON(res, result.ok ? 200 : 500, { ...result, processingMs: ms });
     return;
   }
@@ -203,7 +209,7 @@ async function handleAPI(req, res, pathname) {
     if (!question) { sendJSON(res, 400, { error: '質問が空です' }); return; }
 
     const result = await brainService.query(question, brainData);
-    addLog({ feature: 'Company Brain', provider: result.provider || 'openai', processingMs: result.processingMs, success: result.success, error: result.success ? null : result.answer });
+    addLog(session.companyId, { feature: 'Company Brain', provider: result.provider || 'openai', processingMs: result.processingMs, success: result.success, error: result.success ? null : result.answer });
     sendJSON(res, result.success ? 200 : 500, result);
     return;
   }
@@ -214,14 +220,15 @@ async function handleAPI(req, res, pathname) {
     if (!type || !context) { sendJSON(res, 400, { error: 'type と context は必須です' }); return; }
 
     const result = await assistantService.generate(type, context);
-    addLog({ feature: `AI Assistant (${type})`, provider: result.provider || 'openai', processingMs: result.processingMs, success: result.success, error: result.success ? null : result.content });
+    addLog(session.companyId, { feature: `AI Assistant (${type})`, provider: result.provider || 'openai', processingMs: result.processingMs, success: result.success, error: result.success ? null : result.content });
     sendJSON(res, result.success ? 200 : 500, result);
     return;
   }
 
   // ---- GET /api/ai/logs ----
   if (pathname === '/api/ai/logs' && req.method === 'GET') {
-    sendJSON(res, 200, { logs: aiLogs, total: aiLogs.length });
+    const logs = getLogs(session.companyId);
+    sendJSON(res, 200, { logs, total: logs.length });
     return;
   }
 
@@ -243,7 +250,7 @@ async function handleAPI(req, res, pathname) {
         review = { merit: result.content, demerit:'', risk:'', revenue:'', priority:'中', suggestion:'' };
       }
     }
-    addLog({ feature: 'Innovation Review', provider: result.provider||'openai', processingMs: result.processingMs, success: result.success });
+    addLog(session.companyId, { feature: 'Innovation Review', provider: result.provider||'openai', processingMs: result.processingMs, success: result.success });
     sendJSON(res, result.success ? 200 : 500, { review, success: result.success, error: result.error });
     return;
   }
@@ -266,7 +273,7 @@ async function handleAPI(req, res, pathname) {
         workOrder = { todos: [result.content], assignee: '小川 昌利', deadline: '', claudePrompt: '' };
       }
     }
-    addLog({ feature: 'Work Order Gen', provider: result.provider||'openai', processingMs: result.processingMs, success: result.success });
+    addLog(session.companyId, { feature: 'Work Order Gen', provider: result.provider||'openai', processingMs: result.processingMs, success: result.success });
     sendJSON(res, result.success ? 200 : 500, { workOrder, success: result.success, error: result.error });
     return;
   }
