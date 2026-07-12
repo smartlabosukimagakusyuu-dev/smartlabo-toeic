@@ -6222,7 +6222,9 @@ function selectAIRETemplate(id) {
       <label>${esc(f.label)}${f.required ? ' *' : ''}</label>
       ${f.type === 'textarea'
         ? `<textarea class="form-input" id="are-field-${esc(f.key)}" placeholder="${esc(f.placeholder||'')}"></textarea>`
-        : `<input class="form-input" id="are-field-${esc(f.key)}" placeholder="${esc(f.placeholder||'')}">`}
+        : f.type === 'select'
+          ? `<select class="form-input" id="are-field-${esc(f.key)}">${(f.options||[]).map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select>`
+          : `<input class="form-input" id="are-field-${esc(f.key)}" placeholder="${esc(f.placeholder||'')}">`}
     </div>`).join('')}
     <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="generateAIRETemplate()">生成する</button>
   </div>
