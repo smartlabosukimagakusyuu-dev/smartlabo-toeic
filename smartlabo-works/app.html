@@ -1876,7 +1876,7 @@ checkSession();
 //  NAVIGATION
 // ============================
 const PAGE_TITLES = {
-  dashboard:'ダッシュボード', brain:'Company Brain', ai:'AI アシスタント',
+  dashboard:'ダッシュボード', brain:'Company Brain', 'brain-builder':'🧠 Company Brain Builder', ai:'AI アシスタント',
   workorder:'AI Work Order', memory:'Company Memory', meeting:'会議・会話サマリー',
   crm:'顧客管理（CRM）', deals:'案件管理', contract:'契約管理',
   homepage:'ホームページ管理', materials:'営業資料', marketing:'マーケティング',
@@ -1901,6 +1901,7 @@ function navTo(name, el) {
   switch(name) {
     case 'dashboard': c.innerHTML = renderDashboard(); break;
     case 'brain': c.innerHTML = renderBrain(); initBrain(); break;
+    case 'brain-builder': c.innerHTML = renderBrainBuilder(); break;
     case 'workorder': c.innerHTML = renderWorkOrder(); break;
     case 'memory': c.innerHTML = renderMemory(); break;
     case 'meeting': c.innerHTML = renderMeeting(); break;
@@ -3676,6 +3677,7 @@ function renderBrain() {
   <div class="brain-main">
     <div class="brain-toolbar">
       <input class="brain-search" id="brain-search-input" placeholder="🔍 検索..." oninput="brainFilter(this.value)">
+      <button class="btn btn-secondary" onclick="openBrainBuilder()">🧙 Builderで作成</button>
       <button class="btn btn-primary" onclick="openBrainModal()">＋ 新規追加</button>
     </div>
     <div id="brain-entries"></div>
@@ -3784,6 +3786,322 @@ async function saveBrainEntry() {
     BRAIN.push(created);
   }
   closeBrainModal(); renderBrainCats(); renderBrainEntries();
+}
+
+// ============================
+//  COMPANY BRAIN BUILDER（Sprint3 Task3）
+//  誰でも約30分でCompany Brainを作成できるWizard（6Step）。
+//  保存は既存のREST API（/api/brain、CompanyIDで分離済み）をそのまま利用する。
+//  AI自動生成・PDF/Word読込・OCR等は今回対象外（自由入力のみ）。
+// ============================
+const BRAIN_BUILDER_STEP_LABELS = ['業種選択', '会社情報', '商品・サービス', '業務ルール', 'FAQ', '完成'];
+const BRAIN_BUILDER_INDUSTRIES = [
+  { id: 'realEstateSale',       icon: '🏠', label: '不動産売買' },
+  { id: 'realEstateManagement', icon: '🏢', label: '不動産管理' },
+  { id: 'judicialScrivener',    icon: '⚖️', label: '司法書士' },
+  { id: 'taxAccountant',        icon: '🧮', label: '税理士', disabled: true },
+  { id: 'other',                icon: '📋', label: 'その他' },
+];
+const BRAIN_BUILDER_RULE_EXAMPLES = ['営業時間','契約更新方法','査定ルール','メールルール','社内ルール','禁止事項','承認フロー'];
+
+let _brainBuilderStep = 1;
+let _brainBuilderData = null;
+function freshBrainBuilderData() {
+  return {
+    industry: null,
+    company: { name:'', contact:'', address:'', tel:'', hours:'', website:'', intro:'' },
+    products: [],
+    rules: [],
+    faqs: [],
+  };
+}
+
+function openBrainBuilder() {
+  _brainBuilderStep = 1;
+  _brainBuilderData = freshBrainBuilderData();
+  navTo('brain-builder');
+}
+
+function renderBrainBuilder() {
+  if (!_brainBuilderData) _brainBuilderData = freshBrainBuilderData();
+  const pct = Math.round(_brainBuilderStep / 6 * 100);
+  return `
+<div class="builder-hero">
+  <div class="builder-hero-title">🧠 Company Brain Builder</div>
+  <div class="builder-hero-sub">
+    御社の情報を6つのステップで入力するだけで、Company Brainが完成します。目安は約30分です。
+  </div>
+  <span class="builder-hero-badge">Company Brain Builder v1.0</span>
+</div>
+<div class="card" style="padding:16px 20px;margin-bottom:20px">
+  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+  <div class="progress-label"><span>STEP ${_brainBuilderStep} / 6：${BRAIN_BUILDER_STEP_LABELS[_brainBuilderStep-1]}</span><span>${pct}%</span></div>
+</div>
+<div id="brain-builder-body">${renderBrainBuilderStepBody()}</div>`;
+}
+
+function refreshBrainBuilder() {
+  const c = document.getElementById('content');
+  if (c) c.innerHTML = renderBrainBuilder();
+}
+
+function renderBrainBuilderStepBody() {
+  switch (_brainBuilderStep) {
+    case 1: return renderBBStep1();
+    case 2: return renderBBStep2();
+    case 3: return renderBBStep3();
+    case 4: return renderBBStep4();
+    case 5: return renderBBStep5();
+    case 6: return renderBBStep6();
+    default: return '';
+  }
+}
+
+function renderBrainBuilderNav(showBack, nextEnabled, nextLabel) {
+  return `
+<div style="display:flex;justify-content:space-between;margin-top:20px">
+  ${showBack ? `<button class="btn btn-secondary" onclick="brainBuilderBack()">← 戻る</button>` : '<div></div>'}
+  <button class="btn btn-primary" ${nextEnabled ? '' : 'disabled'} onclick="brainBuilderNext()">${nextLabel || '次へ →'}</button>
+</div>`;
+}
+
+function captureBrainBuilderStep() {
+  if (_brainBuilderStep === 2) {
+    const g = id => (document.getElementById(id) && document.getElementById(id).value.trim()) || '';
+    _brainBuilderData.company = {
+      name: g('bb-c-name'), contact: g('bb-c-contact'), address: g('bb-c-address'),
+      tel: g('bb-c-tel'), hours: g('bb-c-hours'), website: g('bb-c-website'), intro: g('bb-c-intro'),
+    };
+  }
+}
+
+function brainBuilderNext() {
+  captureBrainBuilderStep();
+  if (_brainBuilderStep === 1 && !_brainBuilderData.industry) { alert('業種を選択してください'); return; }
+  if (_brainBuilderStep === 2 && !_brainBuilderData.company.name) { alert('会社名は必須です'); return; }
+  if (_brainBuilderStep < 6) { _brainBuilderStep++; refreshBrainBuilder(); }
+}
+
+function brainBuilderBack() {
+  captureBrainBuilderStep();
+  if (_brainBuilderStep > 1) { _brainBuilderStep--; refreshBrainBuilder(); }
+}
+
+// ---- STEP1: 業種選択 ----
+function renderBBStep1() {
+  const cards = BRAIN_BUILDER_INDUSTRIES.map(ind => `
+    <div class="template-card ${_brainBuilderData.industry===ind.id?'selected':''}" style="${ind.disabled?'opacity:.45;cursor:not-allowed':''}"
+         ${ind.disabled ? '' : `onclick="selectBBIndustry('${ind.id}')"`}>
+      <div class="template-card-icon">${ind.icon}</div>
+      <div class="template-card-name">${esc(ind.label)}</div>
+      ${ind.disabled ? '<div style="font-size:10px;color:var(--text2);margin-top:4px">準備中</div>' : ''}
+    </div>`).join('');
+  return `
+<div class="builder-section">
+  <div class="builder-section-title">🏭 業種を選択してください</div>
+  <div class="template-grid">${cards}</div>
+</div>
+${renderBrainBuilderNav(false, !!_brainBuilderData.industry)}`;
+}
+function selectBBIndustry(id) {
+  const ind = BRAIN_BUILDER_INDUSTRIES.find(i => i.id === id);
+  if (!ind || ind.disabled) return;
+  _brainBuilderData.industry = id;
+  refreshBrainBuilder();
+}
+
+// ---- STEP2: 会社情報 ----
+function renderBBStep2() {
+  const c = _brainBuilderData.company;
+  return `
+<div class="builder-section">
+  <div class="builder-section-title">🏢 会社情報</div>
+  <div class="builder-form-grid">
+    <div class="form-row"><label>会社名 *</label><input class="form-input" id="bb-c-name" value="${esc(c.name)}" placeholder="株式会社〇〇"></div>
+    <div class="form-row"><label>担当者</label><input class="form-input" id="bb-c-contact" value="${esc(c.contact)}" placeholder="山田 太郎"></div>
+    <div class="form-row"><label>所在地</label><input class="form-input" id="bb-c-address" value="${esc(c.address)}" placeholder="札幌市〇〇区..."></div>
+    <div class="form-row"><label>電話番号</label><input class="form-input" id="bb-c-tel" value="${esc(c.tel)}" placeholder="011-000-0000"></div>
+    <div class="form-row"><label>営業時間</label><input class="form-input" id="bb-c-hours" value="${esc(c.hours)}" placeholder="平日9:00〜18:00"></div>
+    <div class="form-row"><label>ホームページ</label><input class="form-input" id="bb-c-website" value="${esc(c.website)}" placeholder="https://..."></div>
+  </div>
+  <div class="form-row"><label>会社紹介</label><textarea class="form-input" id="bb-c-intro" rows="4" placeholder="事業内容や強みなど">${esc(c.intro)}</textarea></div>
+</div>
+${renderBrainBuilderNav(true, true)}`;
+}
+
+// ---- STEP3: 商品・サービス ----
+function renderBBStep3() {
+  const items = _brainBuilderData.products.map((p,i) => `
+    <div class="card" style="padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">${esc(p.name)}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;white-space:pre-wrap">${esc(p.description)}</div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="removeBBProduct(${i})">削除</button>
+    </div>`).join('');
+  return `
+<div class="builder-section">
+  <div class="builder-section-title">📦 商品・サービス</div>
+  ${items || '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">まだ登録されていません。下のフォームから追加してください（複数登録可）。</div>'}
+  <div class="card" style="padding:16px;margin-top:12px">
+    <div class="form-row"><label>商品・サービス名</label><input class="form-input" id="bb-p-name" placeholder="例：物件管理システム導入支援"></div>
+    <div class="form-row"><label>説明</label><textarea class="form-input" id="bb-p-desc" rows="3" placeholder="内容・特徴・価格帯など"></textarea></div>
+    <button class="btn btn-secondary" onclick="addBBProduct()">＋ 追加</button>
+  </div>
+</div>
+${renderBrainBuilderNav(true, true, _brainBuilderData.products.length ? '次へ →' : 'スキップして次へ →')}`;
+}
+function addBBProduct() {
+  const name = document.getElementById('bb-p-name').value.trim();
+  const description = document.getElementById('bb-p-desc').value.trim();
+  if (!name) { alert('商品・サービス名を入力してください'); return; }
+  _brainBuilderData.products.push({ name, description });
+  refreshBrainBuilder();
+}
+function removeBBProduct(i) {
+  _brainBuilderData.products.splice(i, 1);
+  refreshBrainBuilder();
+}
+
+// ---- STEP4: 業務ルール ----
+function renderBBStep4() {
+  const items = _brainBuilderData.rules.map((r,i) => `
+    <div class="card" style="padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">${esc(r.label)}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;white-space:pre-wrap">${esc(r.content)}</div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="removeBBRule(${i})">削除</button>
+    </div>`).join('');
+  const examples = BRAIN_BUILDER_RULE_EXAMPLES.map(e => `<span class="badge badge-gray" style="cursor:pointer;margin:2px" onclick="document.getElementById('bb-r-label').value='${e}'">${e}</span>`).join(' ');
+  return `
+<div class="builder-section">
+  <div class="builder-section-title">📋 業務ルール</div>
+  <div style="font-size:12px;color:var(--text2);margin-bottom:10px">入力例（クリックでルール名欄に入ります。自由入力もできます）：${examples}</div>
+  ${items}
+  <div class="card" style="padding:16px;margin-top:12px">
+    <div class="form-row"><label>ルール名</label><input class="form-input" id="bb-r-label" placeholder="例：査定ルール"></div>
+    <div class="form-row"><label>内容</label><textarea class="form-input" id="bb-r-content" rows="3" placeholder="具体的なルールを入力してください"></textarea></div>
+    <button class="btn btn-secondary" onclick="addBBRule()">＋ 追加</button>
+  </div>
+</div>
+${renderBrainBuilderNav(true, true, _brainBuilderData.rules.length ? '次へ →' : 'スキップして次へ →')}`;
+}
+function addBBRule() {
+  const label = document.getElementById('bb-r-label').value.trim();
+  const content = document.getElementById('bb-r-content').value.trim();
+  if (!label || !content) { alert('ルール名と内容を入力してください'); return; }
+  _brainBuilderData.rules.push({ label, content });
+  refreshBrainBuilder();
+}
+function removeBBRule(i) {
+  _brainBuilderData.rules.splice(i, 1);
+  refreshBrainBuilder();
+}
+
+// ---- STEP5: FAQ ----
+function renderBBStep5() {
+  const items = _brainBuilderData.faqs.map((f,i) => `
+    <div class="card" style="padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">Q. ${esc(f.question)}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;white-space:pre-wrap">A. ${esc(f.answer)}</div>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="removeBBFaq(${i})">削除</button>
+    </div>`).join('');
+  return `
+<div class="builder-section">
+  <div class="builder-section-title">❓ よくある質問（FAQ）</div>
+  ${items || '<div style="font-size:12px;color:var(--text2);margin-bottom:12px">まだ登録されていません（複数登録可）。</div>'}
+  <div class="card" style="padding:16px;margin-top:12px">
+    <div class="form-row"><label>質問</label><input class="form-input" id="bb-f-q" placeholder="例：仲介手数料はいくらですか？"></div>
+    <div class="form-row"><label>回答</label><textarea class="form-input" id="bb-f-a" rows="3" placeholder="回答を入力してください"></textarea></div>
+    <button class="btn btn-secondary" onclick="addBBFaq()">＋ 追加</button>
+  </div>
+</div>
+${renderBrainBuilderNav(true, true, _brainBuilderData.faqs.length ? '確認画面へ →' : 'スキップして確認画面へ →')}`;
+}
+function addBBFaq() {
+  const question = document.getElementById('bb-f-q').value.trim();
+  const answer = document.getElementById('bb-f-a').value.trim();
+  if (!question || !answer) { alert('質問と回答を入力してください'); return; }
+  _brainBuilderData.faqs.push({ question, answer });
+  refreshBrainBuilder();
+}
+function removeBBFaq(i) {
+  _brainBuilderData.faqs.splice(i, 1);
+  refreshBrainBuilder();
+}
+
+// ---- STEP6: 完成（Company Brainへ保存） ----
+function renderBBStep6() {
+  const d = _brainBuilderData;
+  const industryLabel = (BRAIN_BUILDER_INDUSTRIES.find(i => i.id === d.industry) || {}).label || '未選択';
+  return `
+<div class="builder-section">
+  <div class="builder-section-title">✅ 入力内容の確認</div>
+  <div class="card" style="padding:16px;margin-bottom:12px">
+    <div style="font-size:12px;color:var(--text2)">業種</div>
+    <div style="font-weight:700;margin-bottom:12px">${esc(industryLabel)}</div>
+    <div style="font-size:12px;color:var(--text2)">会社名</div>
+    <div style="font-weight:700;margin-bottom:12px">${esc(d.company.name)}</div>
+    <div style="font-size:12px;color:var(--text2)">登録されるCompany Brainエントリー</div>
+    <div style="font-weight:700">会社情報 1件／商品・サービス ${d.products.length}件／業務ルール ${d.rules.length}件／FAQ ${d.faqs.length}件</div>
+  </div>
+  <div id="bb-save-status"></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px">
+  <button class="btn btn-secondary" id="bb-back-btn" onclick="brainBuilderBack()">← 戻る</button>
+  <button class="builder-generate-btn" id="bb-finish-btn" onclick="finishBrainBuilder()" style="flex:1;margin-top:0">🧠 Company Brainを作成する</button>
+</div>`;
+}
+
+/**
+ * 入力内容をCompany Brainエントリーへ変換し、既存のREST API（POST /api/brain）で保存する。
+ * CompanyIDによる分離はサーバー側（session.companyId）に委ねる（apiCreate('brain', ...)を利用）。
+ */
+async function finishBrainBuilder() {
+  const btn = document.getElementById('bb-finish-btn');
+  const backBtn = document.getElementById('bb-back-btn');
+  const status = document.getElementById('bb-save-status');
+  btn.disabled = true; btn.textContent = '⏳ 保存しています...';
+
+  const d = _brainBuilderData;
+  const industryLabel = (BRAIN_BUILDER_INDUSTRIES.find(i => i.id === d.industry) || {}).label || 'その他';
+  const tags = ['Company Brain Builder', industryLabel];
+
+  const entries = [];
+  const companyBody = [
+    d.company.contact ? `担当者：${d.company.contact}` : '',
+    d.company.address ? `所在地：${d.company.address}` : '',
+    d.company.tel ? `電話番号：${d.company.tel}` : '',
+    d.company.hours ? `営業時間：${d.company.hours}` : '',
+    d.company.website ? `ホームページ：${d.company.website}` : '',
+    d.company.intro ? `\n${d.company.intro}` : '',
+  ].filter(Boolean).join('\n');
+  entries.push({ cat: '会社概要', importance: '重要', title: d.company.name || '会社情報', tags, body: companyBody });
+  d.products.forEach(p => entries.push({ cat: '商品説明', importance: '普通', title: p.name, tags, body: p.description }));
+  d.rules.forEach(r => entries.push({ cat: '社内ルール', importance: '重要', title: r.label, tags, body: r.content }));
+  d.faqs.forEach(f => entries.push({ cat: 'FAQ', importance: '普通', title: f.question, tags, body: f.answer }));
+
+  try {
+    for (let i = 0; i < entries.length; i++) {
+      const entry = { ...entries[i], id: 'b' + Date.now() + '_' + i };
+      const created = await apiCreate('brain', entry);
+      BRAIN.push(created);
+    }
+    status.innerHTML = `
+    <div class="card" style="padding:20px;border:2px solid #10B981;background:rgba(16,185,129,.05);text-align:center">
+      <div style="font-size:18px;font-weight:800;color:#10B981;margin-bottom:6px">✅ Company Brainを作成しました！</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:14px">${entries.length}件のナレッジを登録しました。</div>
+      <button class="btn btn-primary" onclick="navTo('brain', document.querySelectorAll('.nav-item')[1])">Company Brainを見る</button>
+    </div>`;
+    btn.style.display = 'none';
+    if (backBtn) backBtn.style.display = 'none';
+  } catch (e) {
+    status.innerHTML = `<div class="card" style="padding:14px;border:1px solid #EF4444;color:#EF4444;font-size:12px">保存中にエラーが発生しました：${esc(e.message)}</div>`;
+    btn.disabled = false; btn.textContent = '🧠 Company Brainを作成する';
+  }
 }
 
 // ============================
