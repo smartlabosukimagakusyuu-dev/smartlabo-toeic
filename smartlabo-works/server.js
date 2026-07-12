@@ -27,11 +27,12 @@ const MIME = {
 };
 
 // AIサービス（遅延ロード）
-let brainService, assistantService, router, openaiService;
+let brainService, assistantService, templateService, router, openaiService;
 function loadAIServices() {
   if (!brainService) {
     brainService     = require('./src/services/ai/companyBrainService');
     assistantService = require('./src/services/ai/assistantService');
+    templateService  = require('./src/services/ai/templateService');
     router           = require('./src/services/ai/router');
     openaiService    = require('./src/services/ai/openaiService');
   }
@@ -274,6 +275,23 @@ async function handleAPI(req, res, pathname) {
 
     const result = await assistantService.generate(type, context);
     addLog(session.companyId, { feature: `AI Assistant (${type})`, provider: result.provider || 'openai', processingMs: result.processingMs, success: result.success, error: result.success ? null : result.content });
+    sendJSON(res, result.success ? 200 : 500, result);
+    return;
+  }
+
+  // ---- GET /api/ai/templates ----
+  if (pathname === '/api/ai/templates' && req.method === 'GET') {
+    sendJSON(res, 200, { templates: templateService.listTemplates() });
+    return;
+  }
+
+  // ---- POST /api/ai/templates/generate ----
+  if (pathname === '/api/ai/templates/generate' && req.method === 'POST') {
+    const { templateId, fields } = await readBody(req);
+    if (!templateId) { sendJSON(res, 400, { error: 'templateId は必須です' }); return; }
+
+    const result = await templateService.generate(templateId, fields);
+    addLog(session.companyId, { feature: `AI Template (${templateId})`, provider: result.provider || 'openai', processingMs: result.processingMs, success: result.success, error: result.success ? null : (result.error || result.content) });
     sendJSON(res, result.success ? 200 : 500, result);
     return;
   }

@@ -5916,7 +5916,7 @@ let selectedTemplate = null;
 function renderAI() {
   return `
 <div class="wo-tab" style="margin-bottom:16px">
-  ${[{id:'chat',label:'💬 AIチャット'},{id:'templates',label:'📋 プロンプトテンプレート'},{id:'reply',label:'✉️ 返信・メール生成'}].map(t=>
+  ${[{id:'chat',label:'💬 AIチャット'},{id:'templates',label:'📋 プロンプトテンプレート'},{id:'reply',label:'✉️ 返信・メール生成'},{id:'realestate',label:'🏠 不動産テンプレート'}].map(t=>
     `<div class="wo-tab-item ${aiTab===t.id?'active':''}" onclick="switchAITab('${t.id}')">${t.label}</div>`
   ).join('')}
 </div>
@@ -5925,7 +5925,7 @@ function renderAI() {
 
 function switchAITab(tab) {
   aiTab = tab;
-  document.querySelectorAll('.wo-tab-item').forEach((el,i) => el.classList.toggle('active', i === ['chat','templates','reply'].indexOf(tab)));
+  document.querySelectorAll('.wo-tab-item').forEach((el,i) => el.classList.toggle('active', i === ['chat','templates','reply','realestate'].indexOf(tab)));
   const el = document.getElementById('ai-tab-content');
   if(el) el.innerHTML = renderAITabContent();
 }
@@ -5934,6 +5934,7 @@ function renderAITabContent() {
   if(aiTab === 'chat') return renderAIChat();
   if(aiTab === 'templates') return renderAITemplates();
   if(aiTab === 'reply') return renderAIReply();
+  if(aiTab === 'realestate') return renderAIRealEstateTemplates();
   return '';
 }
 
@@ -6150,6 +6151,134 @@ function openChatGPT() {
   if(!el || el.textContent.includes('左のフォームを')) { alert('先に生成してください'); return; }
   const prompt = `以下のメールを自然な日本語でブラッシュアップしてください。\n\n${el.textContent}`;
   navigator.clipboard.writeText(prompt).then(() => alert('ChatGPT用プロンプトをコピーしました。ChatGPTに貼り付けてください。'));
+}
+
+// ============================
+//  AI Assistant — 業種特化テンプレート（Template First設計）
+//  テンプレートの追加はサーバー側 src/services/ai/templates/ にファイルを
+//  1つ追加するだけでよい。この画面はAPI(/api/ai/templates)から取得した
+//  一覧・フィールド定義をもとに動的にフォームを組み立てるため、
+//  新テンプレート追加時にこのファイルを変更する必要はない。
+// ============================
+let aiRETemplates = [];
+let aiRESelectedTemplateId = null;
+
+function renderAIRealEstateTemplates() {
+  if (aiRETemplates.length === 0) loadAIRETemplates();
+  return `
+<div class="grid2">
+  <div>
+    <div class="section-title" style="margin-bottom:12px">🏠 業種特化テンプレート</div>
+    <div id="are-list">${renderAIRETemplateList()}</div>
+  </div>
+  <div id="are-panel">
+    <div class="card" style="padding:28px;text-align:center;color:var(--text2)">
+      <div style="font-size:28px;margin-bottom:12px">🏠</div>
+      <div style="font-size:14px">左からテンプレートを選択してください</div>
+    </div>
+  </div>
+</div>`;
+}
+
+function renderAIRETemplateList() {
+  if (aiRETemplates.length === 0) {
+    return `<div class="card" style="padding:20px;text-align:center;color:var(--text2);font-size:13px">読み込み中...</div>`;
+  }
+  return aiRETemplates.map(t => `
+    <div class="card" style="padding:14px 16px;margin-bottom:8px;cursor:pointer;border-color:${aiRESelectedTemplateId===t.id?'var(--accent)':'var(--border)'};background:${aiRESelectedTemplateId===t.id?'#EFF6FF':'var(--card)'}"
+      onclick="selectAIRETemplate('${t.id}')">
+      <div style="font-size:13.5px;font-weight:600">${esc(t.label)}</div>
+      <div style="font-size:11px;color:var(--accent);margin:2px 0">${esc(t.category)}</div>
+      <div style="font-size:12px;color:var(--text2)">${esc(t.description || '')}</div>
+    </div>`).join('');
+}
+
+async function loadAIRETemplates() {
+  try {
+    const res = await fetch('/api/ai/templates');
+    const data = await res.json();
+    aiRETemplates = data.templates || [];
+  } catch (e) {
+    aiRETemplates = [];
+  }
+  const listEl = document.getElementById('are-list');
+  if (listEl) listEl.innerHTML = renderAIRETemplateList();
+}
+
+function selectAIRETemplate(id) {
+  aiRESelectedTemplateId = id;
+  const listEl = document.getElementById('are-list');
+  if (listEl) listEl.innerHTML = renderAIRETemplateList();
+
+  const tpl = aiRETemplates.find(t => t.id === id);
+  const panel = document.getElementById('are-panel');
+  if (!panel || !tpl) return;
+
+  panel.innerHTML = `
+  <div class="card">
+    <div class="section-title" style="margin-bottom:14px">${esc(tpl.label)}</div>
+    ${tpl.fields.map(f => `
+    <div class="form-row">
+      <label>${esc(f.label)}${f.required ? ' *' : ''}</label>
+      ${f.type === 'textarea'
+        ? `<textarea class="form-input" id="are-field-${esc(f.key)}" placeholder="${esc(f.placeholder||'')}"></textarea>`
+        : `<input class="form-input" id="are-field-${esc(f.key)}" placeholder="${esc(f.placeholder||'')}">`}
+    </div>`).join('')}
+    <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="generateAIRETemplate()">生成する</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px">📄 生成結果</div>
+    <div id="are-output" style="background:var(--bg);padding:14px;border-radius:8px;font-size:13px;line-height:1.8;min-height:160px;white-space:pre-wrap;color:var(--text2)">
+      左のフォームを入力して「生成する」をクリックしてください。
+    </div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn btn-secondary" style="flex:1" onclick="copyAIREOutput()">📋 コピー</button>
+    </div>
+  </div>`;
+}
+
+async function generateAIRETemplate() {
+  const tpl = aiRETemplates.find(t => t.id === aiRESelectedTemplateId);
+  if (!tpl) return;
+
+  const fields = {};
+  let missingRequired = false;
+  tpl.fields.forEach(f => {
+    const el = document.getElementById(`are-field-${f.key}`);
+    const val = el ? el.value.trim() : '';
+    fields[f.key] = val;
+    if (f.required && !val) missingRequired = true;
+  });
+
+  if (missingRequired) { alert('必須項目を入力してください'); return; }
+
+  const el = document.getElementById('are-output');
+  const btn = document.querySelector('[onclick="generateAIRETemplate()"]');
+  if (el) { el.textContent = '⏳ AI生成中...'; el.style.color = 'var(--text2)'; }
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/ai/templates/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ templateId: tpl.id, fields })
+    });
+    const data = await res.json();
+    if (el) { el.textContent = data.content || data.error || 'エラーが発生しました'; el.style.color = 'var(--text)'; }
+  } catch (e) {
+    if (el) { el.textContent = `接続エラー: ${e.message}`; el.style.color = 'var(--red)'; }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function copyAIREOutput() {
+  const el = document.getElementById('are-output');
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    event.target.textContent = '✅ コピーしました';
+    setTimeout(() => event.target.textContent = '📋 コピー', 2000);
+  });
 }
 
 // ============================

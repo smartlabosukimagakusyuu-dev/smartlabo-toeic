@@ -301,12 +301,20 @@ smartlabo-works/
             ├── promptManager.js      ← 全プロンプト一元管理
             ├── companyBrainService.js
             ├── assistantService.js
+            ├── templateService.js    ← 業種特化テンプレートの実行サービス
+            ├── templates/            ← 業種特化テンプレート定義（Template First）
+            │   ├── index.js          ← レジストリ（フォルダ内を自動読込。変更不要）
+            │   └── propertyListing.js← 物件紹介文テンプレート
             ├── meetingService.js
             └── knowledgeService.js
 ```
 
 新しいProviderを追加する場合は `providers/` 配下に作成し、
 `router/router.js` の `PROVIDERS` と `ROUTE_TABLE` に登録すること。
+
+新しい業種特化テンプレート（査定コメント・営業メール・SNS・LINE・司法書士・管理会社等）を
+追加する場合は、`templates/` 配下に定義ファイルを1つ追加するだけでよい
+（`templateService.js`・`server.js`・`templates/index.js` は変更不要）。
 
 ---
 
@@ -318,6 +326,8 @@ smartlabo-works/
 | POST | `/api/ai/test`             | OpenAI接続テスト |
 | POST | `/api/ai/brain`            | Company Brain（社内ナレッジ検索） |
 | POST | `/api/ai/assistant`        | AI Assistant（文書生成） |
+| GET  | `/api/ai/templates`        | 業種特化テンプレート一覧取得 |
+| POST | `/api/ai/templates/generate`| 業種特化テンプレートで文書生成 |
 | POST | `/api/ai/innovation-review`| Innovation Hub AIレビュー |
 | POST | `/api/ai/workorder-gen`    | AI Work Order生成 |
 | GET  | `/api/ai/logs`             | AIログ取得 |
