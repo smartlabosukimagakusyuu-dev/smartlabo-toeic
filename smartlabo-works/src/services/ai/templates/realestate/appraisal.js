@@ -1,10 +1,11 @@
 /**
  * テンプレート: 査定コメント（不動産売買向け）
- * Sprint3 Task4 Step2.2 で実装する唯一のテンプレート。
+ * id・namespaceは templates/index.js（Template Loader）がファイルパスから自動付与する。
  *
- * 査定価格の根拠を顧客にそのまま提示できる文章として生成する。
- * 法的判断・価格保証は行わず、断定的な将来予測表現も禁止する
- * （CEO指示「必ず売れる」「確実に値上がりする」等の表現禁止に対応）。
+ * Sprint3 Task4 Step2.2で実装・動作確認・CEO承認済みの内容を、
+ * Template Engine正式フォルダ構成（realestate/）へそのまま移動したもの。
+ * 査定価格の根拠を顧客にそのまま提示できる文章として生成する。法的判断・価格保証は行わず、
+ * 断定的な将来予測表現も禁止する（CEO指示「必ず売れる」「確実に値上がりする」等の表現禁止に対応）。
  */
 
 const TONE_OPTIONS = [
@@ -15,7 +16,6 @@ const TONE_OPTIONS = [
 const TONE_LABELS = TONE_OPTIONS.reduce((acc, t) => (acc[t.value] = t.label, acc), {});
 
 module.exports = {
-  id: 'assessment_comment',
   label: '査定コメント',
   category: '不動産売買',
   description: '査定価格の根拠が伝わる、顧客提示用の査定コメントを生成します',

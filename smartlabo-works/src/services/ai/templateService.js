@@ -1,16 +1,19 @@
 /**
- * Smart Labo Works — 業種特化テンプレート Service
+ * Smart Labo Works — 業種特化テンプレート Service（Template Engine）
  *
- * templates/ レジストリに登録されたテンプレートを使ってAIを呼び出す。
- * assistantService.js（既存のtype固定switch）とは独立した経路とし、
- * 既存のAI Assistant機能には一切手を加えない。
+ * PromptManager（Template Loaderの窓口。実体は templates/index.js）に登録された
+ * テンプレートを使ってAI Routerを呼び出す。assistantService.js（既存のtype固定switch）
+ * とは独立した経路とし、既存のAI Assistant機能には一切手を加えない。
+ *
+ * Routerへ渡すfeatureは常に'assistant'固定。Provider選択・JobType判断はRouter側の
+ * 既存ROUTE_TABLEに委ね、このServiceやRouterに業種ロジックを書かない。
  */
 
-const router    = require('./router');
-const templates = require('./templates');
+const router  = require('./router');
+const { templates } = require('./promptManager');
 
 /**
- * UI向けのテンプレート一覧を返す
+ * UI向けのテンプレート一覧を返す（雛形＝status:'planned'のテンプレートも含む）
  */
 function listTemplates() {
   return templates.list();
@@ -28,6 +31,12 @@ async function generate(templateId, fields) {
     return {
       content: null, provider: null, processingMs: 0, success: false,
       error: `テンプレート "${templateId}" が見つかりません`,
+    };
+  }
+  if (tpl.status !== 'ready') {
+    return {
+      content: null, provider: null, processingMs: 0, success: false,
+      error: `テンプレート "${tpl.label}" は未実装（準備中）です`,
     };
   }
 

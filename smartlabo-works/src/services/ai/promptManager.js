@@ -225,4 +225,14 @@ PROJECT_BIBLE / CURRENT_STATUS確認の指示、Brand Bible・Design Bible遵守
   },
 };
 
+// ==========================================
+// Template Engine（CEO承認による正式仕様）
+//
+// 業種特化テンプレート（物件紹介文・査定コメント等）はここに個別のswitch文を
+// 書かず、PromptManagerをTemplate Loader（templates/index.js）への窓口として
+// 利用する。新しいテンプレートの追加は templates/<namespace>/ 配下に
+// ファイルを1つ追加するだけでよく、PromptManagerの変更は不要。
+// ==========================================
+prompts.templates = require('./templates');
+
 module.exports = prompts;

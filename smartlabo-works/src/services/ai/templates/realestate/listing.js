@@ -1,10 +1,9 @@
 /**
- * テンプレート: 物件紹介文（不動産売買・不動産管理向け）
- * Sprint3 Task4 Step2.1 で実装する唯一のテンプレート。
+ * テンプレート: 物件紹介文（不動産売買向け）
+ * id・namespaceは templates/index.js（Template Loader）がファイルパスから自動付与する。
  */
 
 module.exports = {
-  id: 'property_listing',
   label: '物件紹介文',
   category: '不動産売買',
   description: '物件情報を入力すると、魅力が伝わる物件紹介文を生成します',

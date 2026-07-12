@@ -298,13 +298,17 @@ smartlabo-works/
             ├── types/
             │   └── aiTypes.js        ← JSDoc型定義
             ├── router.js             ← 後方互換シム
-            ├── promptManager.js      ← 全プロンプト一元管理
+            ├── promptManager.js      ← Template Loaderの窓口（実体はtemplates/index.js）
             ├── companyBrainService.js
             ├── assistantService.js
-            ├── templateService.js    ← 業種特化テンプレートの実行サービス
-            ├── templates/            ← 業種特化テンプレート定義（Template First）
-            │   ├── index.js          ← レジストリ（フォルダ内を自動読込。変更不要）
-            │   └── propertyListing.js← 物件紹介文テンプレート
+            ├── templateService.js    ← Template Engineの実行サービス
+            ├── templates/            ← Template Engine（正式仕様。Template追加型）
+            │   ├── index.js          ← Template Loader本体（namespaceフォルダを自動読込。変更不要）
+            │   ├── realestate/       ← 不動産売買（listing.js・appraisal.js実装済み。他は雛形）
+            │   ├── management/       ← 不動産管理会社（全て雛形）
+            │   ├── legal/            ← 司法書士（全て雛形）
+            │   ├── tax/              ← 税理士（全て雛形）
+            │   └── common/           ← 業種を問わない汎用テンプレート（全て雛形）
             ├── meetingService.js
             └── knowledgeService.js
 ```
@@ -312,9 +316,12 @@ smartlabo-works/
 新しいProviderを追加する場合は `providers/` 配下に作成し、
 `router/router.js` の `PROVIDERS` と `ROUTE_TABLE` に登録すること。
 
-新しい業種特化テンプレート（査定コメント・営業メール・SNS・LINE・司法書士・管理会社等）を
-追加する場合は、`templates/` 配下に定義ファイルを1つ追加するだけでよい
-（`templateService.js`・`server.js`・`templates/index.js` は変更不要）。
+新しい業種特化テンプレートを追加する場合は、`templates/<namespace>/` 配下に
+定義ファイルを1つ追加するだけでよい（`templateService.js`・`server.js`・
+`templates/index.js`・`promptManager.js` はいずれも変更不要）。
+テンプレートID・namespaceはファイルパスから自動生成される
+（例: `templates/realestate/listing.js` → `realestate.listing`）。
+新しい業種（namespace）を追加する場合は `templates/` 直下にフォルダを1つ追加する。
 
 ---
 
