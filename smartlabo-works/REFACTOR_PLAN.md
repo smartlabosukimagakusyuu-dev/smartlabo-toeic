@@ -186,6 +186,8 @@
 | コミット単位 | 1〜2コミット |
 | 完了条件 | Gemini経由の応答が取得できること |
 
+**【2026-07-11 更新】** 本Stepが計画していたGemini接続は、Sprint3 Task1「Smart AI Router基盤実装」（CEO承認）にて、当初想定していた`src/services/ai/router/`（Task4の既存Router）への追加ではなく、新設の`src/services/router/`（Smart AI Router、Smart Labo Works独自技術として新設）内の`GeminiProvider.js`として実装された。既存の`src/services/ai/router/router.js`・`geminiProvider.js`（スタブ）はTask4のまま変更しておらず、引き続き稼働中の`/api/ai/*`エンドポイントを支えている。両者は現時点で並存しており、将来的にどちらへ一本化するかは未決定（`PRODUCT_REQUIREMENTS.md`等への反映も含め、CEO確認事項として残す）。
+
 ### Step 3.4 Meeting AI
 
 | 項目 | 内容 |
